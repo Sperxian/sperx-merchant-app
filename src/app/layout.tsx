@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AppHeader } from "./AppHeader";
+import { AppHeader } from "./merchant/scanner/components/AppHeader";
 
 export const SHOP_NAME = "Café Barako";
 export const LOYALTY_PROGRAM_NAME = "Member Loyalty Program";

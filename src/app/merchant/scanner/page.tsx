@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CustomerSheet } from "./CustomerSheet";
+import { CustomerSheet } from "./components/CustomerSheet";
 
 const LOYALTY_CONFIG = {
   stampsRequired: 12,
