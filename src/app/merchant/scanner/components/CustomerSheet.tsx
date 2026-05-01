@@ -22,7 +22,7 @@ interface LoyaltyConfig {
 type SheetState = "idle" | "confirmed";
 
 export function CustomerSheet({
-  member: member,
+  member,
   config,
   open,
   onClose,

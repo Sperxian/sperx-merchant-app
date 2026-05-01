@@ -7,7 +7,7 @@ interface StampGridProps {
 
 export function StampGrid({ total, collected }: StampGridProps) {
   return (
-    <div className="grid grid-cols-6 gap-2 mb-[14px]">
+    <div className="grid grid-cols-5 gap-2 mb-4">
       {Array.from({ length: total }).map((_, i) => {
         const filled = i < collected;
 

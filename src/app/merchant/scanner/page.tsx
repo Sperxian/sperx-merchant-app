@@ -13,9 +13,7 @@ const LOYALTY_CONFIG = {
 export default function QrScanPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty | undefined>(
-    undefined,
-  );
+  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty | undefined>();
 
   const handleScan = async () => {
     const memberId = "3aa24af8-1798-4af9-95bd-153dc1564cce";

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StampGrid } from "./StampGrid";
 
 export type LoyaltyCardSectionProps = {
@@ -9,16 +10,21 @@ export type LoyaltyCardSectionProps = {
 
 export function LoyaltyCardSection(props: LoyaltyCardSectionProps) {
   return (
-    <div>
+    <div className="space-y-1">
       <p className="text-sm font-medium text-foreground/50 mb-2">
         Loyalty Card
       </p>
+      {/* <LoyaltyCard {...props} /> */}
       <LoyaltyCard {...props} />
     </div>
   );
 }
 
-function LoyaltyCard({ current, total, rewardLabel }: LoyaltyCardSectionProps) {
+function LoyaltyCard({
+  current,
+  total,
+  rewardLabel,
+}: LoyaltyCardSectionProps) {
   const LOYALTY_PROGRAM_NAME = "Member Loyalty Program";
 
   const trackingPoints = current % total;
@@ -26,21 +32,22 @@ function LoyaltyCard({ current, total, rewardLabel }: LoyaltyCardSectionProps) {
   const remainingPercent = Math.round((trackingPoints / total) * 100);
 
   return (
-    <div className="bg-primary rounded-2xl p-4">
-      {/* Header row */}
-      <div className="flex items-center justify-between pt-2 pb-4">
-        <p className="text-xs text-white/50 uppercase tracking-wide">
+    <div className="h-56 flex-none bg-primary rounded-2xl p-4 relative overflow-hidden flex flex-col">
+      {/* Decorative circles */}
+      <div className="absolute -top-[28px] -right-[28px] w-[90px] h-[90px] rounded-full border-[18px] border-white/5" />
+      <div className="absolute bottom-[-18px] left-[18px] w-[55px] h-[55px] rounded-full border-[11px] border-white/5" />
+
+      <div className="flex items-center justify-between uppercase tracking-widest mb-4">
+        <p className="text-xs text-white/50 uppercase">
           {LOYALTY_PROGRAM_NAME}
         </p>
-        <span className="text-xs text-secondary tracking-wide font-medium">
-          {trackingPoints} / {total}
-        </span>
+        <p className="text-xs text-secondary">
+          {Math.trunc(trackingPoints)} / {total}
+        </p>
       </div>
 
-      {/* Stamp grid */}
-      <StampGrid collected={trackingPoints} total={total} />
-
-      {/* Progress bar */}
+      <StampGrid collected={trackingPoints} total={total}  />
+      
       <div className="flex items-center gap-2">
         <div className="flex-1 h-1 bg-secondary/30 rounded-full overflow-hidden">
           <div
@@ -57,3 +64,12 @@ function LoyaltyCard({ current, total, rewardLabel }: LoyaltyCardSectionProps) {
     </div>
   );
 }
+
+// function LoyaltyCardSkeleton() {
+//   return (
+//     <div className="bg-primary rounded-2xl p-4 animate-pulse space-y-4">
+//       <div className="h-4 bg-gray-300 rounded" />
+//       <div className="h-30 bg-gray-300 rounded" />
+//     </div>
+//   );
+// }
