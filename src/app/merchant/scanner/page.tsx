@@ -2,28 +2,31 @@
 
 import { useState } from "react";
 import { CustomerSheet } from "./components/CustomerSheet";
+import { getMemberLoyalty } from "@/src/lib/api/member";
+import { MemberLoyalty } from "@/src/lib/types";
 
 const LOYALTY_CONFIG = {
   stampsRequired: 12,
   rewardLabel: "free coffee",
 };
 
-// Simulated customer returned after a QR scan
-const MOCK_CUSTOMER = {
-  id: "b18da224-f443-4243-aeaf-8fca36ae0aea",
-  name: "Juan Karlos",
-  initials: "JK",
-  memberSince: "Jan 2024",
-  stamps: 9,
-  totalStamps: 12,
-};
-
-export default function Home() {
+export default function QrScanPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  function handleScan() {
+  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty | undefined>(
+    undefined,
+  );
+
+  const handleScan = async () => {
+    const memberId = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+    const data = await getMemberLoyalty(memberId);
+    setMemberLoyalty({
+      id: data.id,
+      points: data.points,
+      dateCreated: data.dateCreated,
+    });
     setSheetOpen(true);
-  }
+  };
 
   function handleClose() {
     setSheetOpen(false);
@@ -43,7 +46,7 @@ export default function Home() {
       </div>
 
       <CustomerSheet
-        customer={MOCK_CUSTOMER}
+        customer={memberLoyalty}
         config={LOYALTY_CONFIG}
         open={sheetOpen}
         onClose={handleClose}

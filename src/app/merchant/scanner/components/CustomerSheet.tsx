@@ -1,13 +1,13 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Customer } from "@/src/types";
 import { CustomerSection } from "../CustomerSection";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
+import { MemberLoyalty } from "@/src/lib/types";
 
 interface CustomerSheetProps {
-  customer: Customer;
+  customer?: MemberLoyalty;
   config: LoyaltyConfig;
   open: boolean;
   onClose: () => void;
@@ -26,7 +26,7 @@ export function CustomerSheet({
   open,
   onClose,
 }: CustomerSheetProps) {
-  const [stamps, setStamps] = useState(customer.stamps);
+  const [stamps, setStamps] = useState(customer?.points ?? 0);
   const [newlyAdded, setNewlyAdded] = useState(0);
   const [stampsToReward, setStampsToReward] = useState(1);
   const [state, setState] = useState<SheetState>("idle");
@@ -44,10 +44,11 @@ export function CustomerSheet({
     onClose();
   }
 
-  const successMessage =
-    stamps >= config.stampsRequired
+  const successMessage = customer
+    ? stamps >= config.stampsRequired
       ? `Card complete! ${customer.name} earned a ${config.rewardLabel}!`
-      : `${newlyAdded} ${newlyAdded === 1 ? "stamp" : "stamps"} added to ${customer.name}!`;
+      : `${newlyAdded} ${newlyAdded === 1 ? "stamp" : "stamps"} added to ${customer.name}!`
+    : null;
 
   return (
     <div
@@ -79,7 +80,7 @@ export function CustomerSheet({
 
         <div className="px-4 pb-24 flex flex-col flex-grow gap-4">
           {/* Customer */}
-          <CustomerSection customer={customer} />
+          {customer && <CustomerSection customer={customer} />}
 
           {/* Loyalty card */}
           <LoyaltyCardSection
