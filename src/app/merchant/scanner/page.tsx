@@ -20,14 +20,12 @@ export default function QrScanPage() {
   >();
 
   const handleScan = async () => {
-    await loadMemberDetails(MEMBER_ID);
-
     setSheetOpen(true);
+    await loadMemberDetails(MEMBER_ID);
   };
 
   const loadMemberDetails = async (memberId: string) => {
     const data = await getMemberLoyalty(memberId);
-    console.log("Loaded member:", { data });
     setMemberLoyalty({
       id: data.id,
       points: data.points,
@@ -40,7 +38,7 @@ export default function QrScanPage() {
   }
 
   return (
-    <div className="flex flex-col h-full gap-6 max-w-xl rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div className="flex flex-col h-full gap-6 max-w-xl bg-background">
       <div className="flex-1 flex items-center justify-center relative overflow-hidden">
         {/* <QrScanner onScan={handleScan} /> */}
 

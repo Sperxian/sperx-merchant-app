@@ -60,7 +60,7 @@ export function CustomerSheet({
   return (
     <div
       className={[
-        "absolute inset-0 z-10 transition-colors duration-300",
+        "absolute inset-0 z-[999] transition-colors duration-300",
         open
           ? "bg-black/55 pointer-events-auto"
           : "bg-transparent pointer-events-none",
@@ -81,8 +81,16 @@ export function CustomerSheet({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drag handle */}
-        <div className="flex justify-center pt-2.5 pb-3.5">
-          <div className="w-9 h-1 bg-primary rounded-full" />
+        <div className="flex items-center justify-between px-4 py-2">
+          {/* Content */}
+          <h2 className="text-lg font-semibold">Add Stamps</h2>
+
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-black text-2xl"
+          >
+            ✕
+          </button>
         </div>
 
         <div className="px-4 flex flex-col flex-grow gap-4">
@@ -113,7 +121,7 @@ export function CustomerSheet({
         </div>
 
         {/* Fixed footer */}
-        <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-primary/30 flex flex-col justify-center px-4 py-2">
+        <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 flex flex-col justify-center px-4 py-2">
           {state === "idle" && (
             <button
               className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
