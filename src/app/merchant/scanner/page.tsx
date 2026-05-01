@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CustomerSheet, MODE_OPTION } from "./components/CustomerSheet";
+import { MemberSheet, MODE_OPTION } from "./components/MemberSheet";
 import { getMemberLoyalty } from "@/src/lib/api/member";
 import { MemberLoyalty } from "@/src/lib/types";
 
@@ -78,7 +78,7 @@ export default function QrScanPage() {
         </div>
       </div>
 
-      <CustomerSheet
+      <MemberSheet
         member={memberLoyalty}
         config={LOYALTY_CONFIG}
         mode={mode}
