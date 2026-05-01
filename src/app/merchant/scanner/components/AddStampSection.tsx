@@ -11,7 +11,7 @@ export function AddStampSection({
 }: AddStampSectionProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground/50 mb-2">Add Stamps</p>
+      <p className="text-sm font-medium text-foreground/50 mb-2">Apply Stamps</p>
       <StampCounter value={stampsToReward} onChange={setStampsToReward} />
     </div>
   );

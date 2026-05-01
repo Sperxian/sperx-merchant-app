@@ -6,10 +6,15 @@ import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
+import { RedeemRewardSection } from "./RedeemRewardSection";
+
+export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 interface CustomerSheetProps {
   member?: MemberLoyalty;
   config: LoyaltyConfig;
+  mode: MODE_OPTION;
+
   open: boolean;
   onClose: () => void;
   onRefresh: () => void;
@@ -21,10 +26,14 @@ interface LoyaltyConfig {
 }
 
 type SheetState = "idle" | "confirmed";
+type ModeMetadata = {
+  title: string;
+};
 
 export function CustomerSheet({
   member,
   config,
+  mode,
   open,
   onClose,
   onRefresh,
@@ -33,6 +42,15 @@ export function CustomerSheet({
   const [stampsToReward, setStampsToReward] = useState(1);
   const [successMessage, setSuccessMessage] = useState<string>();
   const sheetRef = useRef<HTMLDivElement>(null);
+
+  const modeMetadata: ModeMetadata =
+    mode === "APPLY_STAMP"
+      ? {
+          title: "Apply Stamp",
+        }
+      : {
+          title: "Redeem Reward",
+        };
 
   const handleAddStamp = async () => {
     await addMemberLoyaltyPoints(member!.id, stampsToReward);
@@ -83,7 +101,7 @@ export function CustomerSheet({
         {/* Drag handle */}
         <div className="flex items-center justify-between px-4 py-2">
           {/* Content */}
-          <h2 className="text-lg font-semibold">Add Stamps</h2>
+          <h2 className="text-lg font-semibold">{modeMetadata.title}</h2>
 
           <button
             onClick={onClose}
@@ -95,14 +113,16 @@ export function CustomerSheet({
 
         <div className="px-4 flex flex-col flex-grow gap-4">
           {/* Loyalty card */}
-          <LoyaltyCardSection
-            current={currentPoints}
-            total={config.stampsRequired}
-            rewardLabel={config.rewardLabel}
-          />
+          {mode === "APPLY_STAMP" && (
+            <LoyaltyCardSection
+              current={currentPoints}
+              total={config.stampsRequired}
+              rewardLabel={config.rewardLabel}
+            />
+          )}
 
           {/* Add stamps — hidden after confirm */}
-          {state === "idle" && (
+          {mode === "APPLY_STAMP" && state === "idle" && (
             <AddStampSection
               stampsToReward={stampsToReward}
               setStampsToReward={setStampsToReward}
@@ -110,11 +130,13 @@ export function CustomerSheet({
           )}
 
           {/* Success */}
-          {state === "confirmed" && member && (
+          {mode === "APPLY_STAMP" && state === "confirmed" && member && (
             <div className="bg-green-800 text-white rounded-xl px-4 py-3 text-sm font-medium text-center mb-2">
               {successMessage}
             </div>
           )}
+
+          {mode === "REDEEM_REWARD" && <RedeemRewardSection />}
 
           {/* Customer */}
           {member && <CustomerSection customer={member} />}
@@ -122,7 +144,7 @@ export function CustomerSheet({
 
         {/* Fixed footer */}
         <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 flex flex-col justify-center px-4 py-2">
-          {state === "idle" && (
+          {mode === "APPLY_STAMP" && state === "idle" && (
             <button
               className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
               onClick={handleAddStamp}
@@ -132,7 +154,7 @@ export function CustomerSheet({
                 : `Add ${stampsToReward} stamps`}
             </button>
           )}
-          {state === "confirmed" && (
+          {mode === "APPLY_STAMP" && state === "confirmed" && (
             <div className="text-center">
               <button
                 onClick={handleReset}
@@ -141,6 +163,16 @@ export function CustomerSheet({
                 Scan another customer
               </button>
             </div>
+          )}
+
+          {mode === "REDEEM_REWARD" && (
+            <button
+              className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
+              onClick={() => alert("TODO: Redeem reward")}
+              disabled={true}
+            >
+              Redeem Reward
+            </button>
           )}
         </div>
       </div>
