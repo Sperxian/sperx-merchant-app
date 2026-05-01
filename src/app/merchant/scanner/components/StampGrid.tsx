@@ -1,4 +1,4 @@
-import { CoffeeCup } from "./CoffeeCup";
+import { LoyaltyStamp } from "./LoyaltyStamp";
 
 interface StampGridProps {
   total: number;
@@ -14,16 +14,14 @@ export function StampGrid({ total, collected }: StampGridProps) {
         return (
           <div
             key={i}
-            className={`aspect-square rounded-[9px] flex items-center justify-center relative ${
-              filled
-                ? "border-[1.5px] border-[#a76eff]/40 bg-[rgba(120,50,200,0.28)]"
-                : "border-[1.5px] border-[#c8a0ff]/25 border-dashed bg-[rgba(255,255,255,0.04)]"
+            className={`aspect-square rounded-xl flex items-center justify-center relative border-2 border-gray-600 bg-primary ${
+              filled ? "border-solid" : "border-dashed]"
             }`}
           >
-            <CoffeeCup filled={filled} size={32} />
+            <LoyaltyStamp filled={filled} size={32} icon="coffee" />
 
             {!filled && (
-              <span className="text-[8px] text-[#c8a0ff]/20 absolute bottom-[3px] right-[4px]">
+              <span className="text-[8px] text-background absolute bottom-[3px] right-[4px]">
                 {i + 1}
               </span>
             )}
