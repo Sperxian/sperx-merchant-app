@@ -5,6 +5,7 @@ import { CustomerSection } from "../CustomerSection";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
+import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 
 interface CustomerSheetProps {
   customer?: MemberLoyalty;
@@ -32,11 +33,13 @@ export function CustomerSheet({
   const [state, setState] = useState<SheetState>("idle");
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  function handleAddStamp(newStamps: number) {
+  const handleAddStamp = async (newStamps: number) => {
+    addMemberLoyaltyPoints(customer!.id, stampsToReward);
+
     setStamps((s) => s + newStamps);
     setNewlyAdded(newStamps);
     setState("confirmed");
-  }
+  };
 
   function handleReset() {
     setStampsToReward(1);
