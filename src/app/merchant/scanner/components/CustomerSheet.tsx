@@ -12,6 +12,7 @@ interface CustomerSheetProps {
   config: LoyaltyConfig;
   open: boolean;
   onClose: () => void;
+  onRefresh: () => void;
 }
 
 interface LoyaltyConfig {
@@ -26,18 +27,24 @@ export function CustomerSheet({
   config,
   open,
   onClose,
+  onRefresh,
 }: CustomerSheetProps) {
-  const [stamps, setStamps] = useState(member?.points ?? 0);
-  const [newlyAdded, setNewlyAdded] = useState(0);
-  const [stampsToReward, setStampsToReward] = useState(1);
   const [state, setState] = useState<SheetState>("idle");
+  const [stampsToReward, setStampsToReward] = useState(1);
+  const [successMessage, setSuccessMessage] = useState<string>();
   const sheetRef = useRef<HTMLDivElement>(null);
 
-  const handleAddStamp = async (newStamps: number) => {
-    addMemberLoyaltyPoints(member!.id, stampsToReward);
+  const handleAddStamp = async () => {
+    await addMemberLoyaltyPoints(member!.id, stampsToReward);
+    setSuccessMessage(
+      cardPoints + stampsToReward >= config.stampsRequired
+        ? `Card complete! Member earned a ${config.rewardLabel}!`
+        : stampsToReward === 1
+          ? "Stamp rewarded!"
+          : `${stampsToReward} stamps rewarded!`,
+    );
 
-    setStamps((s) => s + newStamps);
-    setNewlyAdded(newStamps);
+    await onRefresh();
     setState("confirmed");
   };
 
@@ -48,12 +55,7 @@ export function CustomerSheet({
   }
 
   const currentPoints = member?.points ?? 0;
-
-  const successMessage = member
-    ? stamps >= config.stampsRequired
-      ? `Card complete! ${member.name} earned a ${config.rewardLabel}!`
-      : `${newlyAdded} ${newlyAdded === 1 ? "stamp" : "stamps"} added to ${member.name}!`
-    : null;
+  const cardPoints = currentPoints % config.stampsRequired;
 
   return (
     <div
@@ -83,10 +85,7 @@ export function CustomerSheet({
           <div className="w-9 h-1 bg-primary rounded-full" />
         </div>
 
-        <div className="px-4 pb-24 flex flex-col flex-grow gap-4">
-          {/* Customer */}
-          {member && <CustomerSection customer={member} />}
-
+        <div className="px-4 flex flex-col flex-grow gap-4">
           {/* Loyalty card */}
           <LoyaltyCardSection
             current={currentPoints}
@@ -103,19 +102,22 @@ export function CustomerSheet({
           )}
 
           {/* Success */}
-          {state === "confirmed" && (
+          {state === "confirmed" && member && (
             <div className="bg-green-800 text-white rounded-xl px-4 py-3 text-sm font-medium text-center mb-2">
               {successMessage}
             </div>
           )}
+
+          {/* Customer */}
+          {member && <CustomerSection customer={member} />}
         </div>
 
         {/* Fixed footer */}
-        <div className="min-h-24 max-h-24 sticky bottom-0 bg-background border-t rounded-sm border-primary/30 flex flex-col justify-center px-4 py-2">
+        <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-primary/30 flex flex-col justify-center px-4 py-2">
           {state === "idle" && (
             <button
-              className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-4 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
-              onClick={() => handleAddStamp(stampsToReward)}
+              className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
+              onClick={handleAddStamp}
             >
               {stampsToReward <= 1
                 ? "Add 1 stamp"

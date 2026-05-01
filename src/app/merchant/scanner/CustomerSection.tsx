@@ -9,7 +9,7 @@ export function CustomerSection({ customer }: CustomerSectionProps) {
 
   return (
     <div>
-      <p className="text-sm font-medium text-foreground/50 mb-2">Customer</p>
+      <p className="text-sm font-medium text-foreground/50">Customer</p>
       <div className="bg-white border border-primary rounded-2xl p-3">
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white text-md font-medium flex-shrink-0">

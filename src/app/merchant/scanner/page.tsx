@@ -11,19 +11,28 @@ const LOYALTY_CONFIG = {
 };
 
 export default function QrScanPage() {
+  const MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty | undefined>();
+  const [memberLoyalty, setMemberLoyalty] = useState<
+    MemberLoyalty | undefined
+  >();
 
   const handleScan = async () => {
-    const memberId = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+    await loadMemberDetails(MEMBER_ID);
+
+    setSheetOpen(true);
+  };
+
+  const loadMemberDetails = async (memberId: string) => {
     const data = await getMemberLoyalty(memberId);
+    console.log("Loaded member:", { data });
     setMemberLoyalty({
       id: data.id,
       points: data.points,
       dateCreated: data.dateCreated,
     });
-    setSheetOpen(true);
   };
 
   function handleClose() {
@@ -48,6 +57,7 @@ export default function QrScanPage() {
         config={LOYALTY_CONFIG}
         open={sheetOpen}
         onClose={handleClose}
+        onRefresh={() => loadMemberDetails(MEMBER_ID)}
       />
     </div>
   );

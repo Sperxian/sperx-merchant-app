@@ -27,7 +27,7 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
   const increment = () => onChange(value + 1);
 
   return (
-    <div className="bg-background border border-primary rounded-2xl p-3 mb-3">
+    <div className="bg-background border border-primary rounded-2xl p-3">
       <div className="flex items-center">
         <button
           onClick={decrement}
