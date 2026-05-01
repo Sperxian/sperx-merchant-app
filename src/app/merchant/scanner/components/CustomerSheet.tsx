@@ -8,7 +8,7 @@ import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 
 interface CustomerSheetProps {
-  customer?: MemberLoyalty;
+  member?: MemberLoyalty;
   config: LoyaltyConfig;
   open: boolean;
   onClose: () => void;
@@ -22,19 +22,19 @@ interface LoyaltyConfig {
 type SheetState = "idle" | "confirmed";
 
 export function CustomerSheet({
-  customer,
+  member: member,
   config,
   open,
   onClose,
 }: CustomerSheetProps) {
-  const [stamps, setStamps] = useState(customer?.points ?? 0);
+  const [stamps, setStamps] = useState(member?.points ?? 0);
   const [newlyAdded, setNewlyAdded] = useState(0);
   const [stampsToReward, setStampsToReward] = useState(1);
   const [state, setState] = useState<SheetState>("idle");
   const sheetRef = useRef<HTMLDivElement>(null);
 
   const handleAddStamp = async (newStamps: number) => {
-    addMemberLoyaltyPoints(customer!.id, stampsToReward);
+    addMemberLoyaltyPoints(member!.id, stampsToReward);
 
     setStamps((s) => s + newStamps);
     setNewlyAdded(newStamps);
@@ -47,10 +47,12 @@ export function CustomerSheet({
     onClose();
   }
 
-  const successMessage = customer
+  const currentPoints = member?.points ?? 0;
+
+  const successMessage = member
     ? stamps >= config.stampsRequired
-      ? `Card complete! ${customer.name} earned a ${config.rewardLabel}!`
-      : `${newlyAdded} ${newlyAdded === 1 ? "stamp" : "stamps"} added to ${customer.name}!`
+      ? `Card complete! ${member.name} earned a ${config.rewardLabel}!`
+      : `${newlyAdded} ${newlyAdded === 1 ? "stamp" : "stamps"} added to ${member.name}!`
     : null;
 
   return (
@@ -83,11 +85,11 @@ export function CustomerSheet({
 
         <div className="px-4 pb-24 flex flex-col flex-grow gap-4">
           {/* Customer */}
-          {customer && <CustomerSection customer={customer} />}
+          {member && <CustomerSection customer={member} />}
 
           {/* Loyalty card */}
           <LoyaltyCardSection
-            current={stamps}
+            current={currentPoints}
             total={config.stampsRequired}
             rewardLabel={config.rewardLabel}
           />

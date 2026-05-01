@@ -6,7 +6,7 @@ import { getMemberLoyalty } from "@/src/lib/api/member";
 import { MemberLoyalty } from "@/src/lib/types";
 
 const LOYALTY_CONFIG = {
-  stampsRequired: 12,
+  stampsRequired: 10,
   rewardLabel: "free coffee",
 };
 
@@ -46,7 +46,7 @@ export default function QrScanPage() {
       </div>
 
       <CustomerSheet
-        customer={memberLoyalty}
+        member={memberLoyalty}
         config={LOYALTY_CONFIG}
         open={sheetOpen}
         onClose={handleClose}
