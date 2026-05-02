@@ -9,7 +9,6 @@ import {
   CupSodaIcon,
   HamburgerIcon,
   HeartIcon,
-  IceCream2Icon,
   IceCreamBowlIcon,
   IceCreamConeIcon,
   PawPrintIcon,

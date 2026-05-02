@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useState } from "react";
 import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
@@ -19,13 +19,26 @@ interface LoyaltyConfig {
   stampsRequired: number;
   rewardLabel: string;
 }
-
 export function MemberSheetRedeemRewardContent({
   member,
   config,
   open,
   onClose,
 }: MemberSheetRedeemRewardContent) {
+  const [selectedReward, setSelectedReward] = useState<string>();
+  const rewardOptions = [
+    {
+      code: "FREE_COFFEE",
+      name: "Free Brewed Cofee",
+      description: "Any size, any roast - hot or iced",
+      goalPoints: 10,
+    },
+  ];
+
+  const handleRedeemReward = () => {
+    alert("TODO: Redeem reward");
+  };
+
   return (
     <div
       className={[
@@ -50,7 +63,13 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       <div className="px-4 flex flex-col flex-grow gap-4">
-        <RedeemRewardSection />
+        {member?.points}
+        <RedeemRewardSection
+          selected={selectedReward}
+          onSelect={(value) => setSelectedReward(value)}
+          options={rewardOptions}
+          accumulatedPoints={member?.points ?? 0}
+        />
 
         {member && <CustomerSection customer={member} />}
       </div>
@@ -59,8 +78,8 @@ export function MemberSheetRedeemRewardContent({
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 flex flex-col justify-center px-4 py-2">
         <button
           className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
-          onClick={() => alert("TODO: Redeem reward")}
-          disabled={true}
+          onClick={handleRedeemReward}
+          disabled={!selectedReward}
         >
           Redeem Reward
         </button>
