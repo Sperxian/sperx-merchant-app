@@ -15,3 +15,11 @@ export async function addMemberLoyaltyPoints(memberId: string, points: number) {
 
   return data;
 }
+
+export async function redeemReward(memberId: string, rewardCode: string) {
+  console.log({ memberId, rewardCode })
+  const body = { rewardCode };
+  const { data } = await apiClient.post(`/shop/${SHOP_ID}/members/${memberId}/redeem`, body);
+
+  return data;
+}
