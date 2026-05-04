@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
+import { redeemReward } from "@/src/lib/api/member";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -35,8 +36,15 @@ export function MemberSheetRedeemRewardContent({
     },
   ];
 
-  const handleRedeemReward = () => {
-    alert("TODO: Redeem reward");
+  const handleRedeemReward = async () => {
+    if (!member || !selectedReward) {
+      console.log(
+        `Missing member (${member?.id}) or reward (${selectedReward})`,
+      );
+      return;
+    }
+    const redeemResponse = await redeemReward(member.id, selectedReward);
+    console.log({ redeemResponse });
   };
 
   return (
