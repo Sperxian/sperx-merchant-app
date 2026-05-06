@@ -5,7 +5,7 @@ import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
-import { MemberPointsSection } from "./MemberPointsSection";
+import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
@@ -38,6 +38,12 @@ export function MemberSheetRedeemRewardContent({
       name: "Free Brewed Cofee",
       description: "Any size, any roast - hot or iced",
       goalPoints: 10,
+    },
+    {
+      code: "FREE_CAKE",
+      name: "Free Cake",
+      description: "Any cake to your liking",
+      goalPoints: 18,
     },
   ];
 
@@ -99,7 +105,7 @@ export function MemberSheetRedeemRewardContent({
         )}
 
         {/* Member Points Section */}
-        <MemberPointsSection points={member?.points ?? 0} />
+        <MemberStampsSection points={member?.points ?? 0} />
 
         {/* Redeem Rewards Section */}
         <RedeemRewardSection

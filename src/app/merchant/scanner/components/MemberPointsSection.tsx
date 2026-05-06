@@ -1,14 +1,14 @@
 "use react";
 
-type MemberPointsSectionProps = {
+type MemberStampsSectionProps = {
   points: number;
 };
 
-export function MemberPointsSection({ points }: MemberPointsSectionProps) {
+export function MemberStampsSection({ points }: MemberStampsSectionProps) {
   return (
     <div>
       <p className="text-sm font-medium text-foreground/50 mb-2">
-        Member Points
+        Member Stamps
       </p>
       <div className="text-3xl text-primary tracking-wide">{points}</div>
     </div>
