@@ -18,7 +18,7 @@ export default function QrScanPage() {
 
   const [isMock] = useState(!true);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [memberId, setMemberId] = useState<string | null>(null);
+  const [_memberId, setMemberId] = useState<string | null>(null);
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
 
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
