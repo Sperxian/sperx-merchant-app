@@ -6,22 +6,23 @@ import { getMemberLoyalty } from "@/src/lib/api/member";
 import { MemberLoyalty } from "@/src/lib/types";
 import { QrScanner } from "./components/QrScanner";
 import { GiftIcon, StampIcon } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 const LOYALTY_CONFIG = {
   stampsRequired: 10,
   rewardLabel: "free coffee",
 };
   
-const MOCK_MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
 
 export default function QrScanPage() {
-
-  const [isMock] = useState(!true);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [_memberId, setMemberId] = useState<string | null>(null);
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
-
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
+
+  const searchParams = useSearchParams();
+  const isMock = searchParams.get('mock') === 'true' || false;
 
   const handleScan = async (memberId: string | null) => {
     setMemberId(memberId);
