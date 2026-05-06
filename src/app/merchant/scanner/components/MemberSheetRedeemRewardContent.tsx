@@ -6,6 +6,7 @@ import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
 import { MemberPointsSection } from "./MemberPointsSection";
+import { Alert } from "@/src/components/shared/Alert";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -41,6 +42,11 @@ export function MemberSheetRedeemRewardContent({
   ];
 
   const selectedReward = rewardOptions.find(({ code }) => code === rewardCode);
+
+  const minPoints = Math.min(
+    ...rewardOptions.map((reward) => reward.goalPoints),
+  );
+  const canRedeem = member?.points && member.points >= minPoints;
 
   const handleRedeemReward = async () => {
     if (!member || !rewardCode) {
@@ -79,6 +85,19 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       <div className="px-4 flex flex-col flex-grow gap-4">
+        {!canRedeem && (
+          <Alert
+            variant="warning"
+            message="Insufficient stamps to redeem rewards."
+          />
+        )}
+        {state === "REDEEMED" && (
+          <Alert
+            variant="success"
+            message={`Member redeemed ${selectedReward?.name}.`}
+          />
+        )}
+
         {/* Member Points Section */}
         <MemberPointsSection points={member?.points ?? 0} />
 
@@ -89,12 +108,6 @@ export function MemberSheetRedeemRewardContent({
           options={rewardOptions}
           accumulatedPoints={member?.points ?? 0}
         />
-
-        {state === "REDEEMED" && (
-          <div className="bg-green-800 text-white rounded-xl px-4 py-3 text-sm font-medium text-center mb-2">
-            Member redeemed {selectedReward?.name}.
-          </div>
-        )}
 
         {/* Member Section */}
         {member && <CustomerSection customer={member} />}
