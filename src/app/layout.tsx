@@ -31,7 +31,7 @@ export default function RootLayout({
           <div className="flex-1 relative overflow-hidden">
 
             {/* actual scroll container */}
-            <main className="h-full overflow-y-auto pb-10">
+            <main className="h-full overflow-y-auto">
               {children}
             </main>
 
