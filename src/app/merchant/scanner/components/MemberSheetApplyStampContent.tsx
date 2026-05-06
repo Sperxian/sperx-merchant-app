@@ -6,6 +6,7 @@ import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
+import { Alert } from "@/src/components/shared/Alert";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
@@ -97,9 +98,7 @@ export function MemberSheetApplyStampContent({
 
         {/* Success */}
         {state === "confirmed" && member && (
-          <div className="bg-green-800 text-white rounded-xl px-4 py-3 text-sm font-medium text-center mb-2">
-            {successMessage}
-          </div>
+          <Alert variant="success" message={successMessage ?? ""} />
         )}
 
         {/* Customer */}
