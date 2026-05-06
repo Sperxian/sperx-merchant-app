@@ -5,6 +5,7 @@ import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
+import { MemberPointsSection } from "./MemberPointsSection";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -78,6 +79,9 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       <div className="px-4 flex flex-col flex-grow gap-4">
+        {/* Member Points Section */}
+        <MemberPointsSection points={member?.points ?? 0} />
+
         {/* Redeem Rewards Section */}
         <RedeemRewardSection
           selected={rewardCode}
