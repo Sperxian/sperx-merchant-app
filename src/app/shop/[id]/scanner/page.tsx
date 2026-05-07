@@ -5,7 +5,8 @@ type Props = {
 };
 
 export default async function QrScanPage({ searchParams }: Props) {
-  const { mock: mockQr } = await searchParams;
+  const { mock } = await searchParams;
+  const mockQr = mock === "true";
 
-  return <QrScanPageContent mockQr={mockQr}/>;
+  return <QrScanPageContent mockQr={mockQr} />;
 }
