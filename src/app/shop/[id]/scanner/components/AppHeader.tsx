@@ -1,8 +1,11 @@
 import Image from "next/image";
 
-export function AppHeader() {
-  const shopName = "Café Barako";
-  const loyaltyProgramName = "Member Loyalty Program";
+type Props = {
+  shopName: string;
+  loyaltyProgramName: string;
+};
+
+export function AppHeader({ shopName, loyaltyProgramName }: Props) {
   const iconLocation = "/barako-cafe/icon.svg";
 
   return (
