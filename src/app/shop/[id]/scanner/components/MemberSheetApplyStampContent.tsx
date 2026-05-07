@@ -56,6 +56,7 @@ export function MemberSheetApplyStampContent({
 
   const currentPoints = member?.points ?? 0;
   const cardPoints = currentPoints % config.stampsRequired;
+  const hasRedeemableReward = currentPoints >= config.stampsRequired;
 
   return (
     <div
@@ -81,6 +82,10 @@ export function MemberSheetApplyStampContent({
       </div>
 
       <div className="px-4 flex flex-col flex-grow gap-4">
+        {hasRedeemableReward && (
+          <Alert variant="info" message="Customer is eligible to redeem rewards." />
+        )}
+
         {/* Loyalty card */}
         <LoyaltyCardSection
           current={currentPoints}
