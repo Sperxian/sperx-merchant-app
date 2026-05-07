@@ -7,7 +7,6 @@ export type Shop = {
   dateCreated: Date;
 }
 
-
 export type LoyaltyProgram = {
   id: string;
   name: string;
@@ -28,16 +27,9 @@ export type RewardMetadata = {
   goalPoints: number;
 }
 
-
-
 export type MemberLoyalty = {
   id: string;
   name?: string;
   points: number;
   dateCreated: Date;
 };
-
-/**
- * @deprecated
- */
-export type LoyaltyReward = RewardMetadata;

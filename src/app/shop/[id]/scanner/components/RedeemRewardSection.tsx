@@ -2,12 +2,12 @@
 
 import { LoyaltyStamp } from "./LoyaltyStamp";
 import { CircleCheckBigIcon, CircleIcon } from "lucide-react";
-import { LoyaltyReward } from "@/src/lib/types";
+import { RewardMetadata } from "@/src/lib/types";
 
 type RedeemRewardSectionProps = {
   selected?: string;
   onSelect: (code: string) => void;
-  options: LoyaltyReward[];
+  options: RewardMetadata[];
   accumulatedPoints: number;
 };
 

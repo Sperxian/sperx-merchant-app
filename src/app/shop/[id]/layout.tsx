@@ -6,14 +6,6 @@ import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { LoyaltyProgramContextProvider } from "./LoyaltyProgramContext";
 
-export const SHOP_NAME = "Café Barako";
-export const LOYALTY_PROGRAM_NAME = "Member Loyalty Program";
-
-export const metadata: Metadata = {
-  title: SHOP_NAME,
-  description: LOYALTY_PROGRAM_NAME,
-};
-
 type Props = {
   children: React.ReactNode;
   params: Promise<{
@@ -21,12 +13,28 @@ type Props = {
   }>;
 };
 
-export default async function RootLayout({ children, params }: Props) {
-  const { id: shopId } = await params;
+async function loadShopAndLoyaltyProgram(shopId: string) {
   const shop = await getShop(shopId);
 
   const { data: loyaltyPrograms } = await getLoyaltyPrograms(shopId);
   const [loyaltyProgram] = loyaltyPrograms;
+
+  return { shop, loyaltyProgram };
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id: shopId } = await params;
+  const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
+
+  return {
+    title: shop.name,
+    description: loyaltyProgram.name,
+  };
+}
+
+export default async function RootLayout({ children, params }: Props) {
+  const { id: shopId } = await params;
+  const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
 
   return (
     <html lang="en" className={`h-full antialiased`}>

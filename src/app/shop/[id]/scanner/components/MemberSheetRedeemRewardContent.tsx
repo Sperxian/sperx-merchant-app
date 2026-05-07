@@ -7,12 +7,12 @@ import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
 import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
+import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 type MemberSheetRedeemRewardContent = {
   member?: MemberLoyalty;
-  config: LoyaltyConfig;
   open: boolean;
 
   onClose: () => void;
@@ -20,33 +20,17 @@ type MemberSheetRedeemRewardContent = {
 
 type SheetState = "TO_REDEEM" | "REDEEMED";
 
-interface LoyaltyConfig {
-  stampsRequired: number;
-  rewardLabel: string;
-}
 export function MemberSheetRedeemRewardContent({
   member,
-  config,
   open,
   onClose,
 }: MemberSheetRedeemRewardContent) {
+  const loyaltyProgram = useLoyaltyProgram();
+
   const [rewardCode, setRewardCode] = useState<string>();
   const [state, setState] = useState<SheetState>("TO_REDEEM");
-  const rewardOptions = [
-    {
-      code: "FREE_COFFEE",
-      name: "Free Brewed Cofee",
-      description: "Any size, any roast - hot or iced",
-      goalPoints: 10,
-    },
-    {
-      code: "FREE_CAKE",
-      name: "Free Cake",
-      description: "Any cake to your liking",
-      goalPoints: 18,
-    },
-  ];
 
+  const rewardOptions = loyaltyProgram.config.availableRewards;
   const selectedReward = rewardOptions.find(({ code }) => code === rewardCode);
 
   const minPoints = Math.min(

@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { StampGrid } from "./StampGrid";
 
 export type LoyaltyCardSectionProps = {
   current: number;
   total: number;
   rewardLabel: string;
-  newlyAdded?: number;
 };
 
 export function LoyaltyCardSection(props: LoyaltyCardSectionProps) {
@@ -14,7 +13,6 @@ export function LoyaltyCardSection(props: LoyaltyCardSectionProps) {
       <p className="text-sm font-medium text-foreground/50 mb-2">
         Loyalty Card
       </p>
-      {/* <LoyaltyCard {...props} /> */}
       <LoyaltyCard {...props} />
     </div>
   );
@@ -25,7 +23,7 @@ function LoyaltyCard({
   total,
   rewardLabel,
 }: LoyaltyCardSectionProps) {
-  const LOYALTY_PROGRAM_NAME = "Member Loyalty Program";
+  const loyaltyProgram = useLoyaltyProgram();
 
   const trackingPoints = current % total;
   const remainingPoints = total - trackingPoints;
@@ -39,7 +37,7 @@ function LoyaltyCard({
 
       <div className="flex items-center justify-between uppercase tracking-widest mb-4">
         <p className="text-xs text-white/50 uppercase">
-          {LOYALTY_PROGRAM_NAME}
+          {loyaltyProgram.name}
         </p>
         <p className="text-xs text-secondary">
           {Math.trunc(trackingPoints)} / {total}
@@ -64,12 +62,3 @@ function LoyaltyCard({
     </div>
   );
 }
-
-// function LoyaltyCardSkeleton() {
-//   return (
-//     <div className="bg-primary rounded-2xl p-4 animate-pulse space-y-4">
-//       <div className="h-4 bg-gray-300 rounded" />
-//       <div className="h-30 bg-gray-300 rounded" />
-//     </div>
-//   );
-// }
