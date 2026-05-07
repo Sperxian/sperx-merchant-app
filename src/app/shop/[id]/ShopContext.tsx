@@ -25,7 +25,7 @@ export const useShop = (): Shop => {
   const context = useContext(ShopContext);
 
   if (!context || !context.value) {
-    throw new Error("useShopContext must be used within a ShopProvider");
+    throw new Error("useShop must be used within a ShopProvider");
   }
 
   return context.value;

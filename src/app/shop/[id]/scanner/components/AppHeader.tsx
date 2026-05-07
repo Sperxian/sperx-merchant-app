@@ -2,14 +2,13 @@
 
 import Image from "next/image";
 import { useShop } from "../../ShopContext";
+import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
-type Props = {
-  loyaltyProgramName: string;
-};
-
-export function AppHeader({ loyaltyProgramName }: Props) {
+export function AppHeader() {
   const shop = useShop();
   const iconLocation = shop.config.iconLocation as string;
+
+  const loyaltyProgram = useLoyaltyProgram();
 
   return (
     <header className="flex items-center gap-3 bg-primary px-4 py-3 flex-shrink-0">
@@ -27,7 +26,7 @@ export function AppHeader({ loyaltyProgramName }: Props) {
         </h1>
 
         <p className="text-white/50 text-xs leading-tight">
-          {loyaltyProgramName}
+          {loyaltyProgram.name}
         </p>
       </div>
     </header>

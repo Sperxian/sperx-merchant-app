@@ -7,6 +7,29 @@ export type Shop = {
   dateCreated: Date;
 }
 
+
+export type LoyaltyProgram = {
+  id: string;
+  name: string;
+  type: string;
+  config: StampBasedConfig;
+  shopId: string;
+  dateCreated: Date;
+}
+
+export type StampBasedConfig = {
+  availableRewards: RewardMetadata[];
+}
+
+export type RewardMetadata = {
+  code: string;
+  name: string;
+  description?: string;
+  goalPoints: number;
+}
+
+
+
 export type MemberLoyalty = {
   id: string;
   name?: string;
@@ -14,9 +37,7 @@ export type MemberLoyalty = {
   dateCreated: Date;
 };
 
-export type LoyaltyReward = {
-  code: string;
-  name: string;
-  description?: string;
-  goalPoints: number;
-};
+/**
+ * @deprecated
+ */
+export type LoyaltyReward = RewardMetadata;
