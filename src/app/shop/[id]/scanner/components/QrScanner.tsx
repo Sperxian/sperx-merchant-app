@@ -3,11 +3,15 @@
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 
+const MOCK_MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+// const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
+
 type QrScannerProps = {
+  isMock: boolean;
   onScan: (memberId: string) => void;
 };
 
-export function QrScanner({ onScan }: QrScannerProps) {
+export function QrScanner({ isMock, onScan }: QrScannerProps) {
   const [qrData, setQrData] = useState<string | null>();
 
   const handleScan = (detectedCodes: IDetectedBarcode[]) => {
@@ -24,6 +28,17 @@ export function QrScanner({ onScan }: QrScannerProps) {
       onScan(memberId);
     }
   };
+
+  if (isMock) {
+    return (
+      <button
+        onClick={() => onScan(MOCK_MEMBER_ID)}
+        className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
+      >
+        Simulate QR Scan
+      </button>
+    );
+  }
 
   const highlightCodeOnCanvas = (
     detectedCodes: IDetectedBarcode[],

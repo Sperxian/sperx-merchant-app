@@ -12,18 +12,15 @@ const LOYALTY_CONFIG = {
   stampsRequired: 10,
   rewardLabel: "free coffee",
 };
-  
-const MOCK_MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
-// const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
 
 export default function QrScanPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [_memberId, setMemberId] = useState<string | null>(null);
+  const [memberId, setMemberId] = useState<string | null>(null);
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
 
   const searchParams = useSearchParams();
-  const isMock = searchParams.get('mock') === 'true' || false;
+  const isMock = searchParams.get("mock") === "true" || false;
 
   const handleScan = async (memberId: string | null) => {
     setMemberId(memberId);
@@ -51,16 +48,7 @@ export default function QrScanPage() {
     <div className="flex flex-col h-full max-w-xl bg-background pb-10">
       <div className="flex-1 flex flex-col gap-2 items-center justify-center relative overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-8">
-          {isMock ? (
-            <button
-              onClick={() => handleScan(MOCK_MEMBER_ID)}
-              className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
-            >
-              Simulate QR Scan
-            </button>
-          ) : (
-            <QrScanner onScan={handleScan} />
-          )}
+          <QrScanner onScan={handleScan} isMock={isMock} />
         </div>
 
         <div className="flex gap-4 rounded-xl">
@@ -112,7 +100,7 @@ export default function QrScanPage() {
         mode={mode}
         open={sheetOpen}
         onClose={handleClose}
-        onRefresh={() => loadMemberDetails(MOCK_MEMBER_ID)}
+        onRefresh={() => loadMemberDetails(memberId)}
       />
     </div>
   );
