@@ -3,7 +3,7 @@ import "./../../globals.css";
 import { AppHeader } from "./scanner/components/AppHeader";
 import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import { getShop } from "@/src/lib/api/shop";
-import { ShopContextProvider, useShop } from "./ShopContext";
+import { ShopContextProvider } from "./ShopContext";
 
 export const SHOP_NAME = "Café Barako";
 export const LOYALTY_PROGRAM_NAME = "Member Loyalty Program";
@@ -34,10 +34,7 @@ export default async function RootLayout({ children, params }: Props) {
         <div className="w-full md:max-w-md h-full md:h-[90vh] md:my-6 md:rounded-2xl bg-white shadow flex flex-col overflow-hidden">
           {/* header */}
           <ShopContextProvider value={shop}>
-            <AppHeader
-              shopName={shop.name}
-              loyaltyProgramName={loyaltyProgram.name}
-            />
+            <AppHeader loyaltyProgramName={loyaltyProgram.name} />
 
             {/* scroll area wrapper */}
             <div className="flex-1 relative overflow-hidden">
