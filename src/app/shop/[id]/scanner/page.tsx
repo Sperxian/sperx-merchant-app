@@ -13,7 +13,8 @@ const LOYALTY_CONFIG = {
   rewardLabel: "free coffee",
 };
   
-const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
+const MOCK_MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
+// const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
 
 export default function QrScanPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
