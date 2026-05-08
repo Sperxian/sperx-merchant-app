@@ -50,7 +50,6 @@ export function MemberSheet({
       ) : (
         <MemberSheetRedeemRewardContent
           member={member}
-          config={config}
           open={open}
           onClose={onClose}
         />
