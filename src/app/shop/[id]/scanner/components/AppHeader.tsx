@@ -13,7 +13,7 @@ export function AppHeader() {
   return (
     <header className="flex items-center gap-3 bg-primary px-4 py-3 flex-shrink-0">
       <Image
-        className="dark:invert bg-white rounded-full object-cover"
+        className="aspect-square dark:invert bg-white rounded-full object-scale-down"
         src={iconLocation}
         alt={shop.name}
         width={36}
