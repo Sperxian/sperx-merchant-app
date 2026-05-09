@@ -8,11 +8,6 @@ import { QrScanner } from "./components/QrScanner";
 import { GiftIcon, StampIcon } from "lucide-react";
 import { useShop } from "../ShopContext";
 
-const LOYALTY_CONFIG = {
-  stampsRequired: 10,
-  rewardLabel: "free coffee",
-};
-
 type Props = {
   mockQr: boolean;
 };
@@ -59,7 +54,6 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
 
       <MemberSheet
         member={memberLoyalty}
-        config={LOYALTY_CONFIG}
         mode={mode}
         open={sheetOpen}
         onClose={handleClose}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CustomerSection } from "../CustomerSection";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
@@ -8,39 +8,41 @@ import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { Alert } from "@/src/components/shared/Alert";
 import { useShop } from "../../ShopContext";
+import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
-  config: LoyaltyConfig;
-
   open: boolean;
   onClose: () => void;
   onRefresh: () => void;
 }
 
-interface LoyaltyConfig {
-  stampsRequired: number;
-  rewardLabel: string;
-}
 type SheetState = "idle" | "confirmed";
 
 export function MemberSheetApplyStampContent({
   member,
-  config,
   open,
   onClose,
   onRefresh,
 }: MemberSheetApplyStampContentProps) {
+  const shop = useShop();
+  const loyaltyProgram = useLoyaltyProgram();
+
   const [state, setState] = useState<SheetState>("idle");
   const [stampsToReward, setStampsToReward] = useState(1);
   const [successMessage, setSuccessMessage] = useState<string>();
-  const shop = useShop();
+
+  const {
+    config: {
+      availableRewards: [{ name: rewardName, goalPoints }],
+    },
+  } = loyaltyProgram;
 
   const handleAddStamp = async () => {
     await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
     setSuccessMessage(
-      cardPoints + stampsToReward >= config.stampsRequired
-        ? `Card complete! Member earned a ${config.rewardLabel}!`
+      cardPoints + stampsToReward >= goalPoints
+        ? `Card complete! Member earned a ${rewardName}!`
         : stampsToReward === 1
           ? "Stamp rewarded!"
           : `${stampsToReward} stamps rewarded!`,
@@ -57,8 +59,8 @@ export function MemberSheetApplyStampContent({
   }
 
   const currentPoints = member?.points ?? 0;
-  const cardPoints = currentPoints % config.stampsRequired;
-  const hasRedeemableReward = currentPoints >= config.stampsRequired;
+  const cardPoints = currentPoints % goalPoints;
+  const hasRedeemableReward = currentPoints >= goalPoints;
 
   return (
     <div
@@ -94,8 +96,8 @@ export function MemberSheetApplyStampContent({
         {/* Loyalty card */}
         <LoyaltyCardSection
           current={currentPoints}
-          total={config.stampsRequired}
-          rewardLabel={config.rewardLabel}
+          total={goalPoints}
+          rewardLabel={rewardName}
         />
 
         {/* Add stamps — hidden after confirm */}
