@@ -51,7 +51,7 @@ function RewardVoucher({
           >
             <div className="flex items-center gap-4">
               <div className="rounded-full p-2 bg-primary group-disabled:bg-gray-400">
-                <LoyaltyStamp filled={true} size={24} icon="coffee" />
+                <LoyaltyStamp filled={true} size={24} />
               </div>
 
               <div className="flex flex-col text-start gap-0s font-medium">

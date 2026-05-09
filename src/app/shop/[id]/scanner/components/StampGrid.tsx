@@ -18,7 +18,7 @@ export function StampGrid({ total, collected }: StampGridProps) {
               filled ? "border-solid" : "border-dashed]"
             }`}
           >
-            <LoyaltyStamp filled={filled} size={32} icon="coffee" />
+            <LoyaltyStamp filled={filled} size={32} />
 
             {!filled && (
               <span className="text-[8px] text-background absolute bottom-[3px] right-[4px]">
