@@ -6,6 +6,7 @@ import { getMemberLoyalty } from "@/src/lib/api/member";
 import { MemberLoyalty } from "@/src/lib/types";
 import { QrScanner } from "./components/QrScanner";
 import { GiftIcon, StampIcon } from "lucide-react";
+import { useShop } from "../ShopContext";
 
 const LOYALTY_CONFIG = {
   stampsRequired: 10,
@@ -22,6 +23,8 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
 
+  const shop = useShop();
+
   const handleScan = async (memberId: string | null) => {
     setMemberId(memberId);
     if (memberId) {
@@ -31,7 +34,7 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
   };
 
   const loadMemberDetails = async (memberId: string) => {
-    const data = await getMemberLoyalty(memberId);
+    const data = await getMemberLoyalty(shop.id, memberId);
     setMemberLoyalty({
       id: data.id,
       points: data.points,

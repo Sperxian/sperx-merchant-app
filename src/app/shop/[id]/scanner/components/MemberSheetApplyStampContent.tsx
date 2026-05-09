@@ -7,6 +7,7 @@ import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { Alert } from "@/src/components/shared/Alert";
+import { useShop } from "../../ShopContext";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
@@ -33,9 +34,10 @@ export function MemberSheetApplyStampContent({
   const [state, setState] = useState<SheetState>("idle");
   const [stampsToReward, setStampsToReward] = useState(1);
   const [successMessage, setSuccessMessage] = useState<string>();
+  const shop = useShop();
 
   const handleAddStamp = async () => {
-    await addMemberLoyaltyPoints(member!.id, stampsToReward);
+    await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
     setSuccessMessage(
       cardPoints + stampsToReward >= config.stampsRequired
         ? `Card complete! Member earned a ${config.rewardLabel}!`
@@ -83,7 +85,10 @@ export function MemberSheetApplyStampContent({
 
       <div className="px-4 flex flex-col flex-grow gap-4">
         {hasRedeemableReward && (
-          <Alert variant="info" message="Customer is eligible to redeem rewards." />
+          <Alert
+            variant="info"
+            message="Customer is eligible to redeem rewards."
+          />
         )}
 
         {/* Loyalty card */}
