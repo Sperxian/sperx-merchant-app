@@ -3,22 +3,19 @@
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
 
-const MOCK_MEMBER_ID = "3aa24af8-1798-4af9-95bd-153dc1564cce";
-// const MOCK_MEMBER_ID = "a16774da-dbd5-4a00-9907-5b83d7889664";
-
 type QrScannerProps = {
-  isMock: boolean;
+  mockMemberId?: string;
   onScan: (memberId: string) => void;
 };
 
-export function QrScanner({ isMock, onScan }: QrScannerProps) {
-  const [qrData, setQrData] = useState<string | null>();
+export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
+  const [memberId, setMemberId] = useState<string | null>();
 
   const handleScan = (detectedCodes: IDetectedBarcode[]) => {
     if (detectedCodes) {
       console.log("Scanned QR Code:", detectedCodes);
     }
-    setQrData(
+    setMemberId(
       detectedCodes.length > 0
         ? detectedCodes.map((code) => code.rawValue).join(", ")
         : null,
@@ -29,10 +26,10 @@ export function QrScanner({ isMock, onScan }: QrScannerProps) {
     }
   };
 
-  if (isMock) {
+  if (mockMemberId) {
     return (
       <button
-        onClick={() => onScan(MOCK_MEMBER_ID)}
+        onClick={() => onScan(mockMemberId)}
         className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
       >
         Simulate QR Scan
@@ -84,7 +81,7 @@ export function QrScanner({ isMock, onScan }: QrScannerProps) {
         />
       </div>
 
-      {qrData && <p className="text-primary text-sm pt-4">{qrData}</p>}
+      {memberId && <p className="text-primary text-xs pt-4">{memberId}</p>}
     </div>
   );
 }
