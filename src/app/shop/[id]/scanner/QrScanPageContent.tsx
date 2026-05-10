@@ -7,6 +7,7 @@ import { MemberLoyalty } from "@/src/lib/types";
 import { QrScanner } from "./components/QrScanner";
 import { GiftIcon, StampIcon } from "lucide-react";
 import { useShop } from "../ShopContext";
+import { Alert } from "@/src/components/shared/Alert";
 
 type Props = {
   mockQr: boolean;
@@ -17,24 +18,33 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
   const [memberId, setMemberId] = useState<string | null>(null);
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const shop = useShop();
 
   const handleScan = async (memberId: string | null) => {
+    setErrorMessage("");
     setMemberId(memberId);
     if (memberId) {
       await loadMemberDetails(memberId);
-      setSheetOpen(true);
     }
   };
 
   const loadMemberDetails = async (memberId: string) => {
     const data = await getMemberLoyalty(shop.id, memberId);
+
+    if (!data) {
+      setErrorMessage(`Member scanned was not found. Please scan again.`);
+      return;
+    }
+
     setMemberLoyalty({
       id: data.id,
       points: data.points,
       dateCreated: data.dateCreated,
     });
+
+    setSheetOpen(true);
   };
 
   function handleClose() {
@@ -45,8 +55,9 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
   return (
     <div className="flex flex-col h-full max-w-xl bg-background pb-10">
       <div className="flex-1 flex flex-col gap-2 items-center justify-center relative overflow-hidden">
-        <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-8">
+        <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-8 gap-4">
           <QrScanner onScan={handleScan} isMock={mockQr} />
+          {errorMessage && <Alert variant="error" message={errorMessage} />}
         </div>
 
         <ToggleModeSection mode={mode} setMode={setMode} />
