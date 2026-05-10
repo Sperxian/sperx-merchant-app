@@ -12,13 +12,13 @@ type QrScannerProps = {
 };
 
 export function QrScanner({ isMock, onScan }: QrScannerProps) {
-  const [qrData, setQrData] = useState<string | null>();
+  const [memberId, setMemberId] = useState<string | null>();
 
   const handleScan = (detectedCodes: IDetectedBarcode[]) => {
     if (detectedCodes) {
       console.log("Scanned QR Code:", detectedCodes);
     }
-    setQrData(
+    setMemberId(
       detectedCodes.length > 0
         ? detectedCodes.map((code) => code.rawValue).join(", ")
         : null,
@@ -84,7 +84,7 @@ export function QrScanner({ isMock, onScan }: QrScannerProps) {
         />
       </div>
 
-      {qrData && <p className="text-primary text-sm pt-4">{qrData}</p>}
+      {memberId && <p className="text-primary text-xs pt-4">{memberId}</p>}
     </div>
   );
 }
