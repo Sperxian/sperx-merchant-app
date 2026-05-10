@@ -10,10 +10,10 @@ import { useShop } from "../ShopContext";
 import { Alert } from "@/src/components/shared/Alert";
 
 type Props = {
-  mockQr: boolean;
+  mockMemberId?: string;
 };
 
-export default function QrScanPageContent({ mockQr = false }: Props) {
+export default function QrScanPageContent({ mockMemberId }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [memberId, setMemberId] = useState<string | null>(null);
   const [mode, setMode] = useState<MODE_OPTION>("APPLY_STAMP");
@@ -56,7 +56,7 @@ export default function QrScanPageContent({ mockQr = false }: Props) {
     <div className="flex flex-col h-full max-w-xl bg-background pb-10">
       <div className="flex-1 flex flex-col gap-2 items-center justify-center relative overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-8 gap-4">
-          <QrScanner onScan={handleScan} isMock={mockQr} />
+          <QrScanner onScan={handleScan} mockMemberId={mockMemberId} />
           {errorMessage && <Alert variant="error" message={errorMessage} />}
         </div>
 
