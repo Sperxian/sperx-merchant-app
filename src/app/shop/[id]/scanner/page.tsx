@@ -1,12 +1,13 @@
 import QrScanPageContent from "./QrScanPageContent";
 
 type Props = {
-  searchParams: Promise<{ mock?: string }>;
+  searchParams: Promise<{
+    mockMemberId?: string;
+  }>;
 };
 
 export default async function QrScanPage({ searchParams }: Props) {
-  const { mock } = await searchParams;
-  const mockQr = mock === "true";
+  const { mockMemberId } = await searchParams;
 
-  return <QrScanPageContent mockQr={mockQr} />;
+  return <QrScanPageContent mockMemberId={mockMemberId} />;
 }
