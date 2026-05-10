@@ -1,24 +1,21 @@
 import apiClient from "./client";
 
-const SHOP_ID = '329ec261-02ba-4600-8704-deaed7fff77f';
-
-
-export async function getMemberLoyalty(memberId: string) {
-  const { data } = await apiClient.get(`/shop/${SHOP_ID}/members/${memberId}`);
+export async function getMemberLoyalty(shopId: string, memberId: string) {
+  const { data } = await apiClient.get(`/shop/${shopId}/members/${memberId}`);
 
   return data;
 }
 
-export async function addMemberLoyaltyPoints(memberId: string, points: number) {
+export async function addMemberLoyaltyPoints(shopId: string, memberId: string, points: number) {
   const body = { points };
-  const { data } = await apiClient.post(`/shop/${SHOP_ID}/members/${memberId}/points`, body);
+  const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/points`, body);
 
   return data;
 }
 
-export async function redeemReward(memberId: string, rewardCode: string) {
+export async function redeemReward(shopId: string, memberId: string, rewardCode: string) {
   const body = { rewardCode };
-  const { data } = await apiClient.post(`/shop/${SHOP_ID}/members/${memberId}/redeem`, body);
+  const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/redeem`, body);
 
   return data;
 }

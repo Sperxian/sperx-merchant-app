@@ -6,7 +6,6 @@ export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 interface MemberSheetProps {
   member?: MemberLoyalty;
-  config: LoyaltyConfig;
   mode: MODE_OPTION;
 
   open: boolean;
@@ -14,14 +13,8 @@ interface MemberSheetProps {
   onRefresh: () => void;
 }
 
-interface LoyaltyConfig {
-  stampsRequired: number;
-  rewardLabel: string;
-}
-
 export function MemberSheet({
   member,
-  config,
   mode,
   open,
   onClose,
@@ -42,7 +35,6 @@ export function MemberSheet({
       {mode === "APPLY_STAMP" ? (
         <MemberSheetApplyStampContent
           member={member}
-          config={config}
           open={open}
           onClose={onClose}
           onRefresh={onRefresh}

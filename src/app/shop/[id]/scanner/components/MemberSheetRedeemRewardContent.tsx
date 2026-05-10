@@ -8,6 +8,7 @@ import { redeemReward } from "@/src/lib/api/member";
 import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
+import { useShop } from "../../ShopContext";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -25,6 +26,7 @@ export function MemberSheetRedeemRewardContent({
   open,
   onClose,
 }: MemberSheetRedeemRewardContent) {
+  const shop = useShop();
   const loyaltyProgram = useLoyaltyProgram();
 
   const [rewardCode, setRewardCode] = useState<string>();
@@ -43,7 +45,7 @@ export function MemberSheetRedeemRewardContent({
       console.log(`Missing member (${member?.id}) or reward (${rewardCode})`);
       return;
     }
-    await redeemReward(member.id, rewardCode);
+    await redeemReward(shop.id, member.id, rewardCode);
 
     setState("REDEEMED");
   };
