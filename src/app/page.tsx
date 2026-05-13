@@ -1,27 +1,34 @@
-import { currentUser as getCurrentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { UserPublicMetadata } from "../types/clerk";
 
-export default async function DashboardPage() {
-  const currentUser = await getCurrentUser();
+export default function LandingPage() {
+  const router = useRouter();
 
-  if (!currentUser) {
-    console.error("This page should have been unreachable as it is protected!");
-    redirect("/sign-in");
+  const { isSignedIn, user } = useUser();
+  if (!isSignedIn) {
+    return (
+      <div className="text-center">
+        <h1 className="text-4xl font-bold mb-4">Sperx Merchant</h1>
+
+        <p className="text-zinc-400 animate-pulse">
+          Loading your experience...
+        </p>
+      </div>
+    );
   }
 
-  const publicMetadata = currentUser.publicMetadata as UserPublicMetadata;
-  const { shops } = publicMetadata;
+  const { shops } = user.publicMetadata as UserPublicMetadata;
 
   if (!shops || shops.length === 0) {
-    console.error("User has no shops associated with their account");
-    redirect("/under-construction");
+    return <div>User requires shop configuration</div>;
   }
 
   //  Redirect to first shop
   //  Currently we don't support multiple shops per user,
   //  but this is a placeholder for that future feature)
   const [{ id: shopId }] = shops;
-
-  redirect(`/shop/${shopId}/scanner`);
+  router.replace(`/shop/${shopId}/scanner`);
 }
