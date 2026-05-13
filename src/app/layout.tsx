@@ -2,9 +2,6 @@ import { ClerkProvider } from "@clerk/nextjs";
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{
-    id: string;
-  }>;
 };
 
 export default async function RootLayout({ children }: Props) {
