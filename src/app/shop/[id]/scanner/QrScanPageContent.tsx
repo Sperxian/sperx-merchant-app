@@ -97,7 +97,7 @@ function ToggleModeSection({ mode, setMode }: ToggleModeSectionProps) {
         >
           <StampIcon size={32} />
         </button>
-        <p className="uppercase tracking-wider whitespace-normal font-medium text-primary text-center pt-4">
+        <p className="uppercase tracking-wider whitespace-normal font-medium text-primary dark:text-primary-lighter text-center pt-4">
           Apply Stamp
         </p>
       </div>
@@ -117,7 +117,7 @@ function ToggleModeSection({ mode, setMode }: ToggleModeSectionProps) {
         >
           <GiftIcon size={32} />
         </button>
-        <p className="uppercase tracking-wider whitespace-normal font-medium text-primary text-center pt-4">
+        <p className="uppercase tracking-wider whitespace-normal font-medium text-primary dark:text-primary-lighter text-center pt-4">
           Redeem Reward
         </p>
       </div>

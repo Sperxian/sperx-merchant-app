@@ -11,7 +11,9 @@ export function AddStampSection({
 }: AddStampSectionProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground/50 mb-2">Apply Stamps</p>
+      <p className="text-sm font-medium text-foreground/50 mb-2">
+        Apply Stamps
+      </p>
       <StampCounter value={stampsToReward} onChange={setStampsToReward} />
     </div>
   );
@@ -32,7 +34,13 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
         <button
           onClick={decrement}
           disabled={value <= 1}
-          className="w-11 h-11 rounded-full border-2 border-primary text-primary flex items-center justify-center text-2xl leading-none transition-all hover:bg-primary hover:text-white disabled:opacity-25 disabled:cursor-not-allowed flex-shrink-0"
+          className={[
+            "w-11 h-11 rounded-full border-2 border-primary dark:border-primary-lighter",
+            "flex items-center justify-center flex-shrink-0 leading-none",
+            "text-2xl text-primary dark:text-primary-lighter",
+            "transition-all hover:bg-primary hover:text-white",
+            "disabled:opacity-25 disabled:cursor-not-allowed",
+          ].join(" ")}
           aria-label="Remove one stamp"
         >
           −
@@ -44,7 +52,13 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
 
         <button
           onClick={increment}
-          className="w-11 h-11 rounded-full border-2 border-primary text-primary flex items-center justify-center text-2xl leading-none transition-all hover:bg-primary hover:text-white disabled:opacity-25 disabled:cursor-not-allowed flex-shrink-0"
+          className={[
+            "w-11 h-11 rounded-full border-2 border-primary dark:border-primary-lighter",
+            "flex items-center justify-center flex-shrink-0 leading-none",
+            "text-2xl text-primary dark:text-primary-lighter",
+            "transition-all hover:bg-primary hover:text-white",
+            "disabled:opacity-25 disabled:cursor-not-allowed",
+          ].join(" ")}
           aria-label="Add one stamp"
         >
           +
