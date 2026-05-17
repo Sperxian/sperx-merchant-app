@@ -118,7 +118,7 @@ export function MemberSheetApplyStampContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 flex flex-col justify-center px-4 py-2">
+      <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
         {state === "idle" && (
           <button
             className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
@@ -133,7 +133,7 @@ export function MemberSheetApplyStampContent({
           <div className="text-center">
             <button
               onClick={handleReset}
-              className="text-primary text-sm underline underline-offset-2 bg-transparent border-none cursor-pointer"
+              className="text-primary dark:text-primary-lighter text-sm underline underline-offset-2 bg-transparent border-none cursor-pointer"
             >
               Scan another customer
             </button>

@@ -66,11 +66,11 @@ export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
 
   return (
     <div className="flex-1 flex flex-col items-center justify-center px-6">
-      <p className="text-xs font-medium text-primary mb-4">
+      <p className="text-xs font-medium text-primary dark:text-primary-lighter mb-4">
         Point camera at customer QR code
       </p>
 
-      <div className="relative w-full max-w-[280px] aspect-square bg-primary/50 rounded-2xl overflow-hidden">
+      <div className="relative w-full max-w-[280px] aspect-square bg-primary-lighter rounded-2xl overflow-hidden">
         <Scanner
           onScan={handleScan}
           sound={true}
@@ -81,7 +81,7 @@ export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
         />
       </div>
 
-      {memberId && <p className="text-primary text-xs pt-4">{memberId}</p>}
+      {memberId && <p className="text-primary dark:text-primary-lighter text-xs pt-4">{memberId}</p>}
     </div>
   );
 }

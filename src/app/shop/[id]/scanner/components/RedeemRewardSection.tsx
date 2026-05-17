@@ -43,10 +43,10 @@ function RewardVoucher({
             className={[
               "group w-full px-4 py-2",
               "text-md font-medium rounded-2xl transition-all",
-              "disabled:bg-gray-200 disabled:text-gray-400",
+              "disabled:bg-primary/20 dark:disabled:bg-primary-lighter/20 disabled:text-gray-400",
               isActive
-                ? "border-2 border-primary shadow"
-                : "border-2 border-primary/10",
+                ? "border-2 border-primary dark:border-primary-lighter shadow"
+                : "border-2 border-primary/10 dark:border-primary-lighter/10",
             ].join(" ")}
           >
             <div className="flex items-center gap-4">
@@ -54,12 +54,12 @@ function RewardVoucher({
                 <LoyaltyStamp filled={true} size={24} />
               </div>
 
-              <div className="flex flex-col text-start gap-0s font-medium">
-                <span className="text-md text-bold text-primary">{name}</span>
-                <span className="text-xs text-primary/80">
+              <div className="flex flex-col text-start font-medium">
+                <span className="text-md text-bold text-primary dark:text-primary-lighter">{name}</span>
+                <span className="text-xs text-foreground/50 dark:text-foreground/30">
                   {description ?? " ."}
                 </span>
-                <span className="inline-flex gap-2 text-xs text-primary/80">
+                <span className="inline-flex gap-2 text-xs text-primary/80 dark:text-primary-lighter">
                   {claimable && <CircleCheckBigIcon size={16} />}
                   {`${goalPoints} stamps required`}
 
@@ -68,9 +68,9 @@ function RewardVoucher({
               </div>
               {claimable ? (
                 isActive ? (
-                  <CircleCheckBigIcon className="ml-auto text-primary" />
+                  <CircleCheckBigIcon className="ml-auto text-primary dark:text-primary-lighter" />
                 ) : (
-                  <CircleIcon className="ml-auto text-white" />
+                  <CircleIcon className="ml-auto text-primary dark:text-primary-lighter xtext-gray-300 xdark:text-gray-700" />
                 )
               ) : null}
             </div>

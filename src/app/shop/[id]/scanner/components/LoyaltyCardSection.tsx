@@ -34,7 +34,7 @@ function LoyaltyCard({ current, total, rewardLabel }: LoyaltyCardSectionProps) {
       <div className="absolute bottom-[-18px] left-[18px] w-[55px] h-[55px] rounded-full border-[11px] border-white/5" />
 
       <div className="flex items-center justify-between uppercase tracking-widest mb-4">
-        <p className="text-xs text-white/50 uppercase">{loyaltyProgram.name}</p>
+        <p className="text-xs text-white uppercase">{loyaltyProgram.name}</p>
         <p className="text-xs text-secondary">
           {Math.trunc(trackingPoints)} / {total}
         </p>
