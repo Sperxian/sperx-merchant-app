@@ -56,7 +56,7 @@ export default function QrScanPageContent({ mockMemberId }: Props) {
     <div className="flex flex-col h-full max-w-xl bg-background pb-10">
       <div className="flex-1 flex flex-col gap-2 items-center justify-center relative overflow-hidden">
         <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden px-8 gap-4">
-          <QrScanner onScan={handleScan} mockMemberId={mockMemberId} />
+          <QrScanner onScan={handleScan} mockMemberId={mockMemberId} paused={sheetOpen} />
           {errorMessage && <Alert variant="error" message={errorMessage} />}
         </div>
 
