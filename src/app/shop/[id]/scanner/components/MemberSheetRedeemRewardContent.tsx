@@ -51,6 +51,8 @@ export function MemberSheetRedeemRewardContent({
   };
 
   function handleReset() {
+    setRewardCode(undefined);
+    setState("TO_REDEEM");
     onClose();
   }
 

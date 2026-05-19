@@ -78,7 +78,7 @@ export function MemberSheetApplyStampContent({
         <h2 className="text-lg font-semibold">Apply Stamp</h2>
 
         <button
-          onClick={onClose}
+          onClick={handleReset}
           className="text-gray-500 hover:text-black text-2xl"
         >
           ✕
