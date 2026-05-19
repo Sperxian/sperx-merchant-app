@@ -17,6 +17,7 @@ type MemberSheetRedeemRewardContent = {
   open: boolean;
 
   onClose: () => void;
+  onRefresh: () => void;
 };
 
 type SheetState = "TO_REDEEM" | "REDEEMING" | "REDEEMED";
@@ -25,6 +26,7 @@ export function MemberSheetRedeemRewardContent({
   member,
   open,
   onClose,
+  onRefresh,
 }: MemberSheetRedeemRewardContent) {
   const shop = useShop();
   const loyaltyProgram = useLoyaltyProgram();
@@ -51,6 +53,7 @@ export function MemberSheetRedeemRewardContent({
       setState("REDEEMING");
       await redeemReward(shop.id, member.id, rewardCode);
 
+      await onRefresh();
       setState("REDEEMED");
     } catch {
       setState("TO_REDEEM");

@@ -44,6 +44,7 @@ export function MemberSheet({
           member={member}
           open={open}
           onClose={onClose}
+          onRefresh={onRefresh}
         />
       )}
     </div>
