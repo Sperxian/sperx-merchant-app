@@ -17,7 +17,7 @@ interface MemberSheetApplyStampContentProps {
   onRefresh: () => void;
 }
 
-type SheetState = "idle" | "confirmed";
+type SheetState = "IDLE" | "SUBMITTING" | "CONFIRMED";
 
 export function MemberSheetApplyStampContent({
   member,
@@ -28,7 +28,7 @@ export function MemberSheetApplyStampContent({
   const shop = useShop();
   const loyaltyProgram = useLoyaltyProgram();
 
-  const [state, setState] = useState<SheetState>("idle");
+  const [state, setState] = useState<SheetState>("IDLE");
   const [stampsToReward, setStampsToReward] = useState(1);
   const [successMessage, setSuccessMessage] = useState<string>();
 
@@ -39,22 +39,29 @@ export function MemberSheetApplyStampContent({
   } = loyaltyProgram;
 
   const handleAddStamp = async () => {
-    await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
-    setSuccessMessage(
-      cardPoints + stampsToReward >= goalPoints
-        ? `Card complete! Member earned a ${rewardName}!`
-        : stampsToReward === 1
-          ? "Stamp rewarded!"
-          : `${stampsToReward} stamps rewarded!`,
-    );
+    if (state !== "IDLE") return;
 
-    await onRefresh();
-    setState("confirmed");
+    try {
+      setState("SUBMITTING");
+      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
+      setSuccessMessage(
+        cardPoints + stampsToReward >= goalPoints
+          ? `Card complete! Member earned a ${rewardName}!`
+          : stampsToReward === 1
+            ? "Stamp rewarded!"
+            : `${stampsToReward} stamps rewarded!`,
+      );
+
+      await onRefresh();
+      setState("CONFIRMED");
+    } catch {
+      setState("IDLE");
+    }
   };
 
   function handleReset() {
     setStampsToReward(1);
-    setState("idle");
+    setState("IDLE");
     onClose();
   }
 
@@ -78,7 +85,7 @@ export function MemberSheetApplyStampContent({
         <h2 className="text-lg font-semibold">Apply Stamp</h2>
 
         <button
-          onClick={onClose}
+          onClick={handleReset}
           className="text-gray-500 hover:text-black text-2xl"
         >
           ✕
@@ -101,7 +108,7 @@ export function MemberSheetApplyStampContent({
         />
 
         {/* Add stamps — hidden after confirm */}
-        {state === "idle" && (
+        {state === "IDLE" && (
           <AddStampSection
             stampsToReward={stampsToReward}
             setStampsToReward={setStampsToReward}
@@ -109,7 +116,7 @@ export function MemberSheetApplyStampContent({
         )}
 
         {/* Success */}
-        {state === "confirmed" && member && (
+        {state === "CONFIRMED" && member && (
           <Alert variant="success" message={successMessage ?? ""} />
         )}
 
@@ -119,17 +126,17 @@ export function MemberSheetApplyStampContent({
 
       {/* Fixed footer */}
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
-        {state === "idle" && (
+        {state !== "CONFIRMED" ? (
           <button
             className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
+            disabled={state === ("SUBMITTING" as SheetState)}
             onClick={handleAddStamp}
           >
             {stampsToReward <= 1
               ? "Add 1 stamp"
               : `Add ${stampsToReward} stamps`}
           </button>
-        )}
-        {state === "confirmed" && (
+        ) : (
           <div className="text-center">
             <button
               onClick={handleReset}
