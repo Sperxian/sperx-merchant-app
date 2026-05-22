@@ -17,14 +17,16 @@ type MemberSheetRedeemRewardContent = {
   open: boolean;
 
   onClose: () => void;
+  onRefresh: () => void;
 };
 
-type SheetState = "TO_REDEEM" | "REDEEMED";
+type SheetState = "TO_REDEEM" | "REDEEMING" | "REDEEMED";
 
 export function MemberSheetRedeemRewardContent({
   member,
   open,
   onClose,
+  onRefresh,
 }: MemberSheetRedeemRewardContent) {
   const shop = useShop();
   const loyaltyProgram = useLoyaltyProgram();
@@ -41,16 +43,26 @@ export function MemberSheetRedeemRewardContent({
   const canRedeem = member?.points && member.points >= minPoints;
 
   const handleRedeemReward = async () => {
-    if (!member || !rewardCode) {
-      console.log(`Missing member (${member?.id}) or reward (${rewardCode})`);
-      return;
-    }
-    await redeemReward(shop.id, member.id, rewardCode);
+    if (state !== "TO_REDEEM") return;
 
-    setState("REDEEMED");
+    try {
+      if (!member || !rewardCode) {
+        console.log(`Missing member (${member?.id}) or reward (${rewardCode})`);
+        return;
+      }
+      setState("REDEEMING");
+      await redeemReward(shop.id, member.id, rewardCode);
+
+      await onRefresh();
+      setState("REDEEMED");
+    } catch {
+      setState("TO_REDEEM");
+    }
   };
 
   function handleReset() {
+    setRewardCode(undefined);
+    setState("TO_REDEEM");
     onClose();
   }
 
@@ -107,16 +119,15 @@ export function MemberSheetRedeemRewardContent({
 
       {/* Fixed footer */}
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
-        {state === "TO_REDEEM" && (
+        {state !== "REDEEMED" ? (
           <button
             className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
             onClick={handleRedeemReward}
-            disabled={!rewardCode}
+            disabled={!rewardCode && state !== "REDEEMING"}
           >
             Redeem Reward
           </button>
-        )}
-        {state === "REDEEMED" && (
+        ) : (
           <div className="text-center">
             <button
               onClick={handleReset}

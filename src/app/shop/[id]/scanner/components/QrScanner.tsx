@@ -5,10 +5,15 @@ import { useState } from "react";
 
 type QrScannerProps = {
   mockMemberId?: string;
+  paused?: boolean;
   onScan: (memberId: string) => void;
 };
 
-export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
+export function QrScanner({
+  mockMemberId,
+  paused = false,
+  onScan,
+}: QrScannerProps) {
   const [memberId, setMemberId] = useState<string | null>();
 
   const handleScan = (detectedCodes: IDetectedBarcode[]) => {
@@ -65,6 +70,7 @@ export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
   };
 
   return (
+    // TODO: Turn off camera upon sheet overlay
     <div className="flex-1 flex flex-col items-center justify-center px-6">
       <p className="text-xs font-medium text-primary dark:text-primary-lighter mb-4">
         Point camera at customer QR code
@@ -72,6 +78,7 @@ export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
 
       <div className="relative w-full max-w-[280px] aspect-square bg-primary-lighter rounded-2xl overflow-hidden">
         <Scanner
+          paused={paused}
           onScan={handleScan}
           sound={true}
           components={{
@@ -81,7 +88,11 @@ export function QrScanner({ mockMemberId,onScan }: QrScannerProps) {
         />
       </div>
 
-      {memberId && <p className="text-primary dark:text-primary-lighter text-xs pt-4">{memberId}</p>}
+      {memberId && (
+        <p className="text-primary dark:text-primary-lighter text-xs pt-4">
+          {memberId}
+        </p>
+      )}
     </div>
   );
 }
