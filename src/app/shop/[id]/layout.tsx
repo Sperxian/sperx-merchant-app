@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import "./../../globals.css";
+import "@/src/app/globals.css";
 import { AppHeader } from "./scanner/components/AppHeader";
 import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { LoyaltyProgramContextProvider } from "./LoyaltyProgramContext";
 import { notFound } from "next/navigation";
+import { themeCssVars } from "@/src/lib/theme";
+import React from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -43,24 +45,29 @@ export default async function ShopLayout({ children, params }: Props) {
   const { id: shopId } = await params;
   const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
 
+  const { theme } = shop.config;
+  console.log({ theme });
+
+  const themeVars = theme ? themeCssVars(theme) : undefined;
+
   return (
     <ShopContextProvider value={shop}>
       <LoyaltyProgramContextProvider value={loyaltyProgram}>
-        <AppHeader />
+          <AppHeader style={themeVars} />
 
-        {/* scroll area wrapper */}
-        <div className="flex-1 relative overflow-hidden">
-          {/* actual scroll container */}
-          <main className="h-full overflow-y-auto">{children}</main>
+          {/* scroll area wrapper */}
+          <div className="flex-1 relative overflow-hidden" style={themeVars}>
+            {/* actual scroll container */}
+            <main className="h-full overflow-y-auto">{children}</main>
 
-          {/* bottom fade indicator */}
-          <div
-            className={[
-              "pointer-events-none absolute bottom-0 left-0 right-0 h-15",
-              "bg-gradient-to-t from-background via-background/75 via-background/30 to-transparent",
-            ].join(" ")}
-          />
-        </div>
+            {/* bottom fade indicator */}
+            <div
+              className={[
+                "pointer-events-none absolute bottom-0 left-0 right-0 h-15",
+                "bg-gradient-to-t from-background via-background/75 via-background/30 to-transparent",
+              ].join(" ")}
+            />
+          </div>
       </LoyaltyProgramContextProvider>
     </ShopContextProvider>
   );
