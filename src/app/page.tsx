@@ -1,14 +1,18 @@
 "use client";
 
+import "@/src/app/globals.css";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { UserPublicMetadata } from "../types/clerk";
+import IncompleteShopConfig from "./(splash)/IncompleteShopConfig";
+import RedirectingMerchantScanner from "./(splash)/RedirectingMerchantScanner";
 
 export default function LandingPage() {
   const router = useRouter();
 
   const { isSignedIn, user } = useUser();
   if (!isSignedIn) {
+    return <RedirectingMerchantScanner />;
     return (
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">Sperx Merchant</h1>
@@ -23,7 +27,7 @@ export default function LandingPage() {
   const { shops } = user.publicMetadata as UserPublicMetadata;
 
   if (!shops || shops.length === 0) {
-    return <div>User requires shop configuration</div>;
+    return <IncompleteShopConfig />;
   }
 
   //  Redirect to first shop

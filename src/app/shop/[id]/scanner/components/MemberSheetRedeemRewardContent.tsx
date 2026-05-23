@@ -9,6 +9,7 @@ import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
+import { toastError } from "@/src/lib/toast";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -55,7 +56,8 @@ export function MemberSheetRedeemRewardContent({
 
       await onRefresh();
       setState("REDEEMED");
-    } catch {
+    } catch (error) {
+      toastError(error);
       setState("TO_REDEEM");
     }
   };
