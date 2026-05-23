@@ -5,6 +5,7 @@ import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { LoyaltyProgramContextProvider } from "./LoyaltyProgramContext";
+import { notFound } from "next/navigation";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +15,13 @@ type Props = {
 };
 
 async function loadShopAndLoyaltyProgram(shopId: string) {
-  const shop = await getShop(shopId);
+  let shop;
+  try {
+    shop = await getShop(shopId);
+  } catch (err) {
+    console.error("Failed to load shop:", { err });
+    return notFound();
+  }
 
   const { data: loyaltyPrograms } = await getLoyaltyPrograms(shopId);
   const [loyaltyProgram] = loyaltyPrograms;

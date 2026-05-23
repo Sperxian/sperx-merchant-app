@@ -9,6 +9,7 @@ import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { Alert } from "@/src/components/shared/Alert";
 import { useShop } from "../../ShopContext";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
+import { toastError } from "@/src/lib/toast";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
@@ -54,7 +55,8 @@ export function MemberSheetApplyStampContent({
 
       await onRefresh();
       setState("CONFIRMED");
-    } catch {
+    } catch(error) {
+      toastError(error);
       setState("IDLE");
     }
   };
