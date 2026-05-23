@@ -42,6 +42,7 @@
   --color-primary-dark: var(--primary-darker);
   --color-primary-darker: var(--primary-darker);
   --color-primary-darkest: var(--primary-darkest);
+  --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: var(--secondary);
   --color-secondary-light: var(--secondary-light);
@@ -50,6 +51,7 @@
   --color-secondary-dark: var(--secondary-darker);
   --color-secondary-darker: var(--secondary-darker);
   --color-secondary-darkest: var(--secondary-darkest);
+  --color-secondary-foreground: var(--secondary-foreground);
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -65,8 +67,8 @@
 }
 
 .dark {
-  --background: #ededed;
-  --foreground: #0a0a0a;
+  --background: #0a0a0a;
+  --foreground: #ededed;
   --primary-foreground: #000000;
   --secondary-foreground: #000000;
 }
