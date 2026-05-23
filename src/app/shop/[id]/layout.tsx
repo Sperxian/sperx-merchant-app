@@ -36,29 +36,25 @@ export default async function ShopLayout({ children, params }: Props) {
   const { id: shopId } = await params;
   const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
 
-  /* phone shell */
   return (
-    <div className="w-full md:max-w-md h-full md:h-[90vh] md:my-6 md:rounded-2xl md:border md:border-gray-400 md:dark:border-gray-800 bg-background shadow flex flex-col overflow-hidden">
-      {/* header */}
-      <ShopContextProvider value={shop}>
-        <LoyaltyProgramContextProvider value={loyaltyProgram}>
-          <AppHeader />
+    <ShopContextProvider value={shop}>
+      <LoyaltyProgramContextProvider value={loyaltyProgram}>
+        <AppHeader />
 
-          {/* scroll area wrapper */}
-          <div className="flex-1 relative overflow-hidden">
-            {/* actual scroll container */}
-            <main className="h-full overflow-y-auto">{children}</main>
+        {/* scroll area wrapper */}
+        <div className="flex-1 relative overflow-hidden">
+          {/* actual scroll container */}
+          <main className="h-full overflow-y-auto">{children}</main>
 
-            {/* bottom fade indicator */}
-            <div
-              className={[
-                "pointer-events-none absolute bottom-0 left-0 right-0 h-15",
-                "bg-gradient-to-t from-background via-background/75 via-background/30 to-transparent",
-              ].join(" ")}
-            />
-          </div>
-        </LoyaltyProgramContextProvider>
-      </ShopContextProvider>
-    </div>
+          {/* bottom fade indicator */}
+          <div
+            className={[
+              "pointer-events-none absolute bottom-0 left-0 right-0 h-15",
+              "bg-gradient-to-t from-background via-background/75 via-background/30 to-transparent",
+            ].join(" ")}
+          />
+        </div>
+      </LoyaltyProgramContextProvider>
+    </ShopContextProvider>
   );
 }
