@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import "./../../globals.css";
+import "@/src/app/globals.css";
 import { AppHeader } from "./scanner/components/AppHeader";
 import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { LoyaltyProgramContextProvider } from "./LoyaltyProgramContext";
+import { notFound } from "next/navigation";
+import { themeCssVars } from "@/src/lib/theme";
+import React from "react";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +17,13 @@ type Props = {
 };
 
 async function loadShopAndLoyaltyProgram(shopId: string) {
-  const shop = await getShop(shopId);
+  let shop;
+  try {
+    shop = await getShop(shopId);
+  } catch (err) {
+    console.error("Failed to load shop:", { err });
+    return notFound();
+  }
 
   const { data: loyaltyPrograms } = await getLoyaltyPrograms(shopId);
   const [loyaltyProgram] = loyaltyPrograms;
@@ -36,16 +45,18 @@ export default async function ShopLayout({ children, params }: Props) {
   const { id: shopId } = await params;
   const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
 
-  /* phone shell */
+  const { theme } = shop.config;
+  console.log({ theme });
+
+  const themeVars = theme ? themeCssVars(theme) : undefined;
+
   return (
-    <div className="w-full md:max-w-md h-full md:h-[90vh] md:my-6 md:rounded-2xl md:border md:border-gray-400 md:dark:border-gray-800 bg-background shadow flex flex-col overflow-hidden">
-      {/* header */}
-      <ShopContextProvider value={shop}>
-        <LoyaltyProgramContextProvider value={loyaltyProgram}>
-          <AppHeader />
+    <ShopContextProvider value={shop}>
+      <LoyaltyProgramContextProvider value={loyaltyProgram}>
+          <AppHeader style={themeVars} />
 
           {/* scroll area wrapper */}
-          <div className="flex-1 relative overflow-hidden">
+          <div className="flex-1 relative overflow-hidden" style={themeVars}>
             {/* actual scroll container */}
             <main className="h-full overflow-y-auto">{children}</main>
 
@@ -57,8 +68,7 @@ export default async function ShopLayout({ children, params }: Props) {
               ].join(" ")}
             />
           </div>
-        </LoyaltyProgramContextProvider>
-      </ShopContextProvider>
-    </div>
+      </LoyaltyProgramContextProvider>
+    </ShopContextProvider>
   );
 }

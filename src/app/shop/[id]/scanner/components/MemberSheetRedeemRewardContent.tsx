@@ -9,6 +9,8 @@ import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
+import { toastError } from "@/src/lib/toast";
+import "@/src/app/globals.css";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -55,7 +57,8 @@ export function MemberSheetRedeemRewardContent({
 
       await onRefresh();
       setState("REDEEMED");
-    } catch {
+    } catch (error) {
+      toastError(error);
       setState("TO_REDEEM");
     }
   };
@@ -121,7 +124,8 @@ export function MemberSheetRedeemRewardContent({
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
         {state !== "REDEEMED" ? (
           <button
-            className="w-full bg-secondary/80 text-foreground uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all hover:bg-secondary disabled:opacity-35 disabled:cursor-not-allowed"
+            className="w-full bg-secondary dark:bg-secondary-lighter text-secondary-foreground
+            uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
             onClick={handleRedeemReward}
             disabled={!rewardCode && state !== "REDEEMING"}
           >
