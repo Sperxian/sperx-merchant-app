@@ -46,7 +46,6 @@ export default async function ShopLayout({ children, params }: Props) {
   const { shop, loyaltyProgram } = await loadShopAndLoyaltyProgram(shopId);
 
   const { theme } = shop.config;
-  console.log({ theme });
 
   const themeVars = theme ? themeCssVars(theme) : undefined;
 
