@@ -179,7 +179,7 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
           </header>
 
           <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-            <div className={`mx-auto w-full max-w-7xl rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}>
+            <div className={`mx-auto w-full rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}>
               {children}
             </div>
           </main>

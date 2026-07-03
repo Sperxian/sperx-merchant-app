@@ -8,6 +8,7 @@ import { LoyaltyProgramContextProvider } from "./LoyaltyProgramContext";
 import { notFound } from "next/navigation";
 import { themeCssVars } from "@/src/lib/theme";
 import React from "react";
+import { AdminDashboardShell } from "@/src/components/Layouts/AdminDashboardShell";
 
 type Props = {
   children: React.ReactNode;
@@ -52,21 +53,16 @@ export default async function ShopLayout({ children, params }: Props) {
   return (
     <ShopContextProvider value={shop}>
       <LoyaltyProgramContextProvider value={loyaltyProgram}>
+        <AdminDashboardShell>
           <AppHeader style={themeVars} />
 
-          {/* scroll area wrapper */}
-          <div className="flex-1 relative overflow-hidden" style={themeVars}>
-            {/* actual scroll container */}
-            <main className="h-full overflow-y-auto">{children}</main>
-
-            {/* bottom fade indicator */}
-            <div
-              className={[
-                "pointer-events-none absolute bottom-0 left-0 right-0 h-15",
-                "bg-gradient-to-t from-background via-background/75 via-background/30 to-transparent",
-              ].join(" ")}
-            />
+          <div
+            className="flex-1 flex flex-col relative overflow-hidden w-full"
+            style={themeVars}
+          >
+            {children}
           </div>
+        </AdminDashboardShell>
       </LoyaltyProgramContextProvider>
     </ShopContextProvider>
   );
