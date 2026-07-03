@@ -16,6 +16,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import { useShop } from "@/src/app/shop/[id]/ShopContext";
 
 const navigation = [
   { href: "/", label: "Overview", icon: LayoutGrid },
@@ -26,6 +27,7 @@ const navigation = [
 ];
 
 function getPageTitle(pathname: string) {
+  if (pathname.endsWith("/scanner")) return "Merchant Scanner";
   if (pathname.startsWith("/charts")) return "Charts";
   if (pathname.startsWith("/profile")) return "Profile";
   if (pathname.startsWith("/settings")) return "Settings";
@@ -33,15 +35,27 @@ function getPageTitle(pathname: string) {
   return "Dashboard";
 }
 
-export function AdminDashboardShell({ children }: { children: React.ReactNode }) {
+export function AdminDashboardShell({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const pathname = usePathname();
+  const shop = useShop();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {
     const storedTheme = window.localStorage.getItem("admin-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const nextTheme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : prefersDark ? "dark" : "light";
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+    const nextTheme =
+      storedTheme === "light" || storedTheme === "dark"
+        ? storedTheme
+        : prefersDark
+          ? "dark"
+          : "light";
 
     setTheme(nextTheme);
   }, []);
@@ -83,7 +97,9 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
       <div className="flex min-h-screen flex-col lg:flex-row">
         <aside
           className={`fixed inset-y-0 left-0 z-40 w-72 border-r px-5 py-6 shadow-2xl backdrop-blur transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarClasses} ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+            isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full lg:translate-x-0"
           }`}
         >
           <div className="flex items-center justify-between lg:justify-start">
@@ -93,7 +109,11 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
               </div>
               <div>
                 <p className="text-sm font-semibold">Sperx Admin</p>
-                <p className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}>Merchant dashboard</p>
+                <p
+                  className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}
+                >
+                  Merchant dashboard
+                </p>
               </div>
             </div>
             <button
@@ -108,7 +128,9 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
 
           <nav className="mt-8 space-y-2">
             {navigation.map(({ href, label, icon: Icon }) => {
-              const isActive = pathname === href || (href !== "/" && pathname.startsWith(href));
+              const isActive =
+                pathname === href ||
+                (href !== "/" && pathname.startsWith(href));
 
               return (
                 <Link
@@ -127,9 +149,17 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
             })}
           </nav>
 
-          <div className={`mt-8 rounded-2xl border p-4 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-slate-100 text-slate-600"}`}>
-            <p className={`font-medium ${isDark ? "text-white" : "text-slate-900"}`}>Need a quick boost?</p>
-            <p className={`mt-2 text-xs leading-5 ${isDark ? "text-slate-400" : "text-slate-500"}`}>
+          <div
+            className={`mt-8 rounded-2xl border p-4 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-slate-100 text-slate-600"}`}
+          >
+            <p
+              className={`font-medium ${isDark ? "text-white" : "text-slate-900"}`}
+            >
+              Need a quick boost?
+            </p>
+            <p
+              className={`mt-2 text-xs leading-5 ${isDark ? "text-slate-400" : "text-slate-500"}`}
+            >
               Keep your merchant operations moving with a single-view dashboard.
             </p>
           </div>
@@ -157,8 +187,16 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
                   <Menu className="h-5 w-5" />
                 </button>
                 <div>
-                  <p className={`text-xs uppercase tracking-[0.3em] ${isDark ? "text-slate-400" : "text-slate-500"}`}>Operations</p>
-                  <h1 className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}>{pageTitle}</h1>
+                  <p
+                    className={`text-xs uppercase tracking-[0.3em] ${isDark ? "text-slate-400" : "text-slate-500"}`}
+                  >
+                    {shop.name}
+                  </p>
+                  <h1
+                    className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}
+                  >
+                    {pageTitle}
+                  </h1>
                 </div>
               </div>
 
@@ -169,9 +207,15 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
                   onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                   aria-label="Toggle theme"
                 >
-                  {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                  {isDark ? (
+                    <Sun className="h-4 w-4" />
+                  ) : (
+                    <Moon className="h-4 w-4" />
+                  )}
                 </button>
-                <div className={`rounded-full border px-3 py-2 text-sm ${badgeClasses}`}>
+                <div
+                  className={`rounded-full border px-3 py-2 text-sm ${badgeClasses}`}
+                >
                   Live overview
                 </div>
               </div>
@@ -179,7 +223,9 @@ export function AdminDashboardShell({ children }: { children: React.ReactNode })
           </header>
 
           <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-            <div className={`mx-auto w-full rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}>
+            <div
+              className={`mx-auto w-full rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}
+            >
               {children}
             </div>
           </main>
