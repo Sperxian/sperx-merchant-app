@@ -17,6 +17,7 @@ import {
   X,
 } from "lucide-react";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
+import { UserButton } from "@clerk/nextjs";
 
 const navigation = [
   { href: "/", label: "Overview", icon: LayoutGrid },
@@ -88,9 +89,6 @@ export function AdminDashboardShell({
       : isActive
         ? "bg-cyan-500/10 text-cyan-700"
         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
-  const badgeClasses = isDark
-    ? "border-cyan-400/20 bg-cyan-500/10 text-cyan-300"
-    : "border-cyan-500/20 bg-cyan-500/10 text-cyan-700";
 
   return (
     <div className={`min-h-screen w-full transition-colors ${shellClasses}`}>
@@ -213,11 +211,7 @@ export function AdminDashboardShell({
                     <Moon className="h-4 w-4" />
                   )}
                 </button>
-                <div
-                  className={`rounded-full border px-3 py-2 text-sm ${badgeClasses}`}
-                >
-                  Live overview
-                </div>
+                <UserButton afterSwitchSessionUrl="/sign-in" />
               </div>
             </div>
           </header>
