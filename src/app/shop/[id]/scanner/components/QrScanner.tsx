@@ -33,12 +33,14 @@ export function QrScanner({
 
   if (mockMemberId) {
     return (
-      <button
-        onClick={() => onScan(mockMemberId)}
-        className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
-      >
-        Simulate QR Scan
-      </button>
+      <div className="flex flex-col flex-1 justify-center min-h-[350px]">
+        <button
+          onClick={() => onScan(mockMemberId)}
+          className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
+        >
+          Simulate QR Scan
+        </button>
+      </div>
     );
   }
 

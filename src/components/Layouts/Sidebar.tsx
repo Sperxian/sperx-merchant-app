@@ -3,23 +3,22 @@
 import Link from "next/link";
 import {
   ChevronRight,
-  LayoutGrid,
-  ReceiptText,
-  Sparkles,
-  Settings,
-  X,
-  BarChart3,
-  Users,
+  ScanIcon,
+  XIcon,
+  LayoutGridIcon,
+  ReceiptTextIcon,
+  BarChart3Icon,
+  SettingsIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 
 const navigation = [
-  { href: "/", label: "Overview", icon: LayoutGrid },
-  { href: "/pages", label: "Pages", icon: ReceiptText },
-  { href: "/profile", label: "Profile", icon: Users },
-  { href: "/charts", label: "Charts", icon: BarChart3 },
-  { href: "/settings", label: "Settings", icon: Settings },
+  { href: "/", label: "Overview", icon: LayoutGridIcon },
+  { href: "/scanner", label: "Scanner", icon: ScanIcon },
+  { href: "/pages", label: "Pages", icon: ReceiptTextIcon },
+  { href: "/charts", label: "Charts", icon: BarChart3Icon },
+  { href: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 interface SidebarProps {
@@ -75,19 +74,19 @@ export function Sidebar({
           onClick={onClose}
           aria-label="Close sidebar"
         >
-          <X className="h-5 w-5" />
+          <XIcon className="h-5 w-5" />
         </button>
       </div>
 
       <nav className="mt-8 space-y-2">
         {navigation.map(({ href, label, icon: Icon }) => {
           const isActive =
-            pathname === href || (href !== "/" && pathname.startsWith(href));
+            pathname === href || (href !== "/" && pathname.endsWith(href));
 
           return (
             <Link
               key={href}
-              href={href}
+              href={`/shop/${shop.id}/${href}`}
               onClick={onClose}
               className={`flex items-center justify-between rounded-xl px-3 py-3 text-sm transition ${navItemClasses(isActive)}`}
             >
