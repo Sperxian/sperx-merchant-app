@@ -70,27 +70,7 @@ export function MemberSheetRedeemRewardContent({
   }
 
   return (
-    <div
-      className={[
-        "absolute inset-0 bg-background z-11 overflow-y-auto",
-        "flex flex-col",
-        "transition-transform duration-[380ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
-        open ? "translate-y-0" : "translate-y-full",
-      ].join(" ")}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Drag handle */}
-      <div className="flex items-center justify-between px-4 py-2">
-        <h2 className="text-lg font-semibold">Redeem Reward</h2>
-
-        <button
-          onClick={onClose}
-          className="text-gray-500 hover:text-black text-2xl"
-        >
-          ✕
-        </button>
-      </div>
-
+    <div className="h-full flex flex-col justify-between">
       <div className="px-4 flex flex-col flex-grow gap-4">
         {!canRedeem && (
           <Alert
@@ -115,9 +95,6 @@ export function MemberSheetRedeemRewardContent({
           options={rewardOptions}
           accumulatedPoints={member?.points ?? 0}
         />
-
-        {/* Member Section */}
-        {member && <CustomerSection customer={member} />}
       </div>
 
       {/* Fixed footer */}

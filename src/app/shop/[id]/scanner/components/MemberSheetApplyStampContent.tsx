@@ -70,46 +70,10 @@ export function MemberSheetApplyStampContent({
 
   const currentPoints = member?.points ?? 0;
   const cardPoints = currentPoints % goalPoints;
-  const hasRedeemableReward = currentPoints >= goalPoints;
 
   return (
-    <div
-      className={[
-        "absolute inset-0 bg-background z-11 overflow-y-auto",
-        "flex flex-col",
-        "transition-transform duration-[380ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
-        open ? "translate-y-0" : "translate-y-full",
-      ].join(" ")}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Drag handle */}
-      <div className="flex items-center justify-between px-4 py-2">
-        {/* Content */}
-        <h2 className="text-lg font-semibold">Apply Stamp</h2>
-
-        <button
-          onClick={handleReset}
-          className="text-gray-500 hover:text-black text-2xl"
-        >
-          ✕
-        </button>
-      </div>
-
+    <div className="h-full flex flex-col justify-between">
       <div className="px-4 flex flex-col flex-grow gap-4">
-        {hasRedeemableReward && (
-          <Alert
-            variant="info"
-            message="Customer is eligible to redeem rewards."
-          />
-        )}
-
-        {/* Loyalty card */}
-        <LoyaltyCardSection
-          current={currentPoints}
-          total={goalPoints}
-          rewardLabel={rewardName}
-        />
-
         {/* Add stamps — hidden after confirm */}
         {state === "IDLE" && (
           <AddStampSection
@@ -122,9 +86,6 @@ export function MemberSheetApplyStampContent({
         {state === "CONFIRMED" && member && (
           <Alert variant="success" message={successMessage ?? ""} />
         )}
-
-        {/* Customer */}
-        {member && <CustomerSection customer={member} />}
       </div>
 
       {/* Fixed footer */}
