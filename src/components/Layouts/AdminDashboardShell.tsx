@@ -1,31 +1,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  BarChart3,
-  ChevronRight,
-  LayoutGrid,
-  Menu,
-  Moon,
-  ReceiptText,
-  Settings,
-  Sparkles,
-  Sun,
-  Users,
-  X,
-} from "lucide-react";
+import { Menu, Moon, Sun, X } from "lucide-react";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 import { UserButton } from "@clerk/nextjs";
-
-const navigation = [
-  { href: "/", label: "Overview", icon: LayoutGrid },
-  { href: "/pages", label: "Pages", icon: ReceiptText },
-  { href: "/profile", label: "Profile", icon: Users },
-  { href: "/charts", label: "Charts", icon: BarChart3 },
-  { href: "/settings", label: "Settings", icon: Settings },
-];
+import { Sidebar } from "@/src/components/Layouts/Sidebar";
 
 function getPageTitle(pathname: string) {
   if (pathname.endsWith("/scanner")) return "Merchant Scanner";
@@ -93,75 +73,14 @@ export function AdminDashboardShell({
   return (
     <div className={`min-h-screen w-full transition-colors ${shellClasses}`}>
       <div className="flex min-h-screen flex-col lg:flex-row">
-        <aside
-          className={`fixed inset-y-0 left-0 z-40 w-72 border-r px-5 py-6 shadow-2xl backdrop-blur transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarClasses} ${
-            isSidebarOpen
-              ? "translate-x-0"
-              : "-translate-x-full lg:translate-x-0"
-          }`}
-        >
-          <div className="flex items-center justify-between lg:justify-start">
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-violet-500">
-                <Sparkles className="h-5 w-5" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold">Sperx Admin</p>
-                <p
-                  className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}
-                >
-                  Merchant dashboard
-                </p>
-              </div>
-            </div>
-            <button
-              type="button"
-              className={`rounded-lg p-2 transition hover:bg-white/10 lg:hidden ${isDark ? "text-slate-300" : "text-slate-600"}`}
-              onClick={() => setIsSidebarOpen(false)}
-              aria-label="Close sidebar"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-
-          <nav className="mt-8 space-y-2">
-            {navigation.map(({ href, label, icon: Icon }) => {
-              const isActive =
-                pathname === href ||
-                (href !== "/" && pathname.startsWith(href));
-
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  onClick={() => setIsSidebarOpen(false)}
-                  className={`flex items-center justify-between rounded-xl px-3 py-3 text-sm transition ${navItemClasses(isActive)}`}
-                >
-                  <span className="flex items-center gap-3">
-                    <Icon className="h-4 w-4" />
-                    {label}
-                  </span>
-                  <ChevronRight className="h-4 w-4" />
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div
-            className={`mt-8 rounded-2xl border p-4 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-slate-100 text-slate-600"}`}
-          >
-            <p
-              className={`font-medium ${isDark ? "text-white" : "text-slate-900"}`}
-            >
-              Need a quick boost?
-            </p>
-            <p
-              className={`mt-2 text-xs leading-5 ${isDark ? "text-slate-400" : "text-slate-500"}`}
-            >
-              Keep your merchant operations moving with a single-view dashboard.
-            </p>
-          </div>
-        </aside>
+        <Sidebar
+          pathname={pathname ?? "/"}
+          isSidebarOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+          isDark={isDark}
+          sidebarClasses={sidebarClasses}
+          navItemClasses={navItemClasses}
+        />
 
         {isSidebarOpen ? (
           <button
