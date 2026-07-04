@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, Moon, Sun, X } from "lucide-react";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
-import { UserButton } from "@clerk/nextjs";
 import { Sidebar } from "@/src/components/Layouts/Sidebar";
+import { Header } from "@/src/components/Layouts/Header";
 
 function getPageTitle(pathname: string) {
   if (pathname.endsWith("/scanner")) return "Merchant Scanner";
@@ -92,48 +91,14 @@ export function AdminDashboardShell({
         ) : null}
 
         <div className="flex-1">
-          <header className={`border-b backdrop-blur ${headerClasses}`}>
-            <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  className={`rounded-xl border p-2 lg:hidden ${isDark ? "border-white/10 bg-white/10 text-slate-200" : "border-slate-200 bg-slate-100 text-slate-700"}`}
-                  onClick={() => setIsSidebarOpen(true)}
-                  aria-label="Open sidebar"
-                >
-                  <Menu className="h-5 w-5" />
-                </button>
-                <div>
-                  <p
-                    className={`text-xs uppercase tracking-[0.3em] ${isDark ? "text-slate-400" : "text-slate-500"}`}
-                  >
-                    {shop.name}
-                  </p>
-                  <h1
-                    className={`text-lg font-semibold ${isDark ? "text-white" : "text-slate-900"}`}
-                  >
-                    {pageTitle}
-                  </h1>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <button
-                  type="button"
-                  className={`rounded-full border p-2 transition ${isDark ? "border-white/10 bg-white/10 text-slate-200 hover:bg-white/20" : "border-slate-200 bg-slate-100 text-slate-700 hover:bg-slate-200"}`}
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                  aria-label="Toggle theme"
-                >
-                  {isDark ? (
-                    <Sun className="h-4 w-4" />
-                  ) : (
-                    <Moon className="h-4 w-4" />
-                  )}
-                </button>
-                <UserButton afterSwitchSessionUrl="/sign-in" />
-              </div>
-            </div>
-          </header>
+          <Header
+            shopName={shop.name}
+            pageTitle={pageTitle}
+            isDark={isDark}
+            headerClasses={headerClasses}
+            onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
+            onOpenSidebar={() => setIsSidebarOpen(true)}
+          />
 
           <main className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
             <div
