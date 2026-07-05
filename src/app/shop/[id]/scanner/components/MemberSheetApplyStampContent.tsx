@@ -2,8 +2,6 @@
 
 import "@/src/app/globals.css";
 import { useState } from "react";
-import { CustomerSection } from "../CustomerSection";
-import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
@@ -14,7 +12,6 @@ import { toastError } from "@/src/lib/toast";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
-  open: boolean;
   onClose: () => void;
   onRefresh: () => void;
 }
@@ -23,7 +20,6 @@ type SheetState = "IDLE" | "SUBMITTING" | "CONFIRMED";
 
 export function MemberSheetApplyStampContent({
   member,
-  open,
   onClose,
   onRefresh,
 }: MemberSheetApplyStampContentProps) {
@@ -92,7 +88,7 @@ export function MemberSheetApplyStampContent({
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
         {state !== "CONFIRMED" ? (
           <button
-            className="w-full bg-secondary dark:bg-secondary-lighter text-secondary-foreground
+            className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
             uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
             disabled={state === ("SUBMITTING" as SheetState)}
             onClick={handleAddStamp}

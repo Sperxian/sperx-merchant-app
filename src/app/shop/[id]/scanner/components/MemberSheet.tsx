@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { MemberLoyalty } from "@/src/lib/types";
 import { MemberSheetApplyStampContent } from "./MemberSheetApplyStampContent";
 import { MemberSheetRedeemRewardContent } from "./MemberSheetRedeemRewardContent";
@@ -8,10 +11,13 @@ import { Alert } from "@/src/components/shared/Alert";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
+const tabs: Array<{ key: MODE_OPTION; label: string }> = [
+  { key: "APPLY_STAMP", label: "Apply Stamp" },
+  { key: "REDEEM_REWARD", label: "Redeem Reward" },
+];
+
 interface MemberSheetProps {
   member?: MemberLoyalty;
-  mode: MODE_OPTION;
-
   open: boolean;
   onClose: () => void;
   onRefresh: () => void;
@@ -19,12 +25,12 @@ interface MemberSheetProps {
 
 export function MemberSheet({
   member,
-  mode,
   open,
   onClose,
   onRefresh,
 }: MemberSheetProps) {
   const loyaltyProgram = useLoyaltyProgram();
+  const [activeTab, setActiveTab] = useState<MODE_OPTION>("APPLY_STAMP");
 
   const {
     config: {
@@ -33,11 +39,9 @@ export function MemberSheet({
   } = loyaltyProgram;
 
   const currentPoints = member?.points ?? 0;
-  const cardPoints = currentPoints % goalPoints;
   const hasRedeemableReward = currentPoints >= goalPoints;
 
   function handleReset() {
-    // alert("TODO");
     onClose();
   }
 
@@ -53,17 +57,18 @@ export function MemberSheet({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="flex items-center justify-between px-4 py-2">
-        <h2 className="text-lg font-semibold">TODO</h2>
-
-        <button
-          onClick={handleReset}
-          className="text-gray-500 hover:text-black text-2xl"
-        >
-          ✕
-        </button>
+      <div className="flex flex-col gap-3 px-4 py-2">
+        <div className="flex items-center justify-between">
+          <h2 className="text-lg font-semibold">Member actions</h2>
+          <button
+            onClick={handleReset}
+            className="text-gray-500 hover:text-black text-2xl"
+          >
+            ✕
+          </button>
+        </div>
       </div>
-      <div className="flex flex-col sm:flex-row h-full gap-2">
+      <div className="flex flex-col sm:flex-row h-full gap-2 px-4">
         <div className="sm:w-1/2 w-full">
           <div className="flex flex-col p-4 gap-4">
             {hasRedeemableReward && (
@@ -83,18 +88,36 @@ export function MemberSheet({
           </div>
         </div>
 
-        <div className="sm:w-1/2 w-full h-full">
-          {mode === "APPLY_STAMP" ? (
+        <div className="sm:w-1/2 w-full h-full flex flex-col gap-4">
+          <div className="flex flex-wrap gap-2">
+            {tabs.map((tab) => {
+              const isActive = tab.key === activeTab;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setActiveTab(tab.key)}
+                  className={[
+                    "rounded-full px-3 py-2 text-sm font-semibold transition",
+                    isActive
+                      ? "bg-primary text-secondary-foreground"
+                      : "bg-white/80 text-slate-600 border border-slate-200 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-800",
+                  ].join(" ")}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+          {activeTab === "APPLY_STAMP" ? (
             <MemberSheetApplyStampContent
               member={member}
-              open={open}
               onClose={onClose}
               onRefresh={onRefresh}
             />
           ) : (
             <MemberSheetRedeemRewardContent
               member={member}
-              open={open}
               onClose={onClose}
               onRefresh={onRefresh}
             />

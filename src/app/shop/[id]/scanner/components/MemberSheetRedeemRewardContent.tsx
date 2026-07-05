@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
@@ -16,8 +15,6 @@ export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 type MemberSheetRedeemRewardContent = {
   member?: MemberLoyalty;
-  open: boolean;
-
   onClose: () => void;
   onRefresh: () => void;
 };
@@ -26,7 +23,6 @@ type SheetState = "TO_REDEEM" | "REDEEMING" | "REDEEMED";
 
 export function MemberSheetRedeemRewardContent({
   member,
-  open,
   onClose,
   onRefresh,
 }: MemberSheetRedeemRewardContent) {
@@ -101,7 +97,7 @@ export function MemberSheetRedeemRewardContent({
       <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
         {state !== "REDEEMED" ? (
           <button
-            className="w-full bg-secondary dark:bg-secondary-lighter text-secondary-foreground
+            className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
             uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
             onClick={handleRedeemReward}
             disabled={!rewardCode && state !== "REDEEMING"}
