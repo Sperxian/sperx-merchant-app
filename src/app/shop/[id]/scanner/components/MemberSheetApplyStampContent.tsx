@@ -59,9 +59,9 @@ export function MemberSheetApplyStampContent({
   };
 
   function handleReset() {
+    onClose();
     setStampsToReward(1);
     setState("IDLE");
-    onClose();
   }
 
   const currentPoints = member?.points ?? 0;

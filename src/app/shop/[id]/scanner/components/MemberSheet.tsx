@@ -42,10 +42,6 @@ export function MemberSheet({
   const currentPoints = member?.points ?? 0;
   const hasRedeemableReward = currentPoints >= goalPoints;
 
-  function handleReset() {
-    onClose();
-  }
-
   return (
     <Dialog open={open} onClose={onClose} title="Member Actions" size="xl">
       <div className="h-full flex flex-col sm:flex-row gap-10 sm:gap-6">

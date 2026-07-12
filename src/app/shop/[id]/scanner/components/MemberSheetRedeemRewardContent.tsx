@@ -60,9 +60,9 @@ export function MemberSheetRedeemRewardContent({
   };
 
   function handleReset() {
+    onClose();
     setRewardCode(undefined);
     setState("TO_REDEEM");
-    onClose();
   }
 
   return (
