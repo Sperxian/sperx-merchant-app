@@ -8,6 +8,7 @@ import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { CustomerSection } from "../CustomerSection";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { Alert } from "@/src/components/shared/Alert";
+import { Dialog } from "@/src/components/ui/Dialog";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
@@ -46,31 +47,10 @@ export function MemberSheet({
   }
 
   return (
-    <div
-      className={[
-        "absolute inset-0 bg-background z-11 overflow-y-auto",
-        "flex flex-col",
-        "transition-transform duration-[380ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
-        open ? "translate-y-0" : "translate-y-full",
-      ].join(" ")}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <div className="flex flex-col gap-3 px-4 py-2">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Member actions</h2>
-          <button
-            onClick={handleReset}
-            className="text-gray-500 hover:text-black text-2xl"
-          >
-            ✕
-          </button>
-        </div>
-      </div>
-      <div className="flex flex-col sm:flex-row h-full gap-2 px-4">
-        <div className="sm:w-1/2 w-full">
-          <div className="flex flex-col p-4 gap-4">
+    <Dialog open={open} onClose={onClose} title="Member Actions" size="xl">
+      <div className="h-full flex flex-col sm:flex-row gap-10 sm:gap-6">
+        <div className="h-full sm:w-1/2 w-full">
+          <div className="flex flex-col gap-4">
             {hasRedeemableReward && (
               <Alert
                 variant="info"
@@ -88,7 +68,7 @@ export function MemberSheet({
           </div>
         </div>
 
-        <div className="sm:w-1/2 w-full h-full flex flex-col gap-4">
+        <div className="h-full sm:w-1/2 w-full flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
             {tabs.map((tab) => {
               const isActive = tab.key === activeTab;
@@ -124,6 +104,6 @@ export function MemberSheet({
           )}
         </div>
       </div>
-    </div>
+    </Dialog>
   );
 }

@@ -94,7 +94,7 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
+      <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         {state !== "REDEEMED" ? (
           <button
             className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
