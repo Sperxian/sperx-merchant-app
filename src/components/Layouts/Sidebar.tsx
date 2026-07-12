@@ -5,20 +5,20 @@ import {
   ChevronRight,
   ScanIcon,
   XIcon,
-  LayoutGridIcon,
-  ReceiptTextIcon,
-  BarChart3Icon,
-  SettingsIcon,
+  // LayoutGridIcon,
+  // ReceiptTextIcon,
+  // BarChart3Icon,
+  // SettingsIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 
 const navigation = [
-  { href: "/", label: "Overview", icon: LayoutGridIcon },
+  // { href: "/", label: "Overview", icon: LayoutGridIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
-  { href: "/pages", label: "Pages", icon: ReceiptTextIcon },
-  { href: "/charts", label: "Charts", icon: BarChart3Icon },
-  { href: "/settings", label: "Settings", icon: SettingsIcon },
+  // { href: "/pages", label: "Pages", icon: ReceiptTextIcon },
+  // { href: "/charts", label: "Charts", icon: BarChart3Icon },
+  // { href: "/settings", label: "Settings", icon: SettingsIcon },
 ];
 
 interface SidebarProps {
