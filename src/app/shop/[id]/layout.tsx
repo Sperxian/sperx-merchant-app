@@ -20,22 +20,24 @@ export default function ShopLayout({ children }: Props) {
   const params = useParams<{ id: string }>();
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
-  const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgram | null>(null);
+  const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgram | null>(
+    null,
+  );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const storedTheme = window.localStorage.getItem("admin-theme") as
+      | "light"
+      | "dark"
+      | null;
 
-  useEffect(() => {
-    const storedTheme = window.localStorage.getItem("admin-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const nextTheme =
-      storedTheme === "light" || storedTheme === "dark"
-        ? storedTheme
-        : prefersDark
-          ? "dark"
-          : "light";
+    if (storedTheme === "light" || storedTheme === "dark") {
+      return storedTheme;
+    }
 
-    setTheme(nextTheme as "light" | "dark");
-  }, []);
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  });
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", theme === "dark");
@@ -63,20 +65,29 @@ export default function ShopLayout({ children }: Props) {
   }, [shopId]);
 
   const pageTitle = useMemo(() => {
-    const pathname = typeof window !== "undefined" ? window.location.pathname : "";
+    const pathname =
+      typeof window !== "undefined" ? window.location.pathname : "";
     if (pathname.endsWith("/scanner")) return "Merchant Scanner";
     if (pathname.startsWith("/charts")) return "Charts";
     if (pathname.startsWith("/profile")) return "Profile";
     if (pathname.startsWith("/settings")) return "Settings";
     if (pathname.startsWith("/pages")) return "Pages";
     return "Dashboard";
-  }, [shopId]);
+  }, []);
 
   const isDark = theme === "dark";
-  const shellClasses = isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900";
-  const sidebarClasses = isDark ? "border-white/10 bg-slate-900/95 text-slate-100" : "border-slate-200 bg-white/95 text-slate-800";
-  const headerClasses = isDark ? "border-white/10 bg-slate-900/70 text-slate-100" : "border-slate-200 bg-white/80 text-slate-900";
-  const contentCardClasses = isDark ? "border-white/10 bg-slate-900/70 shadow-black/20" : "border-slate-200 bg-white shadow-slate-200/70";
+  const shellClasses = isDark
+    ? "bg-slate-950 text-slate-100"
+    : "bg-slate-50 text-slate-900";
+  const sidebarClasses = isDark
+    ? "border-white/10 bg-slate-900/95 text-slate-100"
+    : "border-slate-200 bg-white/95 text-slate-800";
+  const headerClasses = isDark
+    ? "border-white/10 bg-slate-900/70 text-slate-100"
+    : "border-slate-200 bg-white/80 text-slate-900";
+  const contentCardClasses = isDark
+    ? "border-white/10 bg-slate-900/70 shadow-black/20"
+    : "border-slate-200 bg-white shadow-slate-200/70";
   const navItemClasses = (isActive: boolean) =>
     isDark
       ? isActive
@@ -99,7 +110,9 @@ export default function ShopLayout({ children }: Props) {
         <div className={`min-h-dvh w-full transition-colors ${shellClasses}`}>
           <div className="flex min-h-dvh flex-col lg:flex-row">
             <Sidebar
-              pathname={typeof window !== "undefined" ? window.location.pathname : "/"}
+              pathname={
+                typeof window !== "undefined" ? window.location.pathname : "/"
+              }
               isSidebarOpen={isSidebarOpen}
               onClose={() => setIsSidebarOpen(false)}
               isDark={isDark}
@@ -122,15 +135,22 @@ export default function ShopLayout({ children }: Props) {
                 pageTitle={pageTitle}
                 isDark={isDark}
                 headerClasses={headerClasses}
-                onToggleTheme={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onToggleTheme={() =>
+                  setTheme(theme === "dark" ? "light" : "dark")
+                }
                 onOpenSidebar={() => setIsSidebarOpen(true)}
               />
 
               <main className="flex-1 min-h-0 px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-                <div className={`mx-auto flex h-full w-full max-w-7xl flex-col rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}>
+                <div
+                  className={`mx-auto flex h-full w-full max-w-7xl flex-col rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}
+                >
                   {/* <AppHeader style={themeVars} /> */}
 
-                  <div className="flex-1 flex flex-col relative overflow-hidden w-full" style={themeVars}>
+                  <div
+                    className="flex-1 flex flex-col relative overflow-hidden w-full"
+                    style={themeVars}
+                  >
                     {children}
                   </div>
                 </div>
