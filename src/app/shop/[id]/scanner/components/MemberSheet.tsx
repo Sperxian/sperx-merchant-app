@@ -33,16 +33,6 @@ export function MemberSheet({
   const loyaltyProgram = useLoyaltyProgram();
   const [activeTab, setActiveTab] = useState<MODE_OPTION>("APPLY_STAMP");
 
-
-  // TODO: ENSURE reset when changin customer
-
-
-
-
-
-
-
-
   const {
     config: {
       availableRewards: [{ name: rewardName, goalPoints }],
