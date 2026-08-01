@@ -72,7 +72,7 @@ export default function TransactionsTable({
   });
 
   return (
-    <div className="overflow-auto rounded-lg border border-foreground/40 shadow-sm">
+    <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
       <h2 className="p-4 font-bold">Transactions</h2>
       
       <table className="min-w-full divide-y divide-foreground/10">
