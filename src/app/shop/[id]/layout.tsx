@@ -24,26 +24,23 @@ export default function ShopLayout({ children }: Props) {
     null,
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    const storedTheme = window.localStorage.getItem("admin-theme") as
-      | "light"
-      | "dark"
-      | null;
-
-    if (storedTheme === "light" || storedTheme === "dark") {
-      return storedTheme;
-    }
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  });
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    document.documentElement.style.colorScheme = theme;
-    window.localStorage.setItem("admin-theme", theme);
-  }, [theme]);
+    const syncTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!shopId) return;
@@ -73,7 +70,6 @@ export default function ShopLayout({ children }: Props) {
     return "SperX";
   }, []);
 
-  const isDark = theme === "dark";
   const shellClasses = isDark
     ? "bg-slate-950 text-slate-100"
     : "bg-slate-50 text-slate-900";
@@ -130,9 +126,16 @@ export default function ShopLayout({ children }: Props) {
                 pageTitle={pageTitle}
                 isDark={isDark}
                 headerClasses={headerClasses}
-                onToggleTheme={() =>
-                  setTheme(theme === "dark" ? "light" : "dark")
-                }
+                onToggleTheme={() => {
+                  const nextTheme = isDark ? "light" : "dark";
+                  document.documentElement.classList.toggle(
+                    "dark",
+                    nextTheme === "dark",
+                  );
+                  document.documentElement.style.colorScheme = nextTheme;
+                  window.localStorage.setItem("admin-theme", nextTheme);
+                  setIsDark(nextTheme === "dark");
+                }}
                 onOpenSidebar={() => setIsSidebarOpen(true)}
               />
 
