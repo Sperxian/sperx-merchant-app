@@ -11,7 +11,7 @@ export default async function QrScanPage({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-2xl font-semibold">Scanner</h1>
+      <h1 className="text-2xl font-semibold text-primary">Scanner</h1>
 
       <div className="mx-auto flex h-full w-full max-w-7xl flex-col rounded-3xl border border-white/30 p-4 shadow-2xl sm:p-6 lg:p-8">
         <div className="flex-1 flex flex-col relative overflow-hidden w-full">

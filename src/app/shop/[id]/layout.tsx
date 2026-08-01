@@ -95,10 +95,16 @@ export default function ShopLayout({ children }: Props) {
   const { theme: shopTheme } = shop.config;
   const themeVars = shopTheme ? themeCssVars(shopTheme) : undefined;
 
+  console.log({
+    isDark
+  });
+
   return (
     <ShopContextProvider value={shop}>
       <LoyaltyProgramContextProvider value={loyaltyProgram}>
-        <div className={`min-h-dvh w-full transition-colors ${shellClasses}`}>
+        <div
+          className={`min-h-dvh w-full transition-colors ${shellClasses} ${isDark ? "dark" : ""}`}
+        >
           <div className="flex min-h-dvh flex-col lg:flex-row">
             <Sidebar
               pathname={
