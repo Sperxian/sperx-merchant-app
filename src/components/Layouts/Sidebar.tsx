@@ -6,8 +6,7 @@ import {
   LayoutDashboardIcon,
   ScanIcon,
   XIcon,
-  // LayoutGridIcon,
-  // ReceiptTextIcon,
+  StampIcon,
   // BarChart3Icon,
   // SettingsIcon,
 } from "lucide-react";
@@ -17,7 +16,7 @@ import { useShop } from "@/src/app/shop/[id]/ShopContext";
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
-  // { href: "/pages", label: "Pages", icon: ReceiptTextIcon },
+  { href: "/loyalty", label: "Loyalty", icon: StampIcon },
   // { href: "/charts", label: "Charts", icon: BarChart3Icon },
   // { href: "/settings", label: "Settings", icon: SettingsIcon },
 ];
