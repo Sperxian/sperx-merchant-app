@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   ChevronRight,
+  LayoutDashboardIcon,
   ScanIcon,
   XIcon,
   // LayoutGridIcon,
@@ -14,7 +15,7 @@ import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 
 const navigation = [
-  // { href: "/", label: "Overview", icon: LayoutGridIcon },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
   // { href: "/pages", label: "Pages", icon: ReceiptTextIcon },
   // { href: "/charts", label: "Charts", icon: BarChart3Icon },
