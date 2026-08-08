@@ -24,26 +24,23 @@ export default function ShopLayout({ children }: Props) {
     null,
   );
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [theme, setTheme] = useState<"light" | "dark">(() => {
-    const storedTheme = window.localStorage.getItem("admin-theme") as
-      | "light"
-      | "dark"
-      | null;
-
-    if (storedTheme === "light" || storedTheme === "dark") {
-      return storedTheme;
-    }
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
-  });
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-    document.documentElement.style.colorScheme = theme;
-    window.localStorage.setItem("admin-theme", theme);
-  }, [theme]);
+    const syncTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+
+    syncTheme();
+
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!shopId) return;
@@ -68,14 +65,11 @@ export default function ShopLayout({ children }: Props) {
     const pathname =
       typeof window !== "undefined" ? window.location.pathname : "";
     if (pathname.endsWith("/scanner")) return "Merchant Scanner";
-    if (pathname.startsWith("/charts")) return "Charts";
-    if (pathname.startsWith("/profile")) return "Profile";
-    if (pathname.startsWith("/settings")) return "Settings";
-    if (pathname.startsWith("/pages")) return "Pages";
-    return "Dashboard";
+    if (pathname.startsWith("/dashboard")) return "Dashboard";
+    if (pathname.startsWith("/loyalty")) return "Loyalty";
+    return "SperX";
   }, []);
 
-  const isDark = theme === "dark";
   const shellClasses = isDark
     ? "bg-slate-950 text-slate-100"
     : "bg-slate-50 text-slate-900";
@@ -85,9 +79,6 @@ export default function ShopLayout({ children }: Props) {
   const headerClasses = isDark
     ? "border-white/10 bg-slate-900/70 text-slate-100"
     : "border-slate-200 bg-white/80 text-slate-900";
-  const contentCardClasses = isDark
-    ? "border-white/10 bg-slate-900/70 shadow-black/20"
-    : "border-slate-200 bg-white shadow-slate-200/70";
   const navItemClasses = (isActive: boolean) =>
     isDark
       ? isActive
@@ -104,10 +95,16 @@ export default function ShopLayout({ children }: Props) {
   const { theme: shopTheme } = shop.config;
   const themeVars = shopTheme ? themeCssVars(shopTheme) : undefined;
 
+  console.log({
+    isDark
+  });
+
   return (
     <ShopContextProvider value={shop}>
       <LoyaltyProgramContextProvider value={loyaltyProgram}>
-        <div className={`min-h-dvh w-full transition-colors ${shellClasses}`}>
+        <div
+          className={`min-h-dvh w-full transition-colors ${shellClasses} ${isDark ? "dark" : ""}`}
+        >
           <div className="flex min-h-dvh flex-col lg:flex-row">
             <Sidebar
               pathname={
@@ -135,25 +132,24 @@ export default function ShopLayout({ children }: Props) {
                 pageTitle={pageTitle}
                 isDark={isDark}
                 headerClasses={headerClasses}
-                onToggleTheme={() =>
-                  setTheme(theme === "dark" ? "light" : "dark")
-                }
+                onToggleTheme={() => {
+                  const nextTheme = isDark ? "light" : "dark";
+                  document.documentElement.classList.toggle(
+                    "dark",
+                    nextTheme === "dark",
+                  );
+                  document.documentElement.style.colorScheme = nextTheme;
+                  window.localStorage.setItem("admin-theme", nextTheme);
+                  setIsDark(nextTheme === "dark");
+                }}
                 onOpenSidebar={() => setIsSidebarOpen(true)}
               />
 
-              <main className="flex-1 min-h-0 px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
-                <div
-                  className={`mx-auto flex h-full w-full max-w-7xl flex-col rounded-3xl border p-4 shadow-2xl sm:p-6 lg:p-8 ${contentCardClasses}`}
-                >
-                  {/* <AppHeader style={themeVars} /> */}
-
-                  <div
-                    className="flex-1 flex flex-col relative overflow-hidden w-full"
-                    style={themeVars}
-                  >
-                    {children}
-                  </div>
-                </div>
+              <main
+                className="flex-1 min-h-0 px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8"
+                style={themeVars}
+              >
+                {children}
               </main>
             </div>
           </div>

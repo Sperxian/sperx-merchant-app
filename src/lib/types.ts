@@ -60,3 +60,20 @@ export type MemberLoyalty = {
   points: number;
   dateCreated: Date;
 };
+
+export type LoyaltyTransactionSummary = {
+  id: string;
+  memberId: string;
+  points: number;
+  notes: string | null;
+  loyaltyProgramName: string | null;
+  rewardName: string | null;
+  dateCreated: Date;
+};
+
+export type Paginated<T> = {
+  page: number;
+  size: number;
+  total: number;
+  items: T[];
+}
