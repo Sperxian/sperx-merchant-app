@@ -13,14 +13,19 @@ import { formatDateTime } from "@/src/lib/utils/date.utils";
 
 type TransactionsTableProps = {
   transactions: Paginated<LoyaltyTransactionSummary>;
+  page: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
 };
 
 const columnHelper = createColumnHelper<LoyaltyTransactionSummary>();
 
 export default function TransactionsTable({
   transactions,
+  page,
+  pageSize,
+  onPageChange,
 }: TransactionsTableProps) {
-  console.log({ transactions });
   const columns = useMemo(
     () => [
       columnHelper.accessor("dateCreated", {
@@ -50,15 +55,39 @@ export default function TransactionsTable({
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: transactions.items,
-    state: {},
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
+  const totalPages = Math.max(1, Math.ceil(transactions.total / pageSize));
+
   return (
     <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
-      <h2 className="p-4 font-bold">Transactions</h2>
+      <div className="flex items-center justify-between gap-4 p-4">
+        <h2 className="font-bold">Transactions</h2>
+        <div className="flex items-center gap-2 text-sm">
+          <button
+            type="button"
+            className="rounded border border-foreground/20 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() => onPageChange(Math.max(0, page - 1))}
+            disabled={page <= 0}
+          >
+            Previous
+          </button>
+          <span>
+            Page {page + 1} of {totalPages}
+          </span>
+          <button
+            type="button"
+            className="rounded border border-foreground/20 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={() => onPageChange(Math.min(totalPages - 1, page + 1))}
+            disabled={page >= totalPages - 1}
+          >
+            Next
+          </button>
+        </div>
+      </div>
 
       <table className="min-w-full divide-y divide-foreground/10">
         <thead>

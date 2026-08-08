@@ -9,11 +9,13 @@ import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
 
 export default function LoyaltyPage() {
   const shop = useShop();
+  const [page, setPage] = useState(0);
+  const [pageSize] = useState(20);
   const [loyaltyTransactions, setLoyaltyTransactions] = useState<
     Paginated<LoyaltyTransactionSummary>
   >({
-    page: 0,
-    size: 50,
+    page: 1,
+    size: pageSize,
     total: 0,
     items: [],
   });
@@ -46,12 +48,12 @@ export default function LoyaltyPage() {
 
   useEffect(() => {
     const fetchLoyaltyTransactions = async () => {
-      const data = await fetchAllMemberPointTransactionsForShop(shop.id);
+      const data = await fetchAllMemberPointTransactionsForShop(shop.id, page, pageSize);
       setLoyaltyTransactions(data);
     };
 
     fetchLoyaltyTransactions();
-  }, [shop.id]);
+  }, [page, pageSize, shop.id]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -60,7 +62,12 @@ export default function LoyaltyPage() {
       </h1>
 
       <LoyaltyStatistics items={statisticSummary} />
-      <TransactionsTable transactions={loyaltyTransactions} />
+      <TransactionsTable
+        transactions={loyaltyTransactions}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={setPage}
+      />
     </div>
   );
 }
