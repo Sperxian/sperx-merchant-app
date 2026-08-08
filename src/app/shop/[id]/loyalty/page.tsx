@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import LoyaltyStatistics from "./LoyaltyStatistics";
+import { useEffect, useState } from "react";
+// import LoyaltyStatistics from "./LoyaltyStatistics";
 import TransactionsTable from "./TransactionsTable";
 import { useShop } from "../ShopContext";
 import { fetchAllMemberPointTransactionsForShop } from "@/src/lib/api/loyalty";
@@ -20,31 +20,31 @@ export default function LoyaltyPage() {
     items: [],
   });
   
-  const statisticSummary = useMemo(
-    () => [
-      {
-        title: "Granted Points",
-        description: "Total points awarded to members",
-        value: 1250,
-      },
-      {
-        title: "Redeemed Rewards",
-        description: "Total number of rewards redeemed by members",
-        value: 15,
-      },
-      {
-        title: "Active Members",
-        description: "Number of active loyalty members",
-        value: "XXX",
-      },
-      {
-        title: "Pending Rewards",
-        description: "Rewards awaiting redemption",
-        value: "XX",
-      },
-    ],
-    [],
-  );
+  // const statisticSummary = useMemo(
+  //   () => [
+  //     {
+  //       title: "Granted Points",
+  //       description: "Total points awarded to members",
+  //       value: 1250,
+  //     },
+  //     {
+  //       title: "Redeemed Rewards",
+  //       description: "Total number of rewards redeemed by members",
+  //       value: 15,
+  //     },
+  //     {
+  //       title: "Active Members",
+  //       description: "Number of active loyalty members",
+  //       value: "XXX",
+  //     },
+  //     {
+  //       title: "Pending Rewards",
+  //       description: "Rewards awaiting redemption",
+  //       value: "XX",
+  //     },
+  //   ],
+  //   [],
+  // );
 
   useEffect(() => {
     const fetchLoyaltyTransactions = async () => {
@@ -61,7 +61,7 @@ export default function LoyaltyPage() {
         Loyalty Transactions
       </h1>
 
-      <LoyaltyStatistics items={statisticSummary} />
+      {/* <LoyaltyStatistics items={statisticSummary} /> */}
       <TransactionsTable
         transactions={loyaltyTransactions}
         page={page}
