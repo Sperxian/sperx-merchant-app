@@ -1,39 +1,23 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import LoyaltyStatistics from "./LoyaltyStatistics";
 import TransactionsTable from "./TransactionsTable";
-
-type MemberLoyaltyTransaction = {
-  member: string;
-  points: number;
-  date: Date;
-  loyaltyProgram: {
-    id: string;
-    name: string;
-  };
-  reward: {
-    name: string;
-  };
-};
-
-const generatedTransactions: MemberLoyaltyTransaction[] = Array.from(
-  { length: 15 },
-  (_, index) => ({
-    member: `Member ${index + 1}`,
-    points: [50, 120, 75, 200, 25, 90, 150, 300][index % 8],
-    date: new Date(2026, 6, index + 1),
-    loyaltyProgram: {
-      id: `program-${index + 1}`,
-      name: "Barako Rewards",
-    },
-    reward: {
-      name: index % 2 === 0 ? "Free Coffee" : "Discount Voucher",
-    },
-  }),
-);
+import { useShop } from "../ShopContext";
+import { fetchAllMemberPointTransactionsForShop } from "@/src/lib/api/loyalty";
+import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
 
 export default function LoyaltyPage() {
+  const shop = useShop();
+  const [loyaltyTransactions, setLoyaltyTransactions] = useState<
+    Paginated<LoyaltyTransactionSummary>
+  >({
+    page: 0,
+    size: 50,
+    total: 0,
+    items: [],
+  });
+  
   const statisticSummary = useMemo(
     () => [
       {
@@ -49,16 +33,25 @@ export default function LoyaltyPage() {
       {
         title: "Active Members",
         description: "Number of active loyalty members",
-        value: 'XXX',
+        value: "XXX",
       },
       {
         title: "Pending Rewards",
         description: "Rewards awaiting redemption",
-        value: 'XX',
+        value: "XX",
       },
     ],
     [],
   );
+
+  useEffect(() => {
+    const fetchLoyaltyTransactions = async () => {
+      const data = await fetchAllMemberPointTransactionsForShop(shop.id);
+      setLoyaltyTransactions(data);
+    };
+
+    fetchLoyaltyTransactions();
+  }, [shop.id]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -67,7 +60,7 @@ export default function LoyaltyPage() {
       </h1>
 
       <LoyaltyStatistics items={statisticSummary} />
-      <TransactionsTable transactions={generatedTransactions} />
+      <TransactionsTable transactions={loyaltyTransactions} />
     </div>
   );
 }

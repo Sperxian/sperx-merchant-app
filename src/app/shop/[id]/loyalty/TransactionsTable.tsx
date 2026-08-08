@@ -8,32 +8,26 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-
-type MemberLoyaltyTransaction = {
-  member: string;
-  points: number;
-  date: Date;
-  loyaltyProgram: {
-    id: string;
-    name: string;
-  };
-  reward: {
-    name: string;
-  };
-};
+import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
 
 type TransactionsTableProps = {
-  transactions: MemberLoyaltyTransaction[];
+  transactions: Paginated<LoyaltyTransactionSummary>;
 };
 
-const columnHelper = createColumnHelper<MemberLoyaltyTransaction>();
+const columnHelper = createColumnHelper<LoyaltyTransactionSummary>();
 
 export default function TransactionsTable({
   transactions,
 }: TransactionsTableProps) {
+  console.log({ transactions });
   const columns = useMemo(
     () => [
-      columnHelper.accessor("member", {
+      columnHelper.accessor("dateCreated", {
+        header: "Date",
+        cell: (info) =>
+          info.getValue()
+      }),
+      columnHelper.accessor("memberId", {
         header: "Member",
         cell: (info) => <span className="font-medium">{info.getValue()}</span>,
       }),
@@ -41,20 +35,11 @@ export default function TransactionsTable({
         header: "Points",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
-      columnHelper.accessor("date", {
-        header: "Date",
-        cell: (info) =>
-          info.getValue().toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          }),
-      }),
-      columnHelper.accessor("loyaltyProgram.name", {
+      columnHelper.accessor("loyaltyProgramName", {
         header: "Program",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
-      columnHelper.accessor("reward.name", {
+      columnHelper.accessor("rewardName", {
         header: "Reward",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
@@ -64,7 +49,7 @@ export default function TransactionsTable({
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: transactions,
+    data: transactions.items,
     state: {},
     columns,
     getCoreRowModel: getCoreRowModel(),
@@ -74,7 +59,7 @@ export default function TransactionsTable({
   return (
     <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
       <h2 className="p-4 font-bold">Transactions</h2>
-      
+
       <table className="min-w-full divide-y divide-foreground/10">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
