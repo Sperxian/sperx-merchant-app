@@ -74,7 +74,7 @@ export function QrScanner({
   return (
     // TODO: Turn off camera upon sheet overlay
     <div className="flex-1 flex flex-col items-center justify-center px-6">
-      <p className="text-xs font-medium text-blue-500 dark:text-red-500 mb-4">
+      <p className="text-xs font-medium text-primary dark:text-primary-lighter mb-4">
         Point camera at customer QR code
       </p>
 
