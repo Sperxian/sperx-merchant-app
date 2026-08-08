@@ -9,6 +9,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
+import { formatDateTime } from "@/src/lib/utils/date.utils";
 
 type TransactionsTableProps = {
   transactions: Paginated<LoyaltyTransactionSummary>;
@@ -24,8 +25,7 @@ export default function TransactionsTable({
     () => [
       columnHelper.accessor("dateCreated", {
         header: "Date",
-        cell: (info) =>
-          info.getValue()
+        cell: (info) => formatDateTime(info.getValue()),
       }),
       columnHelper.accessor("memberId", {
         header: "Member",
