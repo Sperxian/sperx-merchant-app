@@ -7,8 +7,7 @@ import {
   ScanIcon,
   XIcon,
   StampIcon,
-  // BarChart3Icon,
-  // SettingsIcon,
+  UsersIcon,
 } from "lucide-react";
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
@@ -17,8 +16,7 @@ const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
   { href: "/loyalty", label: "Loyalty", icon: StampIcon },
-  // { href: "/charts", label: "Charts", icon: BarChart3Icon },
-  // { href: "/settings", label: "Settings", icon: SettingsIcon },
+  { href: "/members", label: "Members", icon: UsersIcon },
 ];
 
 interface SidebarProps {
