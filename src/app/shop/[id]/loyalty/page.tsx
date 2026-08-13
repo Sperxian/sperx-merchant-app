@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 // import LoyaltyStatistics from "./LoyaltyStatistics";
-import TransactionsTable from "./TransactionsTable";
+import TransactionsTable from "../../../../components/shared/TransactionsTable";
 import { useShop } from "../ShopContext";
 import { fetchAllMemberPointTransactionsForShop } from "@/src/lib/api/loyalty";
 import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
