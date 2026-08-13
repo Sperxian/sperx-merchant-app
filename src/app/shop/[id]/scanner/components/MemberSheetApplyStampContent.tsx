@@ -2,8 +2,6 @@
 
 import "@/src/app/globals.css";
 import { useState } from "react";
-import { CustomerSection } from "../CustomerSection";
-import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { AddStampSection } from "./AddStampSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
@@ -14,7 +12,6 @@ import { toastError } from "@/src/lib/toast";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyalty;
-  open: boolean;
   onClose: () => void;
   onRefresh: () => void;
 }
@@ -23,7 +20,6 @@ type SheetState = "IDLE" | "SUBMITTING" | "CONFIRMED";
 
 export function MemberSheetApplyStampContent({
   member,
-  open,
   onClose,
   onRefresh,
 }: MemberSheetApplyStampContentProps) {
@@ -63,53 +59,17 @@ export function MemberSheetApplyStampContent({
   };
 
   function handleReset() {
+    onClose();
     setStampsToReward(1);
     setState("IDLE");
-    onClose();
   }
 
   const currentPoints = member?.points ?? 0;
   const cardPoints = currentPoints % goalPoints;
-  const hasRedeemableReward = currentPoints >= goalPoints;
 
   return (
-    <div
-      className={[
-        "absolute inset-0 bg-background z-11 overflow-y-auto",
-        "flex flex-col",
-        "transition-transform duration-[380ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
-        open ? "translate-y-0" : "translate-y-full",
-      ].join(" ")}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Drag handle */}
-      <div className="flex items-center justify-between px-4 py-2">
-        {/* Content */}
-        <h2 className="text-lg font-semibold">Apply Stamp</h2>
-
-        <button
-          onClick={handleReset}
-          className="text-gray-500 hover:text-black text-2xl"
-        >
-          ✕
-        </button>
-      </div>
-
+    <div className="h-full flex flex-col justify-between">
       <div className="px-4 flex flex-col flex-grow gap-4">
-        {hasRedeemableReward && (
-          <Alert
-            variant="info"
-            message="Customer is eligible to redeem rewards."
-          />
-        )}
-
-        {/* Loyalty card */}
-        <LoyaltyCardSection
-          current={currentPoints}
-          total={goalPoints}
-          rewardLabel={rewardName}
-        />
-
         {/* Add stamps — hidden after confirm */}
         {state === "IDLE" && (
           <AddStampSection
@@ -122,16 +82,13 @@ export function MemberSheetApplyStampContent({
         {state === "CONFIRMED" && member && (
           <Alert variant="success" message={successMessage ?? ""} />
         )}
-
-        {/* Customer */}
-        {member && <CustomerSection customer={member} />}
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
+      <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         {state !== "CONFIRMED" ? (
           <button
-            className="w-full bg-secondary dark:bg-secondary-lighter text-secondary-foreground
+            className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
             uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
             disabled={state === ("SUBMITTING" as SheetState)}
             onClick={handleAddStamp}

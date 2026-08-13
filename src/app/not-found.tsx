@@ -35,8 +35,7 @@ export default function RedirectingMerchantScanner() {
       }
       actionSlot={
         <button
-          className="bg-primary hover:bg-primary/80 text-white p-4 rounded-lg 
-            w-full inline-flex items-center justify-center gap-2"
+          className="bg-primary hover:bg-primary/80 text-white py-4 px-10 rounded-lg inline-flex items-center justify-center gap-2"
           onClick={goHome}
         >
           <HomeIcon size={18} />

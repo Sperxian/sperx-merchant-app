@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { CustomerSection } from "../CustomerSection";
 import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
@@ -16,8 +15,6 @@ export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 type MemberSheetRedeemRewardContent = {
   member?: MemberLoyalty;
-  open: boolean;
-
   onClose: () => void;
   onRefresh: () => void;
 };
@@ -26,7 +23,6 @@ type SheetState = "TO_REDEEM" | "REDEEMING" | "REDEEMED";
 
 export function MemberSheetRedeemRewardContent({
   member,
-  open,
   onClose,
   onRefresh,
 }: MemberSheetRedeemRewardContent) {
@@ -64,33 +60,13 @@ export function MemberSheetRedeemRewardContent({
   };
 
   function handleReset() {
+    onClose();
     setRewardCode(undefined);
     setState("TO_REDEEM");
-    onClose();
   }
 
   return (
-    <div
-      className={[
-        "absolute inset-0 bg-background z-11 overflow-y-auto",
-        "flex flex-col",
-        "transition-transform duration-[380ms] ease-[cubic-bezier(0.32,0.72,0,1)]",
-        open ? "translate-y-0" : "translate-y-full",
-      ].join(" ")}
-      onClick={(e) => e.stopPropagation()}
-    >
-      {/* Drag handle */}
-      <div className="flex items-center justify-between px-4 py-2">
-        <h2 className="text-lg font-semibold">Redeem Reward</h2>
-
-        <button
-          onClick={onClose}
-          className="text-gray-500 hover:text-black text-2xl"
-        >
-          ✕
-        </button>
-      </div>
-
+    <div className="h-full flex flex-col justify-between">
       <div className="px-4 flex flex-col flex-grow gap-4">
         {!canRedeem && (
           <Alert
@@ -115,16 +91,13 @@ export function MemberSheetRedeemRewardContent({
           options={rewardOptions}
           accumulatedPoints={member?.points ?? 0}
         />
-
-        {/* Member Section */}
-        {member && <CustomerSection customer={member} />}
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 max-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center px-4 py-2">
+      <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         {state !== "REDEEMED" ? (
           <button
-            className="w-full bg-secondary dark:bg-secondary-lighter text-secondary-foreground
+            className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
             uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
             onClick={handleRedeemReward}
             disabled={!rewardCode && state !== "REDEEMING"}
