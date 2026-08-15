@@ -24,20 +24,25 @@ interface SidebarProps {
   isSidebarOpen: boolean;
   onClose: () => void;
   isDark: boolean;
-  sidebarClasses: string;
-  navItemClasses: (isActive: boolean) => string;
 }
 
-export function Sidebar({
-  isSidebarOpen,
-  onClose,
-  isDark,
-  sidebarClasses,
-  navItemClasses,
-}: SidebarProps) {
+export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
   const shop = useShop();
   const pathName = usePathname();
   const iconLocation = shop.config.iconLocation as string;
+
+  const sidebarClasses = isDark
+    ? "border-white/10 bg-slate-900/95 text-slate-100"
+    : "border-slate-200 bg-white/95 text-slate-800";
+
+  const navItemClasses = (isActive: boolean) =>
+    isDark
+      ? isActive
+        ? "bg-cyan-500/15 text-cyan-300"
+        : "text-slate-300 hover:bg-white/10 hover:text-white"
+      : isActive
+        ? "bg-cyan-500/10 text-cyan-700"
+        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
 
   return (
     <aside
