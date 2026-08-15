@@ -38,8 +38,7 @@ export default function DataTable<T>({
 
   return (
     <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
-      <div className="flex items-center justify-between gap-4 p-4">
-        <h2 className="font-bold">Transactions</h2>
+      <div className="flex items-center justify-end gap-4 p-4">
         <div className="flex items-center gap-2 text-sm">
           <button
             type="button"
