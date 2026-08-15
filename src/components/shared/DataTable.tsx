@@ -1,66 +1,40 @@
 "use client";
 
-import { useMemo } from "react";
 import {
-  createColumnHelper,
+  ColumnDef,
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { LoyaltyTransactionSummary, Paginated } from "@/src/lib/types";
-import { formatDateTime } from "@/src/lib/utils/date.utils";
 
-type TransactionsTableProps = {
-  transactions: Paginated<LoyaltyTransactionSummary>;
+type Props<T> = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  columns: ColumnDef<T, any>[];
+  rows: T[];
   page: number;
   pageSize: number;
+  totalRows: number;
   onPageChange: (page: number) => void;
 };
 
-const columnHelper = createColumnHelper<LoyaltyTransactionSummary>();
-
-export default function TransactionsTable({
-  transactions,
+export default function DataTable<T>({
+  columns,
+  rows,
   page,
   pageSize,
+  totalRows,
   onPageChange,
-}: TransactionsTableProps) {
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor("dateCreated", {
-        header: "Date",
-        cell: (info) => formatDateTime(info.getValue()),
-      }),
-      columnHelper.accessor("memberId", {
-        header: "Member",
-        cell: (info) => <span className="font-medium">{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("points", {
-        header: "Points",
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("loyaltyProgramName", {
-        header: "Program",
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
-      columnHelper.accessor("rewardName", {
-        header: "Reward",
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
-    ],
-    [],
-  );
-
+}: Props<T>) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: transactions.items,
+    data: rows,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
 
-  const totalPages = Math.max(1, Math.ceil(transactions.total / pageSize));
+  const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
 
   return (
     <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
