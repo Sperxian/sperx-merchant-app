@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
@@ -20,7 +21,6 @@ const navigation = [
 ];
 
 interface SidebarProps {
-  pathname: string;
   isSidebarOpen: boolean;
   onClose: () => void;
   isDark: boolean;
@@ -29,7 +29,6 @@ interface SidebarProps {
 }
 
 export function Sidebar({
-  pathname,
   isSidebarOpen,
   onClose,
   isDark,
@@ -37,6 +36,7 @@ export function Sidebar({
   navItemClasses,
 }: SidebarProps) {
   const shop = useShop();
+  const pathName = usePathname();
   const iconLocation = shop.config.iconLocation as string;
 
   return (
@@ -78,8 +78,7 @@ export function Sidebar({
 
       <nav className="mt-8 space-y-2">
         {navigation.map(({ href, label, icon: Icon }) => {
-          const isActive =
-            pathname === href || (href !== "/" && pathname.endsWith(href));
+          const isActive = href !== "/" && pathName.endsWith(href);
 
           return (
             <Link

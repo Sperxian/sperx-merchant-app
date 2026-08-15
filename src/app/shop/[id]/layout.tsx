@@ -95,10 +95,6 @@ export default function ShopLayout({ children }: Props) {
   const { theme: shopTheme } = shop.config;
   const themeVars = shopTheme ? themeCssVars(shopTheme) : undefined;
 
-  console.log({
-    isDark
-  });
-
   return (
     <ShopContextProvider value={shop}>
       <LoyaltyProgramContextProvider value={loyaltyProgram}>
@@ -107,9 +103,6 @@ export default function ShopLayout({ children }: Props) {
         >
           <div className="flex min-h-dvh flex-col lg:flex-row">
             <Sidebar
-              pathname={
-                typeof window !== "undefined" ? window.location.pathname : "/"
-              }
               isSidebarOpen={isSidebarOpen}
               onClose={() => setIsSidebarOpen(false)}
               isDark={isDark}
