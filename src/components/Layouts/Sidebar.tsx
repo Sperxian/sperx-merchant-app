@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
+import { usePathname } from "next/navigation";
 
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
@@ -20,24 +21,28 @@ const navigation = [
 ];
 
 interface SidebarProps {
-  pathname: string;
   isSidebarOpen: boolean;
   onClose: () => void;
   isDark: boolean;
-  sidebarClasses: string;
-  navItemClasses: (isActive: boolean) => string;
 }
 
-export function Sidebar({
-  pathname,
-  isSidebarOpen,
-  onClose,
-  isDark,
-  sidebarClasses,
-  navItemClasses,
-}: SidebarProps) {
+export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
   const shop = useShop();
+  const pathName = usePathname();
   const iconLocation = shop.config.iconLocation as string;
+
+  const sidebarClasses = isDark
+    ? "border-white/10 bg-slate-900/95 text-slate-100"
+    : "border-slate-200 bg-white/95 text-slate-800";
+
+  const navItemClasses = (isActive: boolean) =>
+    isDark
+      ? isActive
+        ? "bg-cyan-500/15 text-cyan-300"
+        : "text-slate-300 hover:bg-white/10 hover:text-white"
+      : isActive
+        ? "bg-cyan-500/10 text-cyan-700"
+        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
 
   return (
     <aside
@@ -78,8 +83,7 @@ export function Sidebar({
 
       <nav className="mt-8 space-y-2">
         {navigation.map(({ href, label, icon: Icon }) => {
-          const isActive =
-            pathname === href || (href !== "/" && pathname.endsWith(href));
+          const isActive = href !== "/" && pathName.endsWith(href);
 
           return (
             <Link
