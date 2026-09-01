@@ -6,6 +6,7 @@ import { getMemberLoyalty } from "@/src/lib/api/member";
 import { useParams } from "next/navigation";
 import { MemberLoyaltyDto } from "@/src/types/member";
 import MemberInfoSection from "./MemberInfoSection";
+import LoyaltyTransactionsSection from "./LoyaltyTransactionsSection";
 
 export default function MemberIdPage() {
   const shop = useShop();
@@ -17,7 +18,6 @@ export default function MemberIdPage() {
   useEffect(() => {
     const fetchMember = async () => {
       const data = await getMemberLoyalty(shop.id, memberId);
-      console.log(data);
 
       setMemberLoyaltyDto(data);
     };
@@ -28,17 +28,7 @@ export default function MemberIdPage() {
     <div className="flex flex-col gap-4">
       {memberLoyaltyDto && <MemberInfoSection member={memberLoyaltyDto} />}
 
-      <LoyaltyTransactionsSection />
+      <LoyaltyTransactionsSection shop={shop} memberId={memberId} />
     </div>
-  );
-}
-
-function LoyaltyTransactionsSection() {
-  return (
-    <>
-      <h1 className="text-2xl font-semibold text-primary mb-4">
-        Loyalty Transactions
-      </h1>
-    </>
   );
 }

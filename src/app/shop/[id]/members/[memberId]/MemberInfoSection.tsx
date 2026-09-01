@@ -11,7 +11,7 @@ export default function MemberInfoSection({ member }: Props) {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-primary mb-4">
+      <h1 className="text-2xl font-semibold text-primary">
         Member Information
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
