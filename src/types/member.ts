@@ -9,3 +9,11 @@ export type MemberLoyaltyDto = {
   shop: Shop;
   dateCreated: Date;
 };
+
+export type MemberPointTransaction = {
+  id?: number;
+  memberId: string;
+  points: number;
+  notes?: string;
+  dateCreated: Date;
+};
