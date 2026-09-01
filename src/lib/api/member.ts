@@ -1,10 +1,14 @@
+import { MemberLoyaltyDto } from "@/src/types/member";
 import { Paginated, MemberSummary } from "../types";
 import apiClient from "./client";
 
-export async function getMemberLoyalty(shopId: string, memberId: string) {
+export async function getMemberLoyalty(shopId: string, memberId: string): Promise<MemberLoyaltyDto> {
   const { data } = await apiClient.get(`/shop/${shopId}/members/${memberId}`);
 
-  return data;
+  return {
+    ...data,
+    dateCreated: new Date(data.dateCreated),
+  };
 }
 
 export async function addMemberLoyaltyPoints(shopId: string, memberId: string, points: number) {
