@@ -16,6 +16,7 @@ type Props<T> = {
   pageSize: number;
   totalRows: number;
   onPageChange: (page: number) => void;
+  onClickRow?: (row: T) => void;
 };
 
 export default function DataTable<T>({
@@ -25,6 +26,7 @@ export default function DataTable<T>({
   pageSize,
   totalRows,
   onPageChange,
+  onClickRow,
 }: Props<T>) {
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -84,7 +86,11 @@ export default function DataTable<T>({
         </thead>
         <tbody className="divide-y divide-foreground/10">
           {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-slate-500">
+            <tr
+              key={row.id}
+              className="hover:bg-slate-500 cursor-pointer"
+              onClick={() => onClickRow?.(row.original)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-4 text-sm">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
