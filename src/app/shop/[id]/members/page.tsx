@@ -8,11 +8,13 @@ import { MemberSummary } from "@/src/lib/types";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
 import DataTable from "@/src/components/shared/DataTable";
 import { CheckIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const columnHelper = createColumnHelper<MemberSummary>();
 
 export default function MembersPage() {
   const shop = useShop();
+  const router = useRouter();
   const [members, setMembers] = useState<MemberSummary[]>([]);
   const [page, setPage] = useState(0);
   const [pageSize] = useState(20);
@@ -68,6 +70,10 @@ export default function MembersPage() {
     fetchMembers();
   }, [shop, page, pageSize]);
 
+  const onClickRow = (row: MemberSummary) => {
+    router.push(`/shop/${shop.id}/members/${row.id}`);
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold text-primary mb-4">Members</h1>
@@ -79,6 +85,7 @@ export default function MembersPage() {
         pageSize={pageSize}
         totalRows={totalRows}
         onPageChange={(page) => setPage(page)}
+        onClickRow={onClickRow}
       />
     </div>
   );

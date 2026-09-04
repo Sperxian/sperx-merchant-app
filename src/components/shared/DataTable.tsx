@@ -88,7 +88,7 @@ export default function DataTable<T>({
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="hover:bg-slate-500"
+              className="hover:bg-slate-500 cursor-pointer"
               onClick={() => onClickRow?.(row.original)}
             >
               {row.getVisibleCells().map((cell) => (
