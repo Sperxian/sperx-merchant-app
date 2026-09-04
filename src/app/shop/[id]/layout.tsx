@@ -73,20 +73,9 @@ export default function ShopLayout({ children }: Props) {
   const shellClasses = isDark
     ? "bg-slate-950 text-slate-100"
     : "bg-slate-50 text-slate-900";
-  const sidebarClasses = isDark
-    ? "border-white/10 bg-slate-900/95 text-slate-100"
-    : "border-slate-200 bg-white/95 text-slate-800";
   const headerClasses = isDark
     ? "border-white/10 bg-slate-900/70 text-slate-100"
     : "border-slate-200 bg-white/80 text-slate-900";
-  const navItemClasses = (isActive: boolean) =>
-    isDark
-      ? isActive
-        ? "bg-cyan-500/15 text-cyan-300"
-        : "text-slate-300 hover:bg-white/10 hover:text-white"
-      : isActive
-        ? "bg-cyan-500/10 text-cyan-700"
-        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
 
   if (!shop || !loyaltyProgram) {
     return <div className={`min-h-screen w-full ${shellClasses}`} />;
@@ -94,10 +83,6 @@ export default function ShopLayout({ children }: Props) {
 
   const { theme: shopTheme } = shop.config;
   const themeVars = shopTheme ? themeCssVars(shopTheme) : undefined;
-
-  console.log({
-    isDark
-  });
 
   return (
     <ShopContextProvider value={shop}>
@@ -107,14 +92,9 @@ export default function ShopLayout({ children }: Props) {
         >
           <div className="flex min-h-dvh flex-col lg:flex-row">
             <Sidebar
-              pathname={
-                typeof window !== "undefined" ? window.location.pathname : "/"
-              }
               isSidebarOpen={isSidebarOpen}
               onClose={() => setIsSidebarOpen(false)}
               isDark={isDark}
-              sidebarClasses={sidebarClasses}
-              navItemClasses={navItemClasses}
             />
 
             {isSidebarOpen ? (

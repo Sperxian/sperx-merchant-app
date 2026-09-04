@@ -8,7 +8,7 @@ import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { CustomerSection } from "../CustomerSection";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { Alert } from "@/src/components/shared/Alert";
-import { Dialog } from "@/src/components/ui/Dialog";
+import { Dialog } from "@/src/components/shared/Dialog";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
