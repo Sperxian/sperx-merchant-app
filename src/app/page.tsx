@@ -13,15 +13,6 @@ export default function LandingPage() {
   const { isSignedIn, user } = useUser();
   if (!isSignedIn) {
     return <RedirectingMerchantScanner />;
-    return (
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Sperx Merchant</h1>
-
-        <p className="text-zinc-400 animate-pulse">
-          Loading your experience...
-        </p>
-      </div>
-    );
   }
 
   const { shops } = user.publicMetadata as UserPublicMetadata;
