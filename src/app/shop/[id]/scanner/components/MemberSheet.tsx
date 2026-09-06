@@ -58,11 +58,7 @@ export function MemberSheet({
                 />
               )}
 
-              <LoyaltyCardSection
-                current={currentPoints}
-                total={goalPoints}
-                rewardLabel={rewardName}
-              />
+              <LoyaltyCardSection current={currentPoints} />
 
               {member && <CustomerSection customer={member} />}
             </div>
