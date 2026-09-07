@@ -1,5 +1,4 @@
 "use client";
-
 import {
   BadgeCheckIcon,
   CakeIcon,
@@ -54,27 +53,30 @@ const iconMap = {
   pet: PawPrintIcon,
   badge: BadgeCheckIcon,
 };
-type IconName = keyof typeof iconMap;
+export type IconName = keyof typeof iconMap;
 
 const DEFAULT_ICON = BadgeCheckIcon;
 
 interface Props {
   filled: boolean;
-  icon?: IconName;
+  icon?: string;
   size?: number;
 }
 
-export function LoyaltyStamp({
-  filled = false,
-  size = 20,
-  icon: overrideIcon,
-}: Props) {
+export function MemberLoyaltyStamp({ filled = false, size = 20 }: Props) {
   const loyaltyProgram = useLoyaltyProgram()
   const { stampIcon } = loyaltyProgram.config;
 
-  const finalIcon = (overrideIcon ?? stampIcon) as IconName;
+  return (
+    <LoyaltyStamp filled={filled} size={size} icon={stampIcon as IconName} />
+  );
+}
+
+export function LoyaltyStamp({ filled = false, size = 20, icon }: Props) {
+  const finalIcon = icon as IconName;
   const IconComponent = iconMap[finalIcon] ?? DEFAULT_ICON;
   const color = filled ? "var(--secondary)" : "var(--primary-lighter)";
 
   return <IconComponent color={color} size={size} />;
 }
+

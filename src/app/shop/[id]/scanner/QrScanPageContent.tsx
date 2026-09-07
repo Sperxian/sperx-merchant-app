@@ -7,6 +7,7 @@ import { MemberLoyalty } from "@/src/lib/types";
 import { QrScanner } from "./components/QrScanner";
 import { useShop } from "../ShopContext";
 import { Alert } from "@/src/components/shared/Alert";
+import { MemberLoyaltyDto } from "@/src/types/member";
 
 type Props = {
   mockMemberId?: string;
@@ -15,7 +16,7 @@ type Props = {
 export default function QrScanPageContent({ mockMemberId }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [memberId, setMemberId] = useState<string | null>(null);
-  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyalty>();
+  const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyaltyDto>();
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const shop = useShop();
@@ -36,11 +37,7 @@ export default function QrScanPageContent({ mockMemberId }: Props) {
       return;
     }
 
-    setMemberLoyalty({
-      id: data.id,
-      points: data.points,
-      dateCreated: data.dateCreated,
-    });
+    setMemberLoyalty(data);
 
     setSheetOpen(true);
   };

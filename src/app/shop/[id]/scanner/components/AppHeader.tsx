@@ -36,7 +36,7 @@ export function AppHeader({ style }: AppHeaderProps) {
           </h1>
 
           <p className="text-white/50 text-xs leading-tight">
-            {loyaltyProgram.name}
+            {"loyaltyProgram.name"}
           </p>
         </div>
       </div>
