@@ -3,6 +3,13 @@
 import "@/src/app/globals.css";
 import { Alert } from "@/src/components/shared/Alert";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
+import {
+  CircleStarIcon,
+  CreditCardIcon,
+  StarIcon,
+  StoreIcon,
+  type LucideIcon,
+} from "lucide-react";
 // import {
 //   CreditCard,
 //   CreditCardIcon,
@@ -13,13 +20,12 @@ import Image from "next/image";
 import React from "react";
 import { ReactNode, useState } from "react";
 
-const steps = ["Shop", "Loyalty Program", "Review"];
-
 export default function SetupPage() {
   const steps = [
     {
       id: "shop",
       title: "Shop",
+      icon: StoreIcon,
       description: "Set up your shop details.",
       content: (
         <div className="space-y-4">
@@ -32,6 +38,7 @@ export default function SetupPage() {
     {
       id: "loyalty",
       title: "Loyalty Program",
+      icon: CreditCardIcon,
       description: "Configure your loyalty program.",
       content: (
         <div className="rounded-lg border border-dashed p-8 text-center">
@@ -39,16 +46,16 @@ export default function SetupPage() {
         </div>
       ),
     },
-    {
-      id: "review",
-      title: "Review",
-      description: "Review everything before submitting.",
-      content: (
-        <div className="rounded-lg bg-gray-50 p-6">
-          Review information goes here.
-        </div>
-      ),
-    },
+    // {
+    //   id: "review",
+    //   title: "Review",
+    //   description: "Review everything before submitting.",
+    //   content: (
+    //     <div className="rounded-lg bg-gray-50 p-6">
+    //       Review information goes here.
+    //     </div>
+    //   ),
+    // },
   ];
 
   const [shopName, setShopName] = useState("");
@@ -75,8 +82,12 @@ export default function SetupPage() {
       >
         <div className="flex flex-col items-center p-6">
           <div className="w-full md:max-w-lg">
-            <div className="text-xl font-medium text-foreground w-full mb-4">
-              Welcome to SperX!
+            <div className="text-xl font-medium w-full mb-4">
+              Welcome to{" "}
+              <span className="text-primary dark:text-primary-lighter font-medium">
+                SperX
+              </span>
+              !
             </div>
 
             <span className="text-body text-sm">
@@ -97,7 +108,7 @@ export default function SetupPage() {
                 name="shopName"
                 type="text"
                 placeholder="Your Shop's Name"
-                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-lg text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full max-w-sm rounded-lg border border-gray-300 px-3 py-2 text-lg shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                 value={shopName}
                 onChange={(e) => setShopName(e.target.value)}
               />
@@ -107,7 +118,7 @@ export default function SetupPage() {
         <div className="flex flex-col items-center p-6">
           <div className="w-full">
             <div className="text-xl font-medium text-foreground w-full mb-4">
-              Your First Loyalty Program
+              Design Your First Loyalty Program
             </div>
 
             <span className="text-body text-sm pb-4">
@@ -227,6 +238,7 @@ export default function SetupPage() {
 type Step<T = unknown> = {
   id: string;
   title: string;
+  icon?: LucideIcon;
   description?: string;
   content: ReactNode;
   validate?: (data: T) => boolean | Promise<boolean>;
@@ -301,7 +313,7 @@ export function MultiStepForm<T>({
   console.log({ currentStep, isFirstStep });
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10">
+    <div className="mx-auto w-full max-w-3xl px-6 py-10 bg-background">
       {/* Stepper */}
       <StepIndicator
         steps={steps}
@@ -310,21 +322,7 @@ export function MultiStepForm<T>({
       />
 
       {/* Content */}
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-        {/* <div className="border-b border-gray-200 px-6 py-5">
-          <p className="text-sm text-gray-500">
-            Step {currentStep + 1} of {steps.length}
-          </p>
-
-          <h1 className="mt-1 text-xl font-semibold text-gray-900">
-            {step.title}
-          </h1>
-
-          {step.description && (
-            <p className="mt-1 text-sm text-gray-500">{step.description}</p>
-          )}
-        </div> */}
-
+      <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
         <div className="min-h-[300px]">{form}</div>
 
         {/* Actions */}
@@ -333,7 +331,7 @@ export function MultiStepForm<T>({
             type="button"
             onClick={back}
             disabled={isFirstStep || isSubmitting}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-foreground transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Back
           </button>
@@ -342,7 +340,7 @@ export function MultiStepForm<T>({
             type="button"
             onClick={next}
             disabled={isSubmitting}
-            className="rounded-lg bg-black px-5 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary-lighter cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSubmitting
               ? "Submitting..."
@@ -373,6 +371,7 @@ function StepIndicator<T>({
         {steps.map((step, index) => {
           const isActive = index === currentStep;
           const isCompleted = index < currentStep;
+          const StepIcon = step.icon;
 
           return (
             <div
@@ -389,17 +388,23 @@ function StepIndicator<T>({
                     "flex h-9 w-9 items-center justify-center rounded-full",
                     "text-sm font-semibold transition-colors",
                     isActive || isCompleted
-                      ? "bg-black text-white"
+                      ? "bg-primary text-white"
                       : "bg-gray-100 text-gray-500",
                   ].join(" ")}
                 >
-                  {isCompleted ? "✓" : index + 1}
+                  {StepIcon ? (
+                    <StepIcon></StepIcon>
+                  ) : (
+                    <span>{isCompleted ? "✓" : index + 1}</span>
+                  )}
                 </span>
 
                 <span
                   className={[
-                    "hidden text-sm font-medium sm:block",
-                    isActive ? "text-black" : "text-gray-500",
+                    "hidden text-sm sm:block",
+                    isActive
+                      ? "text-primary dark:text-primary-lighter font-bold"
+                      : "text-foreground font-medium",
                   ].join(" ")}
                 >
                   {step.title}
@@ -410,7 +415,7 @@ function StepIndicator<T>({
                 <div
                   className={[
                     "mx-4 h-px flex-1",
-                    index < currentStep ? "bg-black" : "bg-gray-200",
+                    index < currentStep ? "bg-primary-lighter" : "bg-primary-dark dark:bg-primary",
                   ].join(" ")}
                 />
               )}
