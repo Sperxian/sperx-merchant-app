@@ -11,22 +11,19 @@ export type StepMetadata<T = unknown> = {
 type MultiStepFormProps<T> = {
   stepsMetadata: StepMetadata<T>[];
   initialStep?: number;
-  initialData?: T;
   onStepChange?: (step: number) => void;
-  onSubmit?: (data: T) => void | Promise<void>;
+  onSubmit?: () => void | Promise<void>;
   children: ReactNode;
 };
 
 export function MultiStepForm<T>({
   stepsMetadata: steps,
   initialStep = 0,
-  initialData,
   onStepChange,
   onSubmit,
   children,
 }: MultiStepFormProps<T>) {
   const [currentStep, setCurrentStep] = useState(initialStep);
-  const [data] = useState<T>(initialData as T);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const forms = children
@@ -52,7 +49,7 @@ export function MultiStepForm<T>({
 
       try {
         setIsSubmitting(true);
-        await onSubmit(data);
+        await onSubmit();
       } finally {
         setIsSubmitting(false);
       }
