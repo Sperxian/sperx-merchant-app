@@ -3,12 +3,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IconName, ICON_MAP } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 
-type LoyaltyStampIconButtonProps = {
+type Props = {
   stampIcon: IconName;
   onChange?: (icon: IconName) => void;
 };
 
-export default function LoyaltyStampIconButton({ stampIcon, onChange }: LoyaltyStampIconButtonProps) {
+export default function LoyaltyStampIconPicker({ stampIcon, onChange }: Props) {
   const IconComponent = ICON_MAP[stampIcon];
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
