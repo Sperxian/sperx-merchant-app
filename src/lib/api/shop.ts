@@ -23,7 +23,6 @@ export type ShopSetupParams = {
     config: {
       stampIcon: string;
       availableRewards: {
-        code: string;
         name: string;
         description?: string;
         goalPoints: number;
