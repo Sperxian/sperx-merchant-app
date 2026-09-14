@@ -44,20 +44,20 @@ export function MultiStepForm<T>({
   };
 
   const next = async () => {
-    if (isLastStep) {
-      if (!onSubmit) return;
-
-      try {
-        setIsSubmitting(true);
-        await onSubmit();
-      } finally {
-        setIsSubmitting(false);
-      }
+    if (!isLastStep) {
+      goToStep(currentStep + 1);
 
       return;
     }
 
-    goToStep(currentStep + 1);
+    if (!onSubmit) return;
+
+    try {
+      setIsSubmitting(true);
+      await onSubmit();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const back = () => {
