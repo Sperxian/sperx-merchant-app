@@ -2,9 +2,12 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
+import LoyaltyStampIconButton from "./LoyaltyStampIconButton";
+import { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 
 export type LoyaltyProgramInput = {
   loyaltyProgramName: string;
+  stampIcon: IconName;
   goalPoints: number;
   rewardName: string;
   rewardDescription: string;
@@ -35,6 +38,12 @@ export function LoyaltySetupStep({
 
       <div className="flex flex-col w-full items-start gap-4">
         <div className="flex w-full">
+          <LoyaltyStampIconButton
+            stampIcon={loyaltyProgramInput.stampIcon}
+            onChange={(icon) =>
+              setLoyaltyProgramInput((prev) => ({ ...prev, stampIcon: icon }))
+            }
+          />
           <input
             id="loyaltyProgramName"
             name="loyaltyProgramName"
@@ -135,7 +144,7 @@ export function LoyaltySetupStep({
                 name: loyaltyProgramInput.loyaltyProgramName,
                 type: "STAMP_BASED",
                 config: {
-                  stampIcon: "milk_tea",
+                  stampIcon: loyaltyProgramInput.stampIcon,
                   availableRewards: [
                     {
                       code: "XXXX",

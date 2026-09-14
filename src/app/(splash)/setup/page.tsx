@@ -28,6 +28,7 @@ export default function SetupPage() {
   const [shopName, setShopName] = useState("");
   const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgramInput>({
     loyaltyProgramName: "Loyalty Program",
+    stampIcon: "star",
     goalPoints: 10,
     rewardName: "Free Item",
     rewardDescription: "You get a free item once you complete the points.",
@@ -40,7 +41,7 @@ export default function SetupPage() {
         name: loyaltyProgram.loyaltyProgramName,
         type: "STAMP_BASED" as LoyaltyProgramType,
         config: {
-          stampIcon: "star",
+          stampIcon: loyaltyProgram.stampIcon,
           availableRewards: [
             {
               name: loyaltyProgram.rewardName,
