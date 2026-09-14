@@ -1,11 +1,12 @@
-import { LoyaltyStamp } from "./LoyaltyStamp";
+import { IconName, LoyaltyStamp } from "./LoyaltyStamp";
 
 interface StampGridProps {
   total: number;
   collected: number;
+  icon: IconName
 }
 
-export function StampGrid({ total, collected }: StampGridProps) {
+export function StampGrid({ total, collected, icon }: StampGridProps) {
   /**
    * - <= 6 stamps => 1 row
    * - > 6 stamps => multiple rows
@@ -37,37 +38,10 @@ export function StampGrid({ total, collected }: StampGridProps) {
                 : "border-2 border-primary-lighter border-dashed bg-primary-darker/20"
             }`}
           >
-            <LoyaltyStamp filled={filled} size={32} />
+            <LoyaltyStamp filled={filled} size={32} icon={icon}/>
 
             {!filled && (
               <span className="text-[8px] text-white absolute bottom-1 right-1">
-                {i + 1}
-              </span>
-            )}
-          </div>
-        );
-      })}
-    </div>
-  );
-}
-
-export function OldStampGrid({ total, collected }: StampGridProps) {
-  return (
-    <div className="grid grid-cols-5 gap-2 mb-4">
-      {Array.from({ length: total }).map((_, i) => {
-        const filled = i < collected;
-
-        return (
-          <div
-            key={i}
-            className={`aspect-square rounded-xl flex items-center justify-center relative border-2 border-gray-600 bg-primary ${
-              filled ? "border-solid" : "border-dashed]"
-            }`}
-          >
-            <LoyaltyStamp filled={filled} size={32} />
-
-            {!filled && (
-              <span className="text-[8px] text-background absolute bottom-[3px] right-[4px]">
                 {i + 1}
               </span>
             )}
