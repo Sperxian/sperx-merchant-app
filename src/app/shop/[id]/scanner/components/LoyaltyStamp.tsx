@@ -1,5 +1,4 @@
 "use client";
-
 import {
   BadgeCheckIcon,
   CakeIcon,
@@ -28,7 +27,8 @@ import {
 } from "lucide-react";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
-const iconMap = {
+
+export const ICON_MAP = Object.freeze({
   milk_tea: CupSodaIcon,
   coffee: CoffeeIcon,
   utensils: UtensilsIcon,
@@ -53,28 +53,32 @@ const iconMap = {
   shop: ShoppingBagIcon,
   pet: PawPrintIcon,
   badge: BadgeCheckIcon,
-};
-type IconName = keyof typeof iconMap;
+});
+
+export type IconName = keyof typeof ICON_MAP;
 
 const DEFAULT_ICON = BadgeCheckIcon;
 
 interface Props {
   filled: boolean;
-  icon?: IconName;
+  icon?: string;
   size?: number;
 }
 
-export function LoyaltyStamp({
-  filled = false,
-  size = 20,
-  icon: overrideIcon,
-}: Props) {
+export function MemberLoyaltyStamp({ filled = false, size = 20 }: Props) {
   const loyaltyProgram = useLoyaltyProgram()
   const { stampIcon } = loyaltyProgram.config;
 
-  const finalIcon = (overrideIcon ?? stampIcon) as IconName;
-  const IconComponent = iconMap[finalIcon] ?? DEFAULT_ICON;
+  return (
+    <LoyaltyStamp filled={filled} size={size} icon={stampIcon as IconName} />
+  );
+}
+
+export function LoyaltyStamp({ filled = false, size = 20, icon }: Props) {
+  const finalIcon = icon as IconName;
+  const IconComponent = ICON_MAP[finalIcon] ?? DEFAULT_ICON;
   const color = filled ? "var(--secondary)" : "var(--primary-lighter)";
 
   return <IconComponent color={color} size={size} />;
 }
+
