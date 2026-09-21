@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   ChevronRight,
+  CreditCardIcon,
   LayoutDashboardIcon,
   ScanIcon,
   XIcon,
@@ -16,6 +17,7 @@ import { usePathname } from "next/navigation";
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
+  { href: "/loyalty-programs", label: "Loyalty Program", icon: CreditCardIcon },
   { href: "/loyalty", label: "Loyalty", icon: StampIcon },
   { href: "/members", label: "Members", icon: UsersIcon },
 ];
