@@ -2,7 +2,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
-import LoyaltyStampIconPicker from "./LoyaltyStampIconPicker";
+import LoyaltyStampIconPicker from "@/src/components/widgets/LoyaltyStampIconPicker";
 import { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 
 export type LoyaltyProgramInput = {
