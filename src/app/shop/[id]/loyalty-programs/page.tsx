@@ -2,65 +2,39 @@
 
 import type { LoyaltyProgram } from "@/src/lib/types";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
+import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { PencilIcon, PlusIcon } from "lucide-react";
 
 export default function LoyaltyProgramPage() {
   const params = useParams<{ id: string }>();
-  const loyaltyPrograms: LoyaltyProgram[] = [
-    {
-      id: "stub-coffee-club",
-      name: "Coffee Club",
-      type: "STAMP_BASED",
-      config: {
-        stampIcon: "coffee",
-        availableRewards: [
-          {
-            code: "coffee-club-reward",
-            name: "Free Coffee",
-            goalPoints: 10,
-          },
-        ],
-      },
-      shopId: "stub-shop",
-      dateCreated: new Date("2026-01-01"),
-    },
-    {
-      id: "stub-rewards-plus",
-      name: "Rewards Plus",
-      type: "STAMP_BASED",
-      config: {
-        stampIcon: "star",
-        availableRewards: [
-          {
-            code: "rewards-plus-reward",
-            name: "Member Reward",
-            goalPoints: 8,
-          },
-        ],
-      },
-      shopId: "stub-shop",
-      dateCreated: new Date("2026-01-02"),
-    },
-    {
-      id: "stub-member-perks",
-      name: "Member Perks",
-      type: "STAMP_BASED",
-      config: {
-        stampIcon: "heart",
-        availableRewards: [
-          {
-            code: "member-perks-reward",
-            name: "Perk Unlocked",
-            goalPoints: 12,
-          },
-        ],
-      },
-      shopId: "stub-shop",
-      dateCreated: new Date("2026-01-03"),
-    },
-  ];
+  const [loyaltyPrograms, setLoyaltyPrograms] = useState<LoyaltyProgram[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    async function loadLoyaltyPrograms() {
+      setIsLoading(true);
+
+      try {
+        const programs = await getLoyaltyPrograms(params.id);
+        if (isCurrent) setLoyaltyPrograms(programs);
+      } catch (error) {
+        console.error("Failed to load loyalty programs:", error);
+      } finally {
+        if (isCurrent) setIsLoading(false);
+      }
+    }
+
+    if (params.id) void loadLoyaltyPrograms();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [params.id]);
 
   const loyaltyCardPrograms = loyaltyPrograms.map((program) => ({
     id: program.id,
