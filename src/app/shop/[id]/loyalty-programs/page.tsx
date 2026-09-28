@@ -6,7 +6,7 @@ import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { LoaderCircle, PencilIcon, PlusIcon } from "lucide-react";
 
 export default function LoyaltyProgramPage() {
   const params = useParams<{ id: string }>();
@@ -45,12 +45,32 @@ export default function LoyaltyProgramPage() {
     },
   }));
 
+  const loadingContent = (
+    <div
+      role="status"
+      className="flex w-full items-center justify-center gap-3 rounded-3xl border border-foreground/40 bg-background/30 p-8"
+    >
+      <LoaderCircle className="h-6 w-6 animate-spin" aria-hidden="true" />
+      <span>Loading loyalty programs...</span>
+    </div>
+  );
+
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="mb-4 text-2xl font-semibold text-primary">
-        Loyalty Programs
-      </h1>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <h1 className="text-2xl font-semibold text-primary">
+          Loyalty Programs
+        </h1>
+        <Link
+          href={`/shop/${params.id}/loyalty-programs/new`}
+          className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition hover:bg-secondary"
+        >
+          <PlusIcon className="h-5 w-5" aria-hidden="true" />
+          <span>Add New</span>
+        </Link>
+      </div>
       <div className="flex flex-wrap items-start gap-4">
+        {isLoading ? loadingContent : null}
         {loyaltyCardPrograms.map(({ id, loyaltyProgram }) => (
           <article
             key={id}
@@ -73,17 +93,6 @@ export default function LoyaltyProgramPage() {
             </div>
           </article>
         ))}
-        <article className="h-full w-full rounded-3xl border border-dashed border-foreground/40 bg-background/30 p-4 shadow-sm sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(25%-0.75rem)]">
-          <div className="h-[clamp(250px,28vw,250px)]">
-            <Link
-              href={`/shop/${params.id}/loyalty-programs/new`}
-              className="flex h-full flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition hover:bg-foreground/10"
-            >
-              <PlusIcon className="h-10 w-10" />
-              <h2 className="text-xl font-semibold">Add Loyalty Program</h2>
-            </Link>
-          </div>
-        </article>
       </div>
     </div>
   );
