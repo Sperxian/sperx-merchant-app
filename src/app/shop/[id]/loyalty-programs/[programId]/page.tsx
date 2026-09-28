@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { getLoyaltyProgram } from "@/src/lib/api/loyalty";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { CreditCardIcon, Undo2Icon, UndoIcon } from "lucide-react";
+import { CreditCardIcon, UndoIcon } from "lucide-react";
 import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   LoyaltyProgramInput,
@@ -10,13 +11,57 @@ import LoyaltyProgramForm, {
 
 export default function EditLoyaltyProgramPage() {
   const params = useParams<{ id: string; programId: string }>();
-  const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgramInput>({
-    loyaltyProgramName: "Suki Club Loyalty",
-    stampIcon: "star",
-    goalPoints: 10,
-    rewardName: "Free Item",
-    rewardDescription: "You get a free item once you complete the points.",
-  });
+  const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgramInput>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    async function loadLoyaltyProgram() {
+      setIsLoading(true);
+      setLoadError(null);
+
+      try {
+        const program = await getLoyaltyProgram(params.id, params.programId);
+        const reward = program?.config.availableRewards[0];
+
+        if (!program || !reward) {
+          throw new Error("Loyalty program was not found.");
+        }
+
+        if (isCurrent) {
+          setLoyaltyProgram({
+            loyaltyProgramName: program.name,
+            stampIcon: program.config
+              .stampIcon as LoyaltyProgramInput["stampIcon"],
+            goalPoints: reward.goalPoints,
+            rewardName: reward.name,
+            rewardDescription: reward.description ?? "",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to load loyalty program:", error);
+        if (isCurrent) setLoadError("Unable to load this loyalty program.");
+      } finally {
+        if (isCurrent) setIsLoading(false);
+      }
+    }
+
+    if (params.id && params.programId) void loadLoyaltyProgram();
+
+    return () => {
+      isCurrent = false;
+    };
+  }, [params.id, params.programId]);
+
+  if (isLoading) {
+    return <p>Loading loyalty program...</p>;
+  }
+
+  if (loadError || !loyaltyProgram) {
+    return <p>{loadError ?? "Loyalty program was not found."}</p>;
+  }
 
   return (
     <div className="flex flex-col gap-4">
