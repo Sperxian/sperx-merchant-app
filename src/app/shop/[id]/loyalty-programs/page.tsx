@@ -1,8 +1,13 @@
+"use client";
+
 import type { LoyaltyProgram } from "@/src/lib/types";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
-import { PencilIcon } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { PencilIcon, PlusIcon } from "lucide-react";
 
 export default function LoyaltyProgramPage() {
+  const params = useParams<{ id: string }>();
   const loyaltyPrograms: LoyaltyProgram[] = [
     {
       id: "stub-coffee-club",
@@ -92,6 +97,15 @@ export default function LoyaltyProgramPage() {
             </div>
           </article>
         ))}
+        <article className="h-fit w-full rounded-3xl border border-dashed border-foreground/40 bg-background/30 p-4 shadow-sm sm:basis-[calc(50%-0.5rem)] lg:basis-[calc(25%-0.75rem)]">
+          <Link
+            href={`/shop/${params.id}/loyalty-programs/new`}
+            className="flex min-h-[252px] flex-col items-center justify-center gap-3 rounded-2xl p-4 text-center transition hover:bg-foreground/10"
+          >
+            <PlusIcon className="h-10 w-10" />
+            <h2 className="text-xl font-semibold">Add Loyalty Program</h2>
+          </Link>
+        </article>
       </div>
     </div>
   );
