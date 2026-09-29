@@ -4,7 +4,7 @@ import { CreditCardIcon } from "lucide-react";
 import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { getLoyaltyProgram } from "@/src/lib/api/loyalty";
-import EditLoyaltyProgramForm from "./EditLoyaltyProgramForm";
+import EditLoyaltyProgramPageContent from "./EditLoyaltyProgramPageContent";
 
 export default async function EditLoyaltyProgramPage({
   params,
@@ -47,12 +47,11 @@ export default async function EditLoyaltyProgramPage({
     <div className="flex flex-col gap-4">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <h1 className="mb-4 text-2xl font-semibold text-primary">
-        <span className="text-xl">Manage </span>
-        {loyaltyProgram.loyaltyProgramName}
-      </h1>
-      
-      <EditLoyaltyProgramForm initialValue={loyaltyProgram} />
+      <EditLoyaltyProgramPageContent
+        initialValue={loyaltyProgram}
+        shopId={shopId}
+        programId={programId}
+      />
     </div>
   );
 }
