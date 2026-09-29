@@ -1,4 +1,4 @@
-import { LoyaltyProgram, LoyaltyTransactionSummary, Paginated } from "../types";
+import { LoyaltyProgram, LoyaltyProgramType, LoyaltyTransactionSummary, Paginated } from "../types";
 import apiClient from "./client";
 
 export async function getLoyaltyPrograms(
@@ -24,6 +24,19 @@ export async function getLoyaltyProgram(
   };
 }
 
+export async function updateLoyaltyProgram(
+  shopId: string,
+  programId: string,
+  loyaltyProgram: UpdateLoyaltyProgramParams,
+) {
+  const { data } = await apiClient.put(
+    `/shop/${shopId}/loyalty/${programId}`,
+    loyaltyProgram,
+  );
+
+  return data;
+}
+
 export async function fetchAllMemberPointTransactionsForShop(shopId: string, page = 0, size = 50): Promise<Paginated<LoyaltyTransactionSummary>> {
   const { data } = await apiClient.get(`/shop/${shopId}/loyalty-transactions`, { params: { page, size } });
 
@@ -36,3 +49,16 @@ export async function fetchAllMemberPointTransactionsForShop(shopId: string, pag
     })),
   };
 }
+
+export type UpdateLoyaltyProgramParams = {
+  name: string;
+  type: LoyaltyProgramType;
+  config: {
+    stampIcon: string;
+    availableRewards: {
+      name: string;
+      description?: string;
+      goalPoints: number;
+    }[];
+  };
+};
