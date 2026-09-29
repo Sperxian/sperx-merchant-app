@@ -82,14 +82,14 @@ export default function LoyaltyProgramPage() {
             <hr className="my-4 border-foreground/20" />
             <div className="mt-4 flex items-center justify-between gap-3">
               <h2 className="text-xl font-semibold">{loyaltyProgram.name}</h2>
-              <button
-                type="button"
+              <Link
+                href={`/shop/${params.id}/loyalty-programs/${id}`}
                 className="rounded-md p-2 transition hover:bg-foreground/10"
                 aria-label={`Edit ${loyaltyProgram.name}`}
                 title={`Edit ${loyaltyProgram.name}`}
               >
                 <PencilIcon className="h-5 w-5" />
-              </button>
+              </Link>
             </div>
           </article>
         ))}
