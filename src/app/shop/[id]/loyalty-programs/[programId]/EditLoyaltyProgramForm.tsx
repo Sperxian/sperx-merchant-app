@@ -28,7 +28,8 @@ export default function EditLoyaltyProgramForm({
           Save
         </button>
         <button
-          onClick={() => void 0}
+          type="button"
+          onClick={() => setLoyaltyProgram(initialValue)}
           className="w-full inline-flex justify-center gap-2 md:order-1 md:w-fit text-md font-medium p-6 py-2 rounded-lg border border-gray-300"
         >
           <UndoIcon />
