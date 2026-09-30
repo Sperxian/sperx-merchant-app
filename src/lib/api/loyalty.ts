@@ -24,6 +24,18 @@ export async function getLoyaltyProgram(
   };
 }
 
+export async function createLoyaltyProgram(
+  shopId: string,
+  loyaltyProgram: UpdateLoyaltyProgramParams,
+) {
+  const { data } = await apiClient.post(
+    `/shop/${shopId}/loyalty`,
+    loyaltyProgram,
+  );
+
+  return data;
+}
+
 export async function updateLoyaltyProgram(
   shopId: string,
   programId: string,
