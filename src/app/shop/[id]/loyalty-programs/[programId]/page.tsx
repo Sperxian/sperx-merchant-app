@@ -1,7 +1,5 @@
 import axios from "axios";
 import { notFound } from "next/navigation";
-import { CreditCardIcon } from "lucide-react";
-import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { getLoyaltyProgram } from "@/src/lib/api/loyalty";
 import EditLoyaltyProgramPageContent from "./EditLoyaltyProgramPageContent";
@@ -34,24 +32,11 @@ export default async function EditLoyaltyProgramPage({
     rewardDescription: reward.description ?? "",
   };
 
-  const breadcrumbItems = [
-    {
-      label: "Loyalty Programs",
-      href: `/shop/${shopId}/loyalty-programs`,
-      icon: CreditCardIcon,
-    },
-    { label: loyaltyProgram.loyaltyProgramName },
-  ];
-
   return (
-    <div className="flex flex-col gap-4">
-      <Breadcrumbs items={breadcrumbItems} />
-
-      <EditLoyaltyProgramPageContent
-        initialValue={loyaltyProgram}
-        shopId={shopId}
-        programId={programId}
-      />
-    </div>
+    <EditLoyaltyProgramPageContent
+      initialValue={loyaltyProgram}
+      shopId={shopId}
+      programId={programId}
+    />
   );
 }

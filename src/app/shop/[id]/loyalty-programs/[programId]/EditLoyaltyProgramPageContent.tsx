@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { UndoIcon } from "lucide-react";
+import { CreditCardIcon, UndoIcon } from "lucide-react";
 import { updateLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
+import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   type LoyaltyProgramInput,
 } from "@/src/components/widgets/LoyaltyProgramForm";
@@ -46,8 +47,19 @@ export default function EditLoyaltyProgramPageContent({
     }
   }
 
+  const breadcrumbItems = [
+    {
+      label: "Loyalty Programs",
+      href: `/shop/${shopId}/loyalty-programs`,
+      icon: CreditCardIcon,
+    },
+    { label: loyaltyProgram.loyaltyProgramName },
+  ];
+
   return (
-    <>
+    <div className="flex flex-col gap-4">
+      <Breadcrumbs items={breadcrumbItems} />
+
       <h1 className="mb-4 text-2xl font-semibold text-primary">
         <span className="text-xl">Manage </span>
         {loyaltyProgram.loyaltyProgramName}
@@ -78,6 +90,6 @@ export default function EditLoyaltyProgramPageContent({
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
