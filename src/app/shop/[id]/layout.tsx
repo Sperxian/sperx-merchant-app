@@ -57,7 +57,7 @@ export default function ShopLayout({ children }: Props) {
       typeof window !== "undefined" ? window.location.pathname : "";
     if (pathname.endsWith("/scanner")) return "Merchant Scanner";
     if (pathname.startsWith("/dashboard")) return "Dashboard";
-    if (pathname.startsWith("/loyalty")) return "Loyalty";
+    if (pathname.endsWith("/transactions")) return "Transactions";
     return "SperX";
   }, []);
 

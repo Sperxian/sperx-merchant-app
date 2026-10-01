@@ -4,10 +4,8 @@ import "@/src/app/globals.css";
 import { CreditCardIcon, StoreIcon } from "lucide-react";
 import { useState } from "react";
 import { ShopStep } from "@/src/app/(splash)/setup/steps/ShopSetupStep";
-import {
-  LoyaltyProgramInput,
-  LoyaltySetupStep,
-} from "@/src/app/(splash)/setup/steps/LoyaltySetupStep";
+import { LoyaltySetupStep } from "@/src/app/(splash)/setup/steps/LoyaltySetupStep";
+import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { MultiStepForm } from "../../../components/shared/MultiStepForm";
 import { setupShop } from "@/src/lib/api/shop";
 import { LoyaltyProgramType } from "@/src/lib/types";
