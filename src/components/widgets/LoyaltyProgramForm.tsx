@@ -123,7 +123,7 @@ export default function LoyaltyProgramForm({
           </div>
 
           <div className="flex w-full justify-center md:w-3/5">
-            <div className="max-w-[350px]">
+            <div className="max-w-[350px] min-w-[90%]">
               <LoyaltyCard
                 current={Math.max(
                   Math.floor(loyaltyProgramInput.goalPoints * 0.8),
