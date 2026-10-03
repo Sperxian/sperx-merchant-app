@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   ChevronRight,
+  CreditCardIcon,
   LayoutDashboardIcon,
   ScanIcon,
   XIcon,
@@ -16,7 +17,12 @@ import { usePathname } from "next/navigation";
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
   { href: "/scanner", label: "Scanner", icon: ScanIcon },
-  { href: "/loyalty", label: "Loyalty", icon: StampIcon },
+  {
+    href: "/loyalty-programs",
+    label: "Loyalty Programs",
+    icon: CreditCardIcon,
+  },
+  { href: "/transactions", label: "Transactions", icon: StampIcon },
   { href: "/members", label: "Members", icon: UsersIcon },
 ];
 
@@ -29,7 +35,8 @@ interface SidebarProps {
 export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
   const shop = useShop();
   const pathName = usePathname();
-  const iconLocation = shop.config.iconLocation as string;
+  const iconLocation =
+    (shop.config.iconLocation as string) ?? "/sperx-logo.png";
 
   const sidebarClasses = isDark
     ? "border-white/10 bg-slate-900/95 text-slate-100"
