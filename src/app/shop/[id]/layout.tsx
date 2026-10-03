@@ -19,23 +19,6 @@ export default function ShopLayout({ children }: Props) {
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    const syncTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    syncTheme();
-
-    const observer = new MutationObserver(syncTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!shopId) return;
@@ -61,15 +44,10 @@ export default function ShopLayout({ children }: Props) {
     return "SperX";
   }, []);
 
-  const shellClasses = isDark
-    ? "bg-slate-950 text-slate-100"
-    : "bg-slate-50 text-slate-900";
-  const headerClasses = isDark
-    ? "border-white/10 bg-slate-900/70 text-slate-100"
-    : "border-slate-200 bg-white/80 text-slate-900";
-
   if (!shop) {
-    return <div className={`min-h-screen w-full ${shellClasses}`} />;
+    return (
+      <div className="min-h-screen w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100" />
+    );
   }
 
   const { theme: shopTheme } = shop.config;
@@ -78,13 +56,12 @@ export default function ShopLayout({ children }: Props) {
   return (
     <ShopContextProvider value={shop}>
       <div
-        className={`min-h-dvh w-full transition-colors ${shellClasses} ${isDark ? "dark" : ""}`}
+        className="min-h-dvh w-full bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100"
       >
         <div className="flex min-h-dvh flex-col lg:flex-row">
           <Sidebar
             isSidebarOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
-            isDark={isDark}
           />
 
           {isSidebarOpen ? (
@@ -100,18 +77,6 @@ export default function ShopLayout({ children }: Props) {
             <Header
               shopName={shop.name}
               pageTitle={pageTitle}
-              isDark={isDark}
-              headerClasses={headerClasses}
-              onToggleTheme={() => {
-                const nextTheme = isDark ? "light" : "dark";
-                document.documentElement.classList.toggle(
-                  "dark",
-                  nextTheme === "dark",
-                );
-                document.documentElement.style.colorScheme = nextTheme;
-                window.localStorage.setItem("admin-theme", nextTheme);
-                setIsDark(nextTheme === "dark");
-              }}
               onOpenSidebar={() => setIsSidebarOpen(true)}
             />
 
