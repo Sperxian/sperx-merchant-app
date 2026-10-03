@@ -40,7 +40,7 @@ export default function LoyaltyProgramForm({
             name="loyaltyProgramName"
             type="text"
             placeholder="Your Loyalty Program's Name"
-            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-md text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+            className="w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-md text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
             value={loyaltyProgramInput.loyaltyProgramName}
             onChange={(event) =>
               setLoyaltyProgramInput((previous) => ({
@@ -65,7 +65,7 @@ export default function LoyaltyProgramForm({
                 name="goalPoints"
                 type="number"
                 placeholder="Goal Points"
-                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-right text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-right text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
                 value={loyaltyProgramInput.goalPoints}
                 onChange={(event) =>
                   setLoyaltyProgramInput((previous) => ({
@@ -88,7 +88,7 @@ export default function LoyaltyProgramForm({
                 name="rewardName"
                 type="text"
                 placeholder="Reward Name"
-                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
                 value={loyaltyProgramInput.rewardName}
                 onChange={(event) =>
                   setLoyaltyProgramInput((previous) => ({
@@ -110,7 +110,7 @@ export default function LoyaltyProgramForm({
                 id="rewardDescription"
                 name="rewardDescription"
                 placeholder="Reward Description"
-                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-full max-w-sm rounded-lg border border-gray-300 bg-white px-3 py-2 text-gray-900 shadow-sm outline-none transition placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20"
                 value={loyaltyProgramInput.rewardDescription}
                 onChange={(event) =>
                   setLoyaltyProgramInput((previous) => ({
