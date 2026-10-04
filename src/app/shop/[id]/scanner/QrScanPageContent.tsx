@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { MemberSheet } from "./components/MemberSheet";
 import { getMemberLoyalty } from "@/src/lib/api/member";
-import { MemberLoyalty } from "@/src/lib/types";
 import { QrScanner } from "./components/QrScanner";
 import { useShop } from "../ShopContext";
 import { Alert } from "@/src/components/shared/Alert";

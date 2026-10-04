@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CreditCardIcon, UndoIcon } from "lucide-react";
+import { CreditCardIcon } from "lucide-react";
 import { updateLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";

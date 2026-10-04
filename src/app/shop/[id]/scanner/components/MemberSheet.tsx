@@ -38,7 +38,7 @@ export function MemberSheet({
 
   const {
     config: {
-      availableRewards: [{ name: rewardName, goalPoints }],
+      availableRewards: [{ goalPoints }],
     },
   } = loyaltyProgram;
 

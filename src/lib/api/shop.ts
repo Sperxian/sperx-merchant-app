@@ -1,4 +1,4 @@
-import { LoyaltyProgramType, Shop } from "../types";
+import { LoyaltyProgramType } from "../types";
 import apiClient from "./client";
 
 export async function getShop(shopId: string) {

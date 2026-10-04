@@ -8,15 +8,12 @@ type Props = {
 
 export default function SplashPageTemplate({ defaultSlot, actionSlot }: Props) {
   return (
-    <div
-      className="flex flex-col items-center justify-between gap-8
-        w-full h-full mt-[64px] py-8 m-auto relative"
-    >
+    <div className="relative mx-auto flex min-h-dvh w-full flex-col items-center justify-between gap-8 overflow-hidden bg-slate-50 py-8 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100">
       <div className="absolute -top-[28px] -right-[28px] w-[120px] h-[120px] rounded-full border-[18px] border-primary/10" />
       <div className="absolute bottom-[-18px] left-[18px] w-[180px] h-[180px] rounded-full border-[20px] border-primary/10" />
       <div className="absolute bottom-[35%] left-[5%] w-[320px] h-[320px] rounded-full border-[12px] border-primary/5" />
 
-      <div className="flex flex-col items-center gap-8">
+      <div className="flex flex-col items-center gap-8 pt-8">
         <Image
           className="aspect-square object-cover animate-pulse"
           src={"/sperx-logo.png"}
