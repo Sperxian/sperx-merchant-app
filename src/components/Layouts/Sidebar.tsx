@@ -14,6 +14,7 @@ import {
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 import { usePathname } from "next/navigation";
+import type { SidebarMode } from "@/src/lib/preferences";
 
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
@@ -26,8 +27,6 @@ const navigation = [
   { href: "/transactions", label: "Transactions", icon: StampIcon },
   { href: "/members", label: "Members", icon: UsersIcon },
 ];
-
-export type SidebarMode = "OPEN" | "COLLAPSED" | "HIDDEN";
 
 interface SidebarProps {
   sidebarMode: SidebarMode;

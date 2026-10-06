@@ -6,66 +6,33 @@ import { ShopContextProvider } from "./ShopContext";
 import { themeCssVars } from "@/src/lib/theme";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useParams } from "next/navigation";
-import { Sidebar, type SidebarMode } from "@/src/components/Layouts/Sidebar";
+import { Sidebar } from "@/src/components/Layouts/Sidebar";
 import { Header } from "@/src/components/Layouts/Header";
 import { Shop } from "@/src/lib/types";
-
-const SIDEBAR_MODE_STORAGE_KEY = "admin-sidebar-mode";
-const sidebarModeSubscribers = new Set<() => void>();
+import {
+  getSidebarModePreference,
+  saveSidebarModePreference,
+  subscribeToSidebarModePreference,
+  type SidebarMode,
+} from "@/src/lib/preferences";
 
 type Props = {
   children: React.ReactNode;
 };
-
-function getSidebarModeSnapshot(): SidebarMode {
-  if (typeof window === "undefined") return "HIDDEN";
-
-  const storedSidebarMode = window.localStorage.getItem(
-    SIDEBAR_MODE_STORAGE_KEY,
-  );
-  if (
-    storedSidebarMode === "OPEN" ||
-    storedSidebarMode === "COLLAPSED" ||
-    storedSidebarMode === "HIDDEN"
-  ) {
-    return storedSidebarMode;
-  }
-
-  return "HIDDEN";
-}
-
-function subscribeToSidebarMode(subscriber: () => void) {
-  sidebarModeSubscribers.add(subscriber);
-
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === SIDEBAR_MODE_STORAGE_KEY) subscriber();
-  };
-
-  window.addEventListener("storage", handleStorage);
-  return () => {
-    sidebarModeSubscribers.delete(subscriber);
-    window.removeEventListener("storage", handleStorage);
-  };
-}
-
-function saveSidebarMode(mode: SidebarMode) {
-  window.localStorage.setItem(SIDEBAR_MODE_STORAGE_KEY, mode);
-  sidebarModeSubscribers.forEach((subscriber) => subscriber());
-}
 
 export default function ShopLayout({ children }: Props) {
   const params = useParams<{ id: string }>();
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
   const sidebarMode = useSyncExternalStore(
-    subscribeToSidebarMode,
-    getSidebarModeSnapshot,
+    subscribeToSidebarModePreference,
+    getSidebarModePreference,
     (): SidebarMode => "HIDDEN",
   );
 
   function closeSidebar() {
     if (window.matchMedia("(min-width: 64rem)").matches) return;
-    saveSidebarMode("HIDDEN");
+    saveSidebarModePreference("HIDDEN");
   }
 
   useEffect(() => {
@@ -111,7 +78,7 @@ export default function ShopLayout({ children }: Props) {
             sidebarMode={sidebarMode}
             onClose={closeSidebar}
             onToggleCollapse={() =>
-              saveSidebarMode(
+              saveSidebarModePreference(
                 sidebarMode === "COLLAPSED" ? "OPEN" : "COLLAPSED",
               )
             }
@@ -121,7 +88,7 @@ export default function ShopLayout({ children }: Props) {
             <button
               type="button"
               className="fixed inset-0 z-30 bg-slate-950/60 lg:hidden"
-              onClick={() => saveSidebarMode("HIDDEN")}
+              onClick={() => saveSidebarModePreference("HIDDEN")}
               aria-label="Close sidebar overlay"
             />
           ) : null}
@@ -130,7 +97,7 @@ export default function ShopLayout({ children }: Props) {
             <Header
               shopName={shop.name}
               pageTitle={pageTitle}
-              onOpenSidebar={() => saveSidebarMode("OPEN")}
+              onOpenSidebar={() => saveSidebarModePreference("OPEN")}
             />
 
             <main

@@ -7,53 +7,36 @@ import {
   useEffect,
   useSyncExternalStore,
 } from "react";
-
-type Theme = "light" | "dark";
+import {
+  getThemePreference,
+  saveThemePreference,
+  subscribeToThemePreference,
+  type ThemePreference,
+} from "@/src/lib/preferences";
 
 type ThemeContextValue = {
-  theme: Theme;
+  theme: ThemePreference;
   isDark: boolean;
   toggleTheme: () => void;
 };
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
-const subscribers = new Set<() => void>();
 
-function getThemeSnapshot(): Theme {
-  if (typeof window === "undefined") return "light";
+function getThemeSnapshot(): ThemePreference {
+  const storedTheme = getThemePreference();
+  if (storedTheme) return storedTheme;
 
-  const storedTheme = window.localStorage.getItem("admin-theme");
-  if (storedTheme === "light" || storedTheme === "dark") return storedTheme;
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
+  return typeof window !== "undefined" &&
+    window.matchMedia("(prefers-color-scheme: dark)").matches
     ? "dark"
     : "light";
 }
 
-function subscribeToTheme(subscriber: () => void) {
-  subscribers.add(subscriber);
-
-  const handleStorage = (event: StorageEvent) => {
-    if (event.key === "admin-theme") subscriber();
-  };
-
-  window.addEventListener("storage", handleStorage);
-  return () => {
-    subscribers.delete(subscriber);
-    window.removeEventListener("storage", handleStorage);
-  };
-}
-
-function saveTheme(theme: Theme) {
-  window.localStorage.setItem("admin-theme", theme);
-  subscribers.forEach((subscriber) => subscriber());
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const theme = useSyncExternalStore(
-    subscribeToTheme,
+    subscribeToThemePreference,
     getThemeSnapshot,
-    (): Theme => "light",
+    (): ThemePreference => "light",
   );
 
   useEffect(() => {
@@ -66,7 +49,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       value={{
         theme,
         isDark: theme === "dark",
-        toggleTheme: () => saveTheme(theme === "dark" ? "light" : "dark"),
+        toggleTheme: () =>
+          saveThemePreference(theme === "dark" ? "light" : "dark"),
       }}
     >
       {children}
