@@ -27,21 +27,22 @@ const navigation = [
   { href: "/members", label: "Members", icon: UsersIcon },
 ];
 
+export type SidebarMode = "OPEN" | "COLLAPSED" | "HIDDEN";
+
 interface SidebarProps {
-  isSidebarOpen: boolean;
+  sidebarMode: SidebarMode;
   onClose: () => void;
-  isSidebarCollapsed: boolean;
   onToggleCollapse: () => void;
 }
 
 export function Sidebar({
-  isSidebarOpen,
+  sidebarMode,
   onClose,
-  isSidebarCollapsed,
   onToggleCollapse,
 }: SidebarProps) {
   const shop = useShop();
   const pathName = usePathname();
+  const isSidebarCollapsed = sidebarMode === "COLLAPSED";
   const iconLocation =
     (shop.config.iconLocation as string) ?? "/sperx-logo.png";
 
@@ -50,7 +51,9 @@ export function Sidebar({
       className={`fixed inset-y-0 left-0 z-40 w-72 shrink-0 border-r border-slate-200 bg-white/95 px-5 py-6 text-slate-800 shadow-2xl backdrop-blur transition-[width,transform] duration-300 dark:border-white/10 dark:bg-slate-900/95 dark:text-slate-100 lg:static lg:translate-x-0 ${
         isSidebarCollapsed ? "lg:w-20" : "lg:w-72"
       } ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        sidebarMode === "HIDDEN"
+          ? "-translate-x-full lg:translate-x-0"
+          : "translate-x-0"
       }`}
     >
       <div

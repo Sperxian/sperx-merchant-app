@@ -6,7 +6,7 @@ import { ShopContextProvider } from "./ShopContext";
 import { themeCssVars } from "@/src/lib/theme";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { Sidebar } from "@/src/components/Layouts/Sidebar";
+import { Sidebar, type SidebarMode } from "@/src/components/Layouts/Sidebar";
 import { Header } from "@/src/components/Layouts/Header";
 import { Shop } from "@/src/lib/types";
 
@@ -18,8 +18,12 @@ export default function ShopLayout({ children }: Props) {
   const params = useParams<{ id: string }>();
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [sidebarMode, setSidebarMode] = useState<SidebarMode>("HIDDEN");
+
+  function closeSidebar() {
+    if (window.matchMedia("(min-width: 64rem)").matches) return;
+    setSidebarMode("HIDDEN");
+  }
 
   useEffect(() => {
     if (!shopId) return;
@@ -61,19 +65,20 @@ export default function ShopLayout({ children }: Props) {
       >
         <div className="flex min-h-dvh flex-col lg:flex-row">
           <Sidebar
-            isSidebarOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-            isSidebarCollapsed={isSidebarCollapsed}
+            sidebarMode={sidebarMode}
+            onClose={closeSidebar}
             onToggleCollapse={() =>
-              setIsSidebarCollapsed((isCollapsed) => !isCollapsed)
+              setSidebarMode((mode) =>
+                mode === "COLLAPSED" ? "OPEN" : "COLLAPSED",
+              )
             }
           />
 
-          {isSidebarOpen ? (
+          {sidebarMode !== "HIDDEN" ? (
             <button
               type="button"
               className="fixed inset-0 z-30 bg-slate-950/60 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
+              onClick={() => setSidebarMode("HIDDEN")}
               aria-label="Close sidebar overlay"
             />
           ) : null}
@@ -82,7 +87,7 @@ export default function ShopLayout({ children }: Props) {
             <Header
               shopName={shop.name}
               pageTitle={pageTitle}
-              onOpenSidebar={() => setIsSidebarOpen(true)}
+              onOpenSidebar={() => setSidebarMode("OPEN")}
             />
 
             <main
