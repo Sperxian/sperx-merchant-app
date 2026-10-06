@@ -19,6 +19,7 @@ export default function ShopLayout({ children }: Props) {
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (!shopId) return;
@@ -62,6 +63,10 @@ export default function ShopLayout({ children }: Props) {
           <Sidebar
             isSidebarOpen={isSidebarOpen}
             onClose={() => setIsSidebarOpen(false)}
+            isSidebarCollapsed={isSidebarCollapsed}
+            onToggleCollapse={() =>
+              setIsSidebarCollapsed((isCollapsed) => !isCollapsed)
+            }
           />
 
           {isSidebarOpen ? (
