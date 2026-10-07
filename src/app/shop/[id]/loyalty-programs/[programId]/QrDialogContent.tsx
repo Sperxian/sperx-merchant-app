@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { toastError } from "@/src/lib/toast";
-import { CopyIcon } from "lucide-react";
+import CopyableText from "@/src/components/shared/CopyableText";
 
 const qrCenterImage = "/sperx-logo.png";
 
@@ -19,30 +19,6 @@ export default function QrDialogContent({
   onClose,
 }: Props) {
   const qrCodeContainerRef = useRef<HTMLDivElement>(null);
-  const copiedTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [isCopied, setIsCopied] = useState(false);
-
-  useEffect(
-    () => () => {
-      if (copiedTimeoutRef.current) {
-        clearTimeout(copiedTimeoutRef.current);
-      }
-    },
-    [],
-  );
-
-  async function copyData() {
-    try {
-      await navigator.clipboard.writeText(data);
-      setIsCopied(true);
-      if (copiedTimeoutRef.current) {
-        clearTimeout(copiedTimeoutRef.current);
-      }
-      copiedTimeoutRef.current = setTimeout(() => setIsCopied(false), 1500);
-    } catch (error) {
-      toastError(error);
-    }
-  }
 
   async function downloadQrCode() {
     const qrCode = qrCodeContainerRef.current?.querySelector("svg");
@@ -160,40 +136,8 @@ export default function QrDialogContent({
       <div className="flex text-xl text-primary font-medium">
         {loyaltyProgramName}
       </div>
-      <div className="inline-flex w-[80%] items-center justify-center gap-2 text-sm">
-        <div className="group relative min-w-0">
-          <p
-            className="truncate  cursor-pointer"
-            title={data}
-            onClick={copyData}
-          >
-            {data}
-          </p>
-          <span
-            role="tooltip"
-            className="pointer-events-none cursor-pointer absolute bottom-full left-1/2 z-10 mb-2 max-w-[80vw] -translate-x-1/2 break-all rounded bg-foreground px-2 py-1 text-background opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-within:opacity-100"
-          >
-            {data}
-          </span>
-        </div>
-        <div className="relative shrink-0">
-          <button
-            type="button"
-            aria-label="Copy QR code data"
-            className="rounded-lg cursor-pointer transition-all hover:scale-90"
-            onClick={copyData}
-          >
-            <CopyIcon color="var(--primary)" />
-          </button>
-          {isCopied ? (
-            <span
-              role="status"
-              className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-foreground px-2 py-1 text-background shadow"
-            >
-              Copied
-            </span>
-          ) : null}
-        </div>
+      <div className="w-[80%]">
+        <CopyableText text={data} />
       </div>
       <div className="flex w-full justify-between">
         <button
