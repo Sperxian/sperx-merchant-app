@@ -5,6 +5,8 @@ import { QRCodeSVG } from "qrcode.react";
 import { toastError } from "@/src/lib/toast";
 import { CopyIcon } from "lucide-react";
 
+const qrCenterImage = "/sperx-logo.png";
+
 type Props = {
   loyaltyProgramName: string;
   data: string;
@@ -50,25 +52,55 @@ export default function QrDialogContent({
     }
 
     const downloadableQrCode = qrCode.cloneNode(true) as SVGSVGElement;
-    const primaryColor = getComputedStyle(document.documentElement)
-      .getPropertyValue("--primary")
-      .trim();
+    const qrCodeStyles = getComputedStyle(qrCode);
     downloadableQrCode.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-    downloadableQrCode.style.setProperty("--primary", primaryColor);
-
-    const svgUrl = URL.createObjectURL(
-      new Blob([new XMLSerializer().serializeToString(downloadableQrCode)], {
-        type: "image/svg+xml;charset=utf-8",
-      }),
+    downloadableQrCode.style.setProperty(
+      "--primary",
+      qrCodeStyles.getPropertyValue("--primary").trim(),
+    );
+    downloadableQrCode.style.setProperty(
+      "--background",
+      qrCodeStyles.getPropertyValue("--background").trim(),
     );
 
+    let svgUrl: string | undefined;
+
     try {
+      const logoResponse = await fetch(qrCenterImage);
+      if (!logoResponse.ok) {
+        throw new Error("Unable to load the QR code logo.");
+      }
+      const logoBlob = await logoResponse.blob();
+      const logoDataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          if (typeof reader.result === "string") {
+            resolve(reader.result);
+          } else {
+            reject(new Error("Unable to read the QR code logo."));
+          }
+        };
+        reader.onerror = () =>
+          reject(reader.error ?? new Error("Unable to read the QR code logo."));
+        reader.readAsDataURL(logoBlob);
+      });
+
+      downloadableQrCode.querySelectorAll("image").forEach((imageElement) => {
+        imageElement.setAttribute("href", logoDataUrl);
+      });
+
+      const imageSourceUrl = URL.createObjectURL(
+        new Blob([new XMLSerializer().serializeToString(downloadableQrCode)], {
+          type: "image/svg+xml;charset=utf-8",
+        }),
+      );
+      svgUrl = imageSourceUrl;
       const image = new Image();
       await new Promise<void>((resolve, reject) => {
         image.onload = () => resolve();
         image.onerror = () =>
           reject(new Error("Unable to render the QR code."));
-        image.src = svgUrl;
+        image.src = imageSourceUrl;
       });
 
       const canvas = document.createElement("canvas");
@@ -100,12 +132,14 @@ export default function QrDialogContent({
     } catch (error) {
       toastError(error);
     } finally {
-      URL.revokeObjectURL(svgUrl);
+      if (svgUrl) {
+        URL.revokeObjectURL(svgUrl);
+      }
     }
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-2">
       <h2 className="self-start text-2xl">QR Code</h2>
       <div ref={qrCodeContainerRef} className="w-[50vw] max-w-[256px] gap-4">
         <QRCodeSVG
@@ -115,7 +149,7 @@ export default function QrDialogContent({
           fgColor={"var(--primary)"}
           level="H"
           imageSettings={{
-            src: "/sperx-logo.png",
+            src: qrCenterImage,
             height: 48,
             width: 48,
             excavate: true,
@@ -126,7 +160,7 @@ export default function QrDialogContent({
       <div className="flex text-xl text-primary font-medium">
         {loyaltyProgramName}
       </div>
-      <div className="inline-flex w-full items-center justify-center gap-2 text-sm">
+      <div className="inline-flex w-[80%] items-center justify-center gap-2 text-sm">
         <div className="group relative min-w-0">
           <p
             className="truncate  cursor-pointer"
