@@ -4,11 +4,17 @@ import "@/src/app/globals.css";
 import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { themeCssVars } from "@/src/lib/theme";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/src/components/Layouts/Sidebar";
 import { Header } from "@/src/components/Layouts/Header";
 import { Shop } from "@/src/lib/types";
+import {
+  getSidebarModePreference,
+  saveSidebarModePreference,
+  subscribeToSidebarModePreference,
+  type SidebarMode,
+} from "@/src/lib/preferences";
 
 type Props = {
   children: React.ReactNode;
@@ -18,7 +24,16 @@ export default function ShopLayout({ children }: Props) {
   const params = useParams<{ id: string }>();
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const sidebarMode = useSyncExternalStore(
+    subscribeToSidebarModePreference,
+    getSidebarModePreference,
+    (): SidebarMode => "HIDDEN",
+  );
+
+  function closeSidebar() {
+    if (window.matchMedia("(min-width: 64rem)").matches) return;
+    saveSidebarModePreference("HIDDEN");
+  }
 
   useEffect(() => {
     if (!shopId) return;
@@ -60,15 +75,20 @@ export default function ShopLayout({ children }: Props) {
       >
         <div className="flex min-h-dvh flex-col lg:flex-row">
           <Sidebar
-            isSidebarOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
+            sidebarMode={sidebarMode}
+            onClose={closeSidebar}
+            onToggleCollapse={() =>
+              saveSidebarModePreference(
+                sidebarMode === "COLLAPSED" ? "OPEN" : "COLLAPSED",
+              )
+            }
           />
 
-          {isSidebarOpen ? (
+          {sidebarMode !== "HIDDEN" ? (
             <button
               type="button"
               className="fixed inset-0 z-30 bg-slate-950/60 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
+              onClick={() => saveSidebarModePreference("HIDDEN")}
               aria-label="Close sidebar overlay"
             />
           ) : null}
@@ -77,7 +97,7 @@ export default function ShopLayout({ children }: Props) {
             <Header
               shopName={shop.name}
               pageTitle={pageTitle}
-              onOpenSidebar={() => setIsSidebarOpen(true)}
+              onOpenSidebar={() => saveSidebarModePreference("OPEN")}
             />
 
             <main
