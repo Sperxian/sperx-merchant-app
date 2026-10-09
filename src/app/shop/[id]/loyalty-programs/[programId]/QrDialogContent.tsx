@@ -4,22 +4,20 @@ import { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { toastError } from "@/src/lib/toast";
 import CopyableText from "@/src/components/shared/CopyableText";
+import { LoyaltyProgramInfo } from "@/src/types/loyalty";
 
 const qrCenterImage = "/sperx-logo.png";
 
 type Props = {
-  loyaltyProgramName: string;
-  loyaltyJoinLink: string;
+  loyaltyProgramInfo: LoyaltyProgramInfo;
   onClose: () => void;
 };
 
 export default function QrDialogContent({
-  loyaltyProgramName,
-  loyaltyJoinLink,
+  loyaltyProgramInfo,
   onClose,
 }: Props) {
   const qrCodeContainerRef = useRef<HTMLDivElement>(null);
-
 
   async function downloadQrCode() {
     const qrCode = qrCodeContainerRef.current?.querySelector("svg");
@@ -120,7 +118,7 @@ export default function QrDialogContent({
       <h2 className="self-start text-2xl">QR Code</h2>
       <div ref={qrCodeContainerRef} className="w-[50vw] max-w-[256px] gap-4">
         <QRCodeSVG
-          value={loyaltyJoinLink}
+          value={loyaltyProgramInfo.memberJoinLink}
           style={{ display: "block", height: "auto", width: "100%" }}
           bgColor={"var(--background)"}
           fgColor={"var(--primary)"}
@@ -135,10 +133,10 @@ export default function QrDialogContent({
       </div>
 
       <div className="flex text-xl text-primary font-medium">
-        {loyaltyProgramName}
+        {loyaltyProgramInfo.name}
       </div>
       <div className="w-[80%]">
-        <CopyableText text={loyaltyJoinLink} />
+        <CopyableText text={loyaltyProgramInfo.memberJoinLink} />
       </div>
       <div className="flex w-full justify-between">
         <button

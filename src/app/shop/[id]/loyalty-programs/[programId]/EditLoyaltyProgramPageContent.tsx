@@ -162,10 +162,8 @@ export default function EditLoyaltyProgramPageContent({
         onClose={() => setIsQrDialogOpen(false)}
         className="fixed m-auto max-h-[calc(100%-2rem)] w-[80vw] max-w-5xl rounded-2xl border border-white/30 bg-background p-6 text-foreground shadow-2xl backdrop:bg-black/50"
       >
-        {/* Maybe use initialValue and hide Show AR code */}
         <QrDialogContent
-          loyaltyProgramName={loyaltyProgram.loyaltyProgramName}
-          loyaltyJoinLink={initialValue.memberJoinLink}
+          loyaltyProgramInfo={initialValue}
           onClose={() => setIsQrDialogOpen(false)}
         />
       </dialog>
