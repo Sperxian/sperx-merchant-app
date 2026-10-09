@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CreditCardIcon } from "lucide-react";
 import { updateLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
@@ -8,6 +8,23 @@ import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   type LoyaltyProgramInput,
 } from "@/src/components/widgets/LoyaltyProgramForm";
+import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/types/loyalty";
+import QrDialogContent from "./QrDialogContent";
+
+function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
+  const reward = program.config.availableRewards[0];
+  if (!reward) {
+    throw new Error("Loyalty program has no configured reward.");
+  }
+
+  return {
+    loyaltyProgramName: program.name,
+    stampIcon: program.config.stampIcon as LoyaltyProgramInput["stampIcon"],
+    goalPoints: reward.goalPoints,
+    rewardName: reward.name,
+    rewardDescription: reward.description ?? "",
+  };
+}
 
 function areLoyaltyProgramsEqual(
   first: LoyaltyProgramInput,
@@ -18,18 +35,39 @@ function areLoyaltyProgramsEqual(
   );
 }
 
+type Props = {
+  initialValue: LoyaltyProgramInfo;
+  shopId: string;
+  programId: string;
+};
+
 export default function EditLoyaltyProgramPageContent({
   initialValue,
   shopId,
   programId,
-}: {
-  initialValue: LoyaltyProgramInput;
-  shopId: string;
-  programId: string;
-}) {
-  const [loyaltyProgram, setLoyaltyProgram] = useState(initialValue);
-  const [savedLoyaltyProgram, setSavedLoyaltyProgram] = useState(initialValue);
+}: Props) {
+  const [loyaltyProgram, setLoyaltyProgram] = useState(() =>
+    toLoyaltyProgramInput(initialValue),
+  );
+  const [savedLoyaltyProgram, setSavedLoyaltyProgram] = useState(() =>
+    toLoyaltyProgramInput(initialValue),
+  );
   const [isSaving, setIsSaving] = useState(false);
+  const [isQrDialogOpen, setIsQrDialogOpen] = useState(false);
+  const qrDialogRef = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    const dialog = qrDialogRef.current;
+    if (!dialog) {
+      return;
+    }
+
+    if (isQrDialogOpen && !dialog.open) {
+      dialog.showModal();
+    } else if (!isQrDialogOpen && dialog.open) {
+      dialog.close();
+    }
+  }, [isQrDialogOpen]);
 
   async function saveLoyaltyProgram() {
     setIsSaving(true);
@@ -66,6 +104,7 @@ export default function EditLoyaltyProgramPageContent({
     },
     { label: loyaltyProgram.loyaltyProgramName },
   ];
+
   const isDirty = !areLoyaltyProgramsEqual(loyaltyProgram, savedLoyaltyProgram);
 
   return (
@@ -77,11 +116,22 @@ export default function EditLoyaltyProgramPageContent({
         {loyaltyProgram.loyaltyProgramName}
       </h1>
 
-      <div className="flex flex-col mx-auto md:min-w-3xl rounded-xl md:rounded-3xl border border-white/30 p-4 shadow-2xl smz:p-6 gap-4">
+      <div className="flex flex-col mx-auto md:min-w-3xl rounded-xl md:rounded-3xl border border-white/30 p-4 shadow-2xl gap-4">
         <LoyaltyProgramForm
           loyaltyProgramInput={loyaltyProgram}
           setLoyaltyProgramInput={setLoyaltyProgram}
         />
+        {!isDirty && (
+          <div className="w-full flex justify-end px-2 md:px-6">
+            <button
+              type="button"
+              onClick={() => setIsQrDialogOpen(true)}
+              className="w-fit text-sm font-medium text-primary underline underline-offset-4 transition hover:text-secondary"
+            >
+              Show QR code
+            </button>
+          </div>
+        )}
         {isDirty ? (
           <>
             <hr className="border-foreground/20" />
@@ -105,6 +155,18 @@ export default function EditLoyaltyProgramPageContent({
           </>
         ) : null}
       </div>
+
+      <dialog
+        ref={qrDialogRef}
+        aria-labelledby="loyalty-qr-dialog-title"
+        onClose={() => setIsQrDialogOpen(false)}
+        className="fixed m-auto max-h-[calc(100%-2rem)] w-[80vw] max-w-5xl rounded-2xl border border-white/30 bg-background p-6 text-foreground shadow-2xl backdrop:bg-black/50"
+      >
+        <QrDialogContent
+          loyaltyProgramInfo={initialValue}
+          onClose={() => setIsQrDialogOpen(false)}
+        />
+      </dialog>
     </div>
   );
 }

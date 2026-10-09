@@ -9,7 +9,7 @@ import { LoyaltySetupStep } from "@/src/app/(splash)/setup/steps/LoyaltySetupSte
 import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { MultiStepForm } from "../../../components/shared/MultiStepForm";
 import { setupShop } from "@/src/lib/api/shop";
-import { LoyaltyProgramType } from "@/src/lib/types";
+import type { LoyaltyProgramType } from "@/src/types/loyalty";
 
 export default function SetupPageContent() {
   const router = useRouter();

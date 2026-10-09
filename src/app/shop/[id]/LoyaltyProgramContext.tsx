@@ -1,6 +1,6 @@
 "use client";
 
-import { LoyaltyProgram } from "@/src/lib/types";
+import type { LoyaltyProgram } from "@/src/types/loyalty";
 import { createContext, ReactNode, useContext } from "react";
 
 type LoyaltyProgramContextType = {
