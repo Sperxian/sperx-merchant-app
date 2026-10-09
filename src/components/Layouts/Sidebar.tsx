@@ -3,6 +3,7 @@
 import Link from "next/link";
 import {
   ChevronRight,
+  ChevronLeft,
   CreditCardIcon,
   LayoutDashboardIcon,
   ScanIcon,
@@ -13,6 +14,7 @@ import {
 import Image from "next/image";
 import { useShop } from "@/src/app/shop/[id]/ShopContext";
 import { usePathname } from "next/navigation";
+import type { SidebarMode } from "@/src/lib/preferences";
 
 const navigation = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboardIcon },
@@ -27,38 +29,44 @@ const navigation = [
 ];
 
 interface SidebarProps {
-  isSidebarOpen: boolean;
+  sidebarMode: SidebarMode;
   onClose: () => void;
-  isDark: boolean;
+  onToggleCollapse: () => void;
 }
 
-export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
+export function Sidebar({
+  sidebarMode,
+  onClose,
+  onToggleCollapse,
+}: SidebarProps) {
   const shop = useShop();
   const pathName = usePathname();
+  const isSidebarCollapsed = sidebarMode === "COLLAPSED";
   const iconLocation =
     (shop.config.iconLocation as string) ?? "/sperx-logo.png";
 
-  const sidebarClasses = isDark
-    ? "border-white/10 bg-slate-900/95 text-slate-100"
-    : "border-slate-200 bg-white/95 text-slate-800";
-
-  const navItemClasses = (isActive: boolean) =>
-    isDark
-      ? isActive
-        ? "bg-cyan-500/15 text-cyan-300"
-        : "text-slate-300 hover:bg-white/10 hover:text-white"
-      : isActive
-        ? "bg-cyan-500/10 text-cyan-700"
-        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900";
-
   return (
     <aside
-      className={`fixed inset-y-0 left-0 z-40 w-72 border-r px-5 py-6 shadow-2xl backdrop-blur transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarClasses} ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+      className={`fixed inset-y-0 left-0 z-40 w-72 shrink-0 border-r border-slate-200 bg-white/95 px-5 py-6 text-slate-800 shadow-2xl backdrop-blur transition-[width,transform] duration-300 dark:border-white/10 dark:bg-slate-900/95 dark:text-slate-100 lg:static lg:translate-x-0 ${
+        isSidebarCollapsed ? "lg:w-20" : "lg:w-72"
+      } ${
+        sidebarMode === "HIDDEN"
+          ? "-translate-x-full lg:translate-x-0"
+          : "translate-x-0"
       }`}
     >
-      <div className="flex items-center justify-between lg:justify-start">
-        <div className="flex items-center gap-3">
+      <div
+        className={`flex items-center justify-between ${
+          isSidebarCollapsed
+            ? "lg:flex-col-reverse lg:gap-4"
+            : "lg:justify-between"
+        }`}
+      >
+        <div
+          className={`flex items-center gap-3 ${
+            isSidebarCollapsed ? "lg:justify-center" : ""
+          }`}
+        >
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-violet-500">
             <Image
               className="aspect-square h-8 w-8 object-scale-down"
@@ -69,10 +77,10 @@ export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
               priority
             />
           </div>
-          <div>
+          <div className={isSidebarCollapsed ? "lg:hidden" : ""}>
             <p className="text-sm font-semibold">Sperx Admin</p>
             <p
-              className={`text-xs ${isDark ? "text-slate-400" : "text-slate-500"}`}
+              className="text-xs text-slate-500 dark:text-slate-400"
             >
               Merchant dashboard
             </p>
@@ -80,7 +88,21 @@ export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
         </div>
         <button
           type="button"
-          className={`rounded-lg p-2 transition hover:bg-white/10 lg:hidden ${isDark ? "text-slate-300" : "text-slate-600"}`}
+          className="hidden rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10 lg:inline-flex"
+          onClick={onToggleCollapse}
+          aria-label={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!isSidebarCollapsed}
+          title={isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        >
+          {isSidebarCollapsed ? (
+            <ChevronRight className="h-5 w-5" />
+          ) : (
+            <ChevronLeft className="h-5 w-5" />
+          )}
+        </button>
+        <button
+          type="button"
+          className="rounded-lg p-2 text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10 lg:hidden"
           onClick={onClose}
           aria-label="Close sidebar"
         >
@@ -97,28 +119,50 @@ export function Sidebar({ isSidebarOpen, onClose, isDark }: SidebarProps) {
               key={href}
               href={`/shop/${shop.id}/${href}`}
               onClick={onClose}
-              className={`flex items-center justify-between rounded-xl px-3 py-3 text-sm transition ${navItemClasses(isActive)}`}
+              aria-label={label}
+              title={isSidebarCollapsed ? label : undefined}
+              className={`flex items-center justify-between rounded-xl px-3 py-3 text-sm transition ${
+                isSidebarCollapsed
+                  ? "lg:justify-center"
+                  : ""
+              } ${
+                isActive
+                  ? "bg-cyan-500/10 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+              }`}
             >
-              <span className="flex items-center gap-3">
+              <span
+                className={`flex items-center gap-3 ${
+                  isSidebarCollapsed ? "lg:justify-center" : ""
+                }`}
+              >
                 {Icon ? <Icon className="h-4 w-4" /> : null}
-                {label}
+                <span className={isSidebarCollapsed ? "lg:hidden" : ""}>
+                  {label}
+                </span>
               </span>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight
+                className={`h-4 w-4 ${
+                  isSidebarCollapsed ? "lg:hidden" : ""
+                }`}
+              />
             </Link>
           );
         })}
       </nav>
 
       <div
-        className={`mt-8 rounded-2xl border p-4 text-sm ${isDark ? "border-white/10 bg-white/5 text-slate-300" : "border-slate-200 bg-slate-100 text-slate-600"}`}
+        className={`mt-8 rounded-2xl border border-slate-200 bg-slate-100 p-4 text-sm text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 ${
+          isSidebarCollapsed ? "lg:hidden" : ""
+        }`}
       >
         <p
-          className={`font-medium ${isDark ? "text-white" : "text-slate-900"}`}
+          className="font-medium text-slate-900 dark:text-white"
         >
           Need a quick boost?
         </p>
         <p
-          className={`mt-2 text-xs leading-5 ${isDark ? "text-slate-400" : "text-slate-500"}`}
+          className="mt-2 text-xs leading-5 text-slate-500 dark:text-slate-400"
         >
           Keep your merchant operations moving with a single-view dashboard.
         </p>

@@ -4,11 +4,17 @@ import "@/src/app/globals.css";
 import { getShop } from "@/src/lib/api/shop";
 import { ShopContextProvider } from "./ShopContext";
 import { themeCssVars } from "@/src/lib/theme";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { useParams } from "next/navigation";
 import { Sidebar } from "@/src/components/Layouts/Sidebar";
 import { Header } from "@/src/components/Layouts/Header";
 import { Shop } from "@/src/lib/types";
+import {
+  getSidebarModePreference,
+  saveSidebarModePreference,
+  subscribeToSidebarModePreference,
+  type SidebarMode,
+} from "@/src/lib/preferences";
 
 type Props = {
   children: React.ReactNode;
@@ -18,24 +24,16 @@ export default function ShopLayout({ children }: Props) {
   const params = useParams<{ id: string }>();
   const shopId = params?.id;
   const [shop, setShop] = useState<Shop | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const sidebarMode = useSyncExternalStore(
+    subscribeToSidebarModePreference,
+    getSidebarModePreference,
+    (): SidebarMode => "HIDDEN",
+  );
 
-  useEffect(() => {
-    const syncTheme = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-
-    syncTheme();
-
-    const observer = new MutationObserver(syncTheme);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  function closeSidebar() {
+    if (window.matchMedia("(min-width: 64rem)").matches) return;
+    saveSidebarModePreference("HIDDEN");
+  }
 
   useEffect(() => {
     if (!shopId) return;
@@ -61,15 +59,10 @@ export default function ShopLayout({ children }: Props) {
     return "SperX";
   }, []);
 
-  const shellClasses = isDark
-    ? "bg-slate-950 text-slate-100"
-    : "bg-slate-50 text-slate-900";
-  const headerClasses = isDark
-    ? "border-white/10 bg-slate-900/70 text-slate-100"
-    : "border-slate-200 bg-white/80 text-slate-900";
-
   if (!shop) {
-    return <div className={`min-h-screen w-full ${shellClasses}`} />;
+    return (
+      <div className="min-h-screen w-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100" />
+    );
   }
 
   const { theme: shopTheme } = shop.config;
@@ -78,20 +71,24 @@ export default function ShopLayout({ children }: Props) {
   return (
     <ShopContextProvider value={shop}>
       <div
-        className={`min-h-dvh w-full transition-colors ${shellClasses} ${isDark ? "dark" : ""}`}
+        className="min-h-dvh w-full bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100"
       >
         <div className="flex min-h-dvh flex-col lg:flex-row">
           <Sidebar
-            isSidebarOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-            isDark={isDark}
+            sidebarMode={sidebarMode}
+            onClose={closeSidebar}
+            onToggleCollapse={() =>
+              saveSidebarModePreference(
+                sidebarMode === "COLLAPSED" ? "OPEN" : "COLLAPSED",
+              )
+            }
           />
 
-          {isSidebarOpen ? (
+          {sidebarMode !== "HIDDEN" ? (
             <button
               type="button"
               className="fixed inset-0 z-30 bg-slate-950/60 lg:hidden"
-              onClick={() => setIsSidebarOpen(false)}
+              onClick={() => saveSidebarModePreference("HIDDEN")}
               aria-label="Close sidebar overlay"
             />
           ) : null}
@@ -100,19 +97,7 @@ export default function ShopLayout({ children }: Props) {
             <Header
               shopName={shop.name}
               pageTitle={pageTitle}
-              isDark={isDark}
-              headerClasses={headerClasses}
-              onToggleTheme={() => {
-                const nextTheme = isDark ? "light" : "dark";
-                document.documentElement.classList.toggle(
-                  "dark",
-                  nextTheme === "dark",
-                );
-                document.documentElement.style.colorScheme = nextTheme;
-                window.localStorage.setItem("admin-theme", nextTheme);
-                setIsDark(nextTheme === "dark");
-              }}
-              onOpenSidebar={() => setIsSidebarOpen(true)}
+              onOpenSidebar={() => saveSidebarModePreference("OPEN")}
             />
 
             <main

@@ -1,6 +1,6 @@
 "use client";
 
-import type { LoyaltyProgram } from "@/src/lib/types";
+import type { LoyaltyProgram } from "@/src/types/loyalty";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
 import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import Link from "next/link";

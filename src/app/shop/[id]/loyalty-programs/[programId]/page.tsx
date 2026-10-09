@@ -1,6 +1,5 @@
 import axios from "axios";
 import { notFound } from "next/navigation";
-import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { getLoyaltyProgram } from "@/src/lib/api/loyalty";
 import EditLoyaltyProgramPageContent from "./EditLoyaltyProgramPageContent";
 
@@ -24,17 +23,9 @@ export default async function EditLoyaltyProgramPage({
   const reward = program.config.availableRewards[0];
   if (!reward) throw new Error("Loyalty program has no configured reward.");
 
-  const loyaltyProgram: LoyaltyProgramInput = {
-    loyaltyProgramName: program.name,
-    stampIcon: program.config.stampIcon as LoyaltyProgramInput["stampIcon"],
-    goalPoints: reward.goalPoints,
-    rewardName: reward.name,
-    rewardDescription: reward.description ?? "",
-  };
-
   return (
     <EditLoyaltyProgramPageContent
-      initialValue={loyaltyProgram}
+      initialValue={program}
       shopId={shopId}
       programId={programId}
     />

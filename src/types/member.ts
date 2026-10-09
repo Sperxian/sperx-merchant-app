@@ -1,4 +1,5 @@
-import { LoyaltyProgram, Shop } from "../lib/types";
+import { Shop } from "../lib/types";
+import type { LoyaltyProgram } from "./loyalty";
 
 export type MemberLoyaltyDto = {
   id: string;

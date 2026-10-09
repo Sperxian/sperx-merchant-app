@@ -9,7 +9,7 @@ import { LoyaltySetupStep } from "@/src/app/(splash)/setup/steps/LoyaltySetupSte
 import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { MultiStepForm } from "../../../components/shared/MultiStepForm";
 import { setupShop } from "@/src/lib/api/shop";
-import { LoyaltyProgramType } from "@/src/lib/types";
+import type { LoyaltyProgramType } from "@/src/types/loyalty";
 
 export default function SetupPageContent() {
   const router = useRouter();
@@ -57,11 +57,10 @@ export default function SetupPageContent() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-between gap-8 w-full h-full md:pt-8 m-auto relative">
+    <div className="relative mx-auto flex min-h-dvh w-full flex-col items-center justify-between gap-8 overflow-hidden bg-slate-50 py-8 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100 md:pt-8">
       <div className="absolute -top-[28px] -right-[28px] w-[120px] h-[120px] rounded-full border-[18px] border-primary/10" />
       <div className="absolute bottom-[-18px] left-[18px] w-[180px] h-[180px] rounded-full border-[20px] border-primary/10" />
       <div className="absolute bottom-[35%] left-[5%] w-[320px] h-[320px] rounded-full border-[12px] border-primary/5" />
-
       <MultiStepForm stepsMetadata={stepsMetadata} onSubmit={onSubmit}>
         <ShopStep shopName={shopName} setShopName={setShopName} />
 
