@@ -9,16 +9,17 @@ const qrCenterImage = "/sperx-logo.png";
 
 type Props = {
   loyaltyProgramName: string;
-  data: string;
+  loyaltyJoinLink: string;
   onClose: () => void;
 };
 
 export default function QrDialogContent({
   loyaltyProgramName,
-  data,
+  loyaltyJoinLink,
   onClose,
 }: Props) {
   const qrCodeContainerRef = useRef<HTMLDivElement>(null);
+
 
   async function downloadQrCode() {
     const qrCode = qrCodeContainerRef.current?.querySelector("svg");
@@ -119,7 +120,7 @@ export default function QrDialogContent({
       <h2 className="self-start text-2xl">QR Code</h2>
       <div ref={qrCodeContainerRef} className="w-[50vw] max-w-[256px] gap-4">
         <QRCodeSVG
-          value={data}
+          value={loyaltyJoinLink}
           style={{ display: "block", height: "auto", width: "100%" }}
           bgColor={"var(--background)"}
           fgColor={"var(--primary)"}
@@ -137,7 +138,7 @@ export default function QrDialogContent({
         {loyaltyProgramName}
       </div>
       <div className="w-[80%]">
-        <CopyableText text={data} />
+        <CopyableText text={loyaltyJoinLink} />
       </div>
       <div className="flex w-full justify-between">
         <button

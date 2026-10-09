@@ -1,4 +1,4 @@
-import { LoyaltyProgram, LoyaltyProgramType, LoyaltyTransactionSummary, Paginated } from "../types";
+import { LoyaltyProgram, LoyaltyProgramInfo, LoyaltyProgramType, LoyaltyTransactionSummary, Paginated } from "../types";
 import apiClient from "./client";
 
 export async function getLoyaltyPrograms(
@@ -15,7 +15,7 @@ export async function getLoyaltyPrograms(
 export async function getLoyaltyProgram(
   shopId: string,
   programId: string,
-): Promise<LoyaltyProgram> {
+): Promise<LoyaltyProgramInfo> {
   const { data } = await apiClient.get(`/shop/${shopId}/loyalty/${programId}`);
 
   return {

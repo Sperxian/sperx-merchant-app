@@ -8,7 +8,23 @@ import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   type LoyaltyProgramInput,
 } from "@/src/components/widgets/LoyaltyProgramForm";
+import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/lib/types";
 import QrDialogContent from "./QrDialogContent";
+
+function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
+  const reward = program.config.availableRewards[0];
+  if (!reward) {
+    throw new Error("Loyalty program has no configured reward.");
+  }
+
+  return {
+    loyaltyProgramName: program.name,
+    stampIcon: program.config.stampIcon as LoyaltyProgramInput["stampIcon"],
+    goalPoints: reward.goalPoints,
+    rewardName: reward.name,
+    rewardDescription: reward.description ?? "",
+  };
+}
 
 function areLoyaltyProgramsEqual(
   first: LoyaltyProgramInput,
@@ -19,17 +35,23 @@ function areLoyaltyProgramsEqual(
   );
 }
 
+type Props = {
+  initialValue: LoyaltyProgramInfo;
+  shopId: string;
+  programId: string;
+};
+
 export default function EditLoyaltyProgramPageContent({
   initialValue,
   shopId,
   programId,
-}: {
-  initialValue: LoyaltyProgramInput;
-  shopId: string;
-  programId: string;
-}) {
-  const [loyaltyProgram, setLoyaltyProgram] = useState(initialValue);
-  const [savedLoyaltyProgram, setSavedLoyaltyProgram] = useState(initialValue);
+}: Props) {
+  const [loyaltyProgram, setLoyaltyProgram] = useState(() =>
+    toLoyaltyProgramInput(initialValue),
+  );
+  const [savedLoyaltyProgram, setSavedLoyaltyProgram] = useState(() =>
+    toLoyaltyProgramInput(initialValue),
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [isQrDialogOpen, setIsQrDialogOpen] = useState(false);
   const qrDialogRef = useRef<HTMLDialogElement>(null);
@@ -82,6 +104,7 @@ export default function EditLoyaltyProgramPageContent({
     },
     { label: loyaltyProgram.loyaltyProgramName },
   ];
+
   const isDirty = !areLoyaltyProgramsEqual(loyaltyProgram, savedLoyaltyProgram);
 
   return (
@@ -137,7 +160,11 @@ export default function EditLoyaltyProgramPageContent({
         onClose={() => setIsQrDialogOpen(false)}
         className="fixed m-auto max-h-[calc(100%-2rem)] w-[80vw] max-w-5xl rounded-2xl border border-white/30 bg-background p-6 text-foreground shadow-2xl backdrop:bg-black/50"
       >
-        <QrDialogContent onClose={() => setIsQrDialogOpen(false)} />
+        <QrDialogContent
+          loyaltyProgramName={loyaltyProgram.loyaltyProgramName}
+          loyaltyJoinLink={initialValue.memberJoinLink}
+          onClose={() => setIsQrDialogOpen(false)}
+        />
       </dialog>
     </div>
   );

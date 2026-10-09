@@ -42,6 +42,10 @@ export type LoyaltyProgram = {
   dateCreated: Date;
 }
 
+export type LoyaltyProgramInfo = LoyaltyProgram & {
+  memberJoinLink: string;
+}
+
 export type LoyaltyProgramType = 'STAMP_BASED';
 
 export type StampBasedConfig = {
