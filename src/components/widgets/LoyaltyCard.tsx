@@ -1,6 +1,6 @@
 import { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 import { StampGrid } from "@/src/app/shop/[id]/scanner/components/StampGrid";
-import { LoyaltyProgram } from "@/src/lib/types";
+import type { LoyaltyProgram } from "@/src/types/loyalty";
 
 type LoyaltyCardProps = {
   current: number;

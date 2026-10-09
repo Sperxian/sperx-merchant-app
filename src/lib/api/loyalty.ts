@@ -1,4 +1,5 @@
-import { LoyaltyProgram, LoyaltyProgramInfo, LoyaltyProgramType, LoyaltyTransactionSummary, Paginated } from "../types";
+import type { LoyaltyProgram, LoyaltyProgramInfo, LoyaltyProgramType } from "../../types/loyalty";
+import type { LoyaltyTransactionSummary, Paginated } from "../types";
 import apiClient from "./client";
 
 export async function getLoyaltyPrograms(

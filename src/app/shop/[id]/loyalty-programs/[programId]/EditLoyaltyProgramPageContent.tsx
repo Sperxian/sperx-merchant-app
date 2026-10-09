@@ -8,7 +8,7 @@ import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   type LoyaltyProgramInput,
 } from "@/src/components/widgets/LoyaltyProgramForm";
-import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/lib/types";
+import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/types/loyalty";
 import QrDialogContent from "./QrDialogContent";
 
 function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
