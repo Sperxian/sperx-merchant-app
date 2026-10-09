@@ -121,15 +121,17 @@ export default function EditLoyaltyProgramPageContent({
           loyaltyProgramInput={loyaltyProgram}
           setLoyaltyProgramInput={setLoyaltyProgram}
         />
-        <div className="w-full flex justify-end px-2 md:px-6">
-          <button
-            type="button"
-            onClick={() => setIsQrDialogOpen(true)}
-            className="w-fit text-sm font-medium text-primary underline underline-offset-4 transition hover:text-secondary"
-          >
-            Show QR code
-          </button>
-        </div>
+        {!isDirty && (
+          <div className="w-full flex justify-end px-2 md:px-6">
+            <button
+              type="button"
+              onClick={() => setIsQrDialogOpen(true)}
+              className="w-fit text-sm font-medium text-primary underline underline-offset-4 transition hover:text-secondary"
+            >
+              Show QR code
+            </button>
+          </div>
+        )}
         {isDirty ? (
           <>
             <hr className="border-foreground/20" />
@@ -160,6 +162,7 @@ export default function EditLoyaltyProgramPageContent({
         onClose={() => setIsQrDialogOpen(false)}
         className="fixed m-auto max-h-[calc(100%-2rem)] w-[80vw] max-w-5xl rounded-2xl border border-white/30 bg-background p-6 text-foreground shadow-2xl backdrop:bg-black/50"
       >
+        {/* Maybe use initialValue and hide Show AR code */}
         <QrDialogContent
           loyaltyProgramName={loyaltyProgram.loyaltyProgramName}
           loyaltyJoinLink={initialValue.memberJoinLink}
