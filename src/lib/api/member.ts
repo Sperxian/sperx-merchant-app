@@ -1,5 +1,5 @@
-import { MemberLoyaltyDto, MemberPointTransaction } from "@/src/types/member";
-import { Paginated, MemberSummary } from "../types";
+import { MemberLoyaltyDto, MemberLoyaltySummary, MemberPointTransaction } from "@/src/types/member";
+import { Paginated } from "../types";
 import { MemberSummary as EnrichedMemberSummary } from "@/src/types/member";
 import apiClient from "./client";
 
@@ -55,15 +55,15 @@ export async function redeemReward(shopId: string, memberId: string, rewardCode:
   return data;
 }
 
-export async function getMembers(shopId: string, page = 0, size = 50): Promise<Paginated<MemberSummary>> {
-  const { data } = await apiClient.get<Paginated<MemberSummary>>(
+export async function getMembers(shopId: string, page = 0, size = 50): Promise<Paginated<MemberLoyaltySummary>> {
+  const { data } = await apiClient.get<Paginated<MemberLoyaltySummary>>(
     `/shop/${shopId}/members`,
     { params: { page, size } }
   );
 
   return {
     ...data,
-    items: data.items.map((item: MemberSummary) => ({
+    items: data.items.map((item: MemberLoyaltySummary) => ({
       ...item,
       points: Number(item.points),
       dateCreated: new Date(item.dateCreated),

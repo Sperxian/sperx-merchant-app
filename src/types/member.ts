@@ -21,6 +21,17 @@ export type MemberLoyaltyDto = {
   dateCreated: Date;
 };
 
+export type MemberLoyaltySummary = {
+  id: string;
+  points: number;
+  identityId: string | null;
+  guestId: string | null;
+  loyaltyProgramId: string;
+  loyaltyProgramName: string;
+  loyaltyProgramType: string;
+  dateCreated: Date;
+}
+
 export type MemberPointTransaction = {
   id?: number;
   memberId: string;

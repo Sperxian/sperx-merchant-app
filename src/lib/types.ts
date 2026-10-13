@@ -41,17 +41,6 @@ export type LoyaltyTransactionSummary = {
   dateCreated: Date;
 };
 
-export type MemberSummary = {
-  id: string;
-  points: number;
-  identityId: string | null;
-  guestId: string | null;
-  loyaltyProgramId: string;
-  loyaltyProgramName: string;
-  loyaltyProgramType: string;
-  dateCreated: Date;
-}
-
 export type Paginated<T> = {
   page: number;
   size: number;
