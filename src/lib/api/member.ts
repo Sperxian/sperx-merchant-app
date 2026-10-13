@@ -26,8 +26,13 @@ export async function getMemberLoyaltyHistory(shopId: string, memberId: string, 
   };
 }
 
-export async function addMemberLoyaltyPoints(shopId: string, memberId: string, points: number) {
-  const body = { points };
+export async function addMemberLoyaltyPoints(
+  shopId: string,
+  memberId: string,
+  points: number,
+  notes?: string,
+) {
+  const body = notes ? { points, notes } : { points };
   const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/points`, body);
 
   return data;
