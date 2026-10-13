@@ -51,39 +51,41 @@ export default function AddPointsForm({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <label className="flex flex-col gap-2 text-sm font-medium">
-        Points
-        <input
-          type="number"
-          min="1"
-          step="1"
-          required
-          disabled={isSubmitting}
-          value={points}
-          onChange={(event) => {
-            setPoints(event.target.value);
-            setValidationError(undefined);
-          }}
-          className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
-        />
-      </label>
-      <label className="flex flex-col gap-2 text-sm font-medium">
-        Notes
-        <input
-          type="text"
-          disabled={isSubmitting}
-          value={notes}
-          onChange={(event) => setNotes(event.target.value)}
-          className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
-        />
-      </label>
+    <form onSubmit={handleSubmit} className="flex min-h-[260px] h-full flex-col justify-between gap-4">
+      <div className="flex flex-col gap-4">
+        <label className="flex flex-col gap-2 text-sm font-medium">
+          Points
+          <input
+            type="number"
+            min="1"
+            step="1"
+            required
+            disabled={isSubmitting}
+            value={points}
+            onChange={(event) => {
+              setPoints(event.target.value);
+              setValidationError(undefined);
+            }}
+            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+          />
+        </label>
+        <label className="flex flex-col gap-2 text-sm font-medium">
+          Notes
+          <input
+            type="text"
+            disabled={isSubmitting}
+            value={notes}
+            onChange={(event) => setNotes(event.target.value)}
+            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+          />
+        </label>
 
-      {validationError && (
-        <p role="alert" className="text-sm text-red-600">
-          {validationError}
-        </p>
-      )}
+        {validationError && (
+          <p role="alert" className="text-sm text-red-600">
+            {validationError}
+          </p>
+        )}
+      </div>
 
       <button
         type="submit"
