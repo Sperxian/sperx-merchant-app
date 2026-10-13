@@ -3,10 +3,21 @@
 import { Dialog } from "@/src/components/shared/Dialog";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import AddPointsForm from "./AddPointsForm";
 
 type TransactionAction = "add-points" | "redeem-reward";
 
-export default function LoyaltyTransactionActions() {
+type Props = {
+  shopId: string;
+  memberId: string;
+  onPointsAdded: () => void;
+};
+
+export default function LoyaltyTransactionActions({
+  shopId,
+  memberId,
+  onPointsAdded,
+}: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDialog, setActiveDialog] = useState<TransactionAction | null>(
     null,
@@ -84,11 +95,18 @@ export default function LoyaltyTransactionActions() {
         title={activeDialog === "redeem-reward" ? "Redeem Reward" : "Add Points"}
         size="md"
       >
-        <p className="pb-4 text-sm text-foreground/70">
-          {activeDialog === "redeem-reward"
-            ? "The Redeem Reward form will be available here."
-            : "The Add Points form will be available here."}
-        </p>
+        {activeDialog === "add-points" ? (
+          <AddPointsForm
+            shopId={shopId}
+            memberId={memberId}
+            onRefresh={onPointsAdded}
+            onClose={() => setActiveDialog(null)}
+          />
+        ) : (
+          <p className="pb-4 text-sm text-foreground/70">
+            The Redeem Reward form will be available here.
+          </p>
+        )}
       </Dialog>
     </>
   );

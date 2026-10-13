@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useShop } from "../../ShopContext";
 import { getMemberLoyalty } from "@/src/lib/api/member";
 import { useParams } from "next/navigation";
@@ -17,14 +17,17 @@ export default function MemberIdPage() {
 
   const memberId = params?.memberId;
 
+  const refreshMember = useCallback(async () => {
+    const data = await getMemberLoyalty(shop.id, memberId);
+    setMemberLoyaltyDto(data);
+  }, [shop.id, memberId]);
+
   useEffect(() => {
     const fetchMember = async () => {
-      const data = await getMemberLoyalty(shop.id, memberId);
-
-      setMemberLoyaltyDto(data);
+      await refreshMember();
     };
-    fetchMember();
-  }, [shop.id, memberId]);
+    void fetchMember();
+  }, [refreshMember]);
 
   return (
     <div className="flex flex-col gap-4">
@@ -42,7 +45,11 @@ export default function MemberIdPage() {
       {memberLoyaltyDto && (
         <>
           <MemberInfoSection member={memberLoyaltyDto} />
-          <LoyaltyTransactionsSection shop={shop} memberId={memberId} />
+          <LoyaltyTransactionsSection
+            shop={shop}
+            memberId={memberId}
+            onMemberRefresh={refreshMember}
+          />
         </>
       )}
     </div>
