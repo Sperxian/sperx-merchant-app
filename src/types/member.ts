@@ -1,13 +1,23 @@
-import { Shop } from "../lib/types";
 import type { LoyaltyProgram } from "./loyalty";
 
-export type MemberLoyaltyDto = {
+export type MemberSummary = {
   id: string;
-  points: number;
   identityId: string | null;
   guestId: string | null;
   loyaltyProgram: LoyaltyProgram;
-  shop: Shop;
+  netPoints: number;
+  totalAccumulatedPoints: number;
+  totalRedeemedPoints: number;
+  totalRedeemedRewards: number;
+  dateCreated: Date;
+};
+
+export type MemberLoyaltyDto = {
+  id: string;
+  identityId: string | null;
+  guestId: string | null;
+  loyaltyProgram: LoyaltyProgram;
+  points: number;
   dateCreated: Date;
 };
 

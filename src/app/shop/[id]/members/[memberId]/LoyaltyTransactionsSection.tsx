@@ -75,8 +75,8 @@ export default function LoyaltyTransactionsSection({
   };
 
   return (
-    <>
-      <div className="mb-4 flex items-center justify-between gap-4">
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col md:flex-row items-start justify-between gap-2">
         <h1 className="text-2xl font-semibold text-primary">
           Loyalty Transactions
         </h1>
@@ -96,6 +96,6 @@ export default function LoyaltyTransactionsSection({
         totalRows={totalRows}
         onPageChange={setPage}
       />
-    </>
+    </div>
   );
 }

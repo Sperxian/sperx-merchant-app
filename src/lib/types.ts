@@ -31,14 +31,6 @@ export type ThemeColors = {
   secondaryForeground?: string;
 };
 
-
-export type MemberLoyalty = {
-  id: string;
-  name?: string;
-  points: number;
-  dateCreated: Date;
-};
-
 export type LoyaltyTransactionSummary = {
   id: string;
   memberId: string;

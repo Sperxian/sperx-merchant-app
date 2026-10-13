@@ -1,8 +1,8 @@
-import { MemberLoyalty } from "@/src/lib/types";
+import { MemberLoyaltyDto } from "@/src/types/member";
 import { UserIcon } from "lucide-react";
 
 type CustomerSectionProps = {
-  customer: MemberLoyalty;
+  customer: MemberLoyaltyDto;
 };
 
 export function CustomerSection({ customer }: CustomerSectionProps) {
@@ -16,9 +16,6 @@ export function CustomerSection({ customer }: CustomerSectionProps) {
           </div>
 
           <div>
-            <p className="text-foreground text-[16px] font-medium leading-tight mb-1">
-              {customer.name}
-            </p>
             <p className="text-foreground text-xs">{customer.id}</p>
             <p className="text-foreground/50 text-xs">
               {`Member since ${customer.dateCreated}`}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { MemberLoyalty } from "@/src/lib/types";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
 import { MemberStampsSection } from "./MemberPointsSection";
@@ -10,11 +9,12 @@ import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
 import { toastError } from "@/src/lib/toast";
 import "@/src/app/globals.css";
+import { MemberLoyaltyDto } from "@/src/types/member";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
 type MemberSheetRedeemRewardContent = {
-  member?: MemberLoyalty;
+  member?: MemberLoyaltyDto;
   onClose: () => void;
   onRefresh: () => void;
 };

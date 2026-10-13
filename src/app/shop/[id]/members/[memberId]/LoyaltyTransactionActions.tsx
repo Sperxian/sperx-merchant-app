@@ -60,7 +60,7 @@ export default function LoyaltyTransactionActions({
           aria-expanded={isMenuOpen}
           aria-controls="loyalty-transaction-actions"
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-secondary-foreground transition hover:opacity-90"
+          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-secondary-foreground transition hover:opacity-90 tracking-wide transition-all uppercase"
         >
           Add Transaction
           <ChevronDown className="h-4 w-4" aria-hidden="true" />

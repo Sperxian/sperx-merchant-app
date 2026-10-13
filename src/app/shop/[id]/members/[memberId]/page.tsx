@@ -2,24 +2,24 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useShop } from "../../ShopContext";
-import { getMemberLoyalty } from "@/src/lib/api/member";
+import { getMemberSummary } from "@/src/lib/api/member";
 import { useParams } from "next/navigation";
-import { MemberLoyaltyDto } from "@/src/types/member";
 import MemberInfoSection from "./MemberInfoSection";
 import LoyaltyTransactionsSection from "./LoyaltyTransactionsSection";
 import { UsersIcon } from "lucide-react";
 import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
+import { MemberSummary } from "@/src/types/member";
 
 export default function MemberIdPage() {
   const shop = useShop();
   const params = useParams<{ memberId: string }>();
-  const [memberLoyaltyDto, setMemberLoyaltyDto] = useState<MemberLoyaltyDto>();
+  const [memberSummary, setMemberSummary] = useState<MemberSummary>();
 
   const memberId = params?.memberId;
 
   const refreshMember = useCallback(async () => {
-    const data = await getMemberLoyalty(shop.id, memberId);
-    setMemberLoyaltyDto(data);
+    const data = await getMemberSummary(shop.id, memberId);
+    setMemberSummary(data);
   }, [shop.id, memberId]);
 
   useEffect(() => {
@@ -42,15 +42,15 @@ export default function MemberIdPage() {
         ]}
       />
 
-      {memberLoyaltyDto && (
-        <>
-          <MemberInfoSection member={memberLoyaltyDto} />
+      {memberSummary && (
+        <div className="flex flex-col gap-8">
+          <MemberInfoSection memberSummary={memberSummary} />
           <LoyaltyTransactionsSection
             shop={shop}
             memberId={memberId}
             onMemberRefresh={refreshMember}
           />
-        </>
+        </div>
       )}
     </div>
   );
