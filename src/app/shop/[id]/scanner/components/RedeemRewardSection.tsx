@@ -49,8 +49,8 @@ function RewardVoucher({
             ].join(" ")}
           >
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-primary/10 p-2 text-primary group-disabled:bg-slate-200 dark:text-primary-lighter dark:group-disabled:bg-slate-700">
-                <LoyaltyStamp filled={true} size={24} />
+              <div className="rounded-full bg-primary dark:bg-primary-lighter p-2 text-primary group-disabled:bg-slate-200 dark:text-primary-lighter dark:group-disabled:bg-slate-700">
+                <LoyaltyStamp filled size={24} />
               </div>
 
               <div className="flex flex-col gap-2 text-start text-sm ">
