@@ -1,5 +1,7 @@
+import CopyableText from "@/src/components/shared/CopyableText";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
 import { MemberSummary } from "@/src/types/member";
+import { ReactNode } from "react";
 
 type Props = {
   memberSummary: MemberSummary;
@@ -17,7 +19,14 @@ export default function MemberInfoSection({ memberSummary }: Props) {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <InformationCard
           entries={[
-            { label: "Member ID", value: memberSummary.id },
+            {
+              label: "Member ID",
+              valueNode: (
+                <div className="inline-flex">
+                  <CopyableText text={memberSummary.id} />
+                </div>
+              ),
+            },
             {
               label: "Loyalty Program",
               value: memberSummary.loyaltyProgram.name,
@@ -68,7 +77,8 @@ export default function MemberInfoSection({ memberSummary }: Props) {
 
 type InformationCardEntry = {
   label: string;
-  value: string | null;
+  value?: string | null;
+  valueNode?: ReactNode;
 };
 
 function InformationCard({ entries }: { entries: InformationCardEntry[] }) {
@@ -80,7 +90,11 @@ function InformationCard({ entries }: { entries: InformationCardEntry[] }) {
             {entry.label}
           </div>
           <div className="text-md font-medium overflow-hidden text-ellipsis">
-            {entry.value ?? "-"}
+            {entry.valueNode !== undefined ? (
+              entry.valueNode
+            ) : (
+              <span> {entry.value ?? "-"}</span>
+            )}
           </div>
         </div>
       ))}
