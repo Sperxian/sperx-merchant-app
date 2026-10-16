@@ -24,8 +24,8 @@ const navigation = [
     label: "Loyalty Programs",
     icon: CreditCardIcon,
   },
-  { href: "/transactions", label: "Transactions", icon: StampIcon },
   { href: "/members", label: "Members", icon: UsersIcon },
+  { href: "/transactions", label: "Transactions", icon: StampIcon },
 ];
 
 interface SidebarProps {
