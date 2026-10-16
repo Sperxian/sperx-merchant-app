@@ -67,7 +67,7 @@ export function MemberSheetApplyStampContent({
 
   return (
     <div className="h-full flex flex-col justify-between">
-      <div className="px-4 flex flex-col flex-grow gap-4">
+      <div className="px-4 flex flex-col flex-grow gap-4 pb-8 md:pb-0">
         <AddStampSection
           stampsToReward={stampsToReward}
           setStampsToReward={setStampsToReward}
@@ -75,7 +75,7 @@ export function MemberSheetApplyStampContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 sticky bottom-0 border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
+      <div className="min-h-16 sticky bottom-0 border-t bg-slate-50 dark:bg-slate-900 rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         <ActionButton
           className="w-full rounded-xl py-3 text-sm"
           disabled={isSubmitting}
