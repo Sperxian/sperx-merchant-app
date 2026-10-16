@@ -48,8 +48,8 @@ export async function addMemberLoyaltyPoints(
   return data;
 }
 
-export async function redeemReward(shopId: string, memberId: string, rewardCode: string) {
-  const body = { rewardCode };
+export async function redeemReward(shopId: string, memberId: string, rewardCode: string, notes?: string) {
+  const body = { rewardCode, notes };
   const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/redeem`, body);
 
   return data;

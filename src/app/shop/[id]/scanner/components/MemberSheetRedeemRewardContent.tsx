@@ -7,7 +7,7 @@ import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
-import { toastError } from "@/src/lib/toast";
+import { toastError, toastSuccess } from "@/src/lib/toast";
 import "@/src/app/globals.css";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
@@ -19,8 +19,6 @@ type MemberSheetRedeemRewardContent = {
   onRefresh: () => void;
 };
 
-type SheetState = "TO_REDEEM" | "REDEEMING" | "REDEEMED";
-
 export function MemberSheetRedeemRewardContent({
   member,
   onClose,
@@ -30,7 +28,7 @@ export function MemberSheetRedeemRewardContent({
   const loyaltyProgram = useLoyaltyProgram();
 
   const [rewardCode, setRewardCode] = useState<string>();
-  const [state, setState] = useState<SheetState>("TO_REDEEM");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const rewardOptions = loyaltyProgram.config.availableRewards;
   const selectedReward = rewardOptions.find(({ code }) => code === rewardCode);
@@ -41,79 +39,60 @@ export function MemberSheetRedeemRewardContent({
   const canRedeem = member?.points && member.points >= minPoints;
 
   const handleRedeemReward = async () => {
-    if (state !== "TO_REDEEM") return;
+    if (isSubmitting || !member || !rewardCode) return;
 
     try {
-      if (!member || !rewardCode) {
-        console.log(`Missing member (${member?.id}) or reward (${rewardCode})`);
-        return;
-      }
-      setState("REDEEMING");
-      await redeemReward(shop.id, member.id, rewardCode);
+      setIsSubmitting(true);
+      await redeemReward(
+        shop.id,
+        member.id,
+        rewardCode,
+        "Scanned member QR code to redeem reward",
+      );
 
       await onRefresh();
-      setState("REDEEMED");
+      toastSuccess(`Member redeemed ${selectedReward?.name}.`);
+      onClose();
     } catch (error) {
       toastError(error);
-      setState("TO_REDEEM");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  function handleReset() {
-    onClose();
-    setRewardCode(undefined);
-    setState("TO_REDEEM");
-  }
-
   return (
     <div className="h-full flex flex-col justify-between">
-      <div className="px-4 flex flex-col flex-grow gap-4">
+      <div className="px-4 flex flex-col flex-grow gap-4 pb-4 md:pb-0">
         {!canRedeem && (
           <Alert
             variant="warning"
             message="Insufficient stamps to redeem rewards."
           />
         )}
-        {state === "REDEEMED" && (
-          <Alert
-            variant="success"
-            message={`Member redeemed ${selectedReward?.name}.`}
-          />
-        )}
-
         {/* Member Points Section */}
         <MemberStampsSection points={member?.points ?? 0} />
 
         {/* Redeem Rewards Section */}
-        <RedeemRewardSection
-          selected={rewardCode}
-          onSelect={(value) => setRewardCode(value)}
-          options={rewardOptions}
-          accumulatedPoints={member?.points ?? 0}
-        />
+        <div className="pb-4">
+          <RedeemRewardSection
+            selected={rewardCode}
+            onSelect={(value) => setRewardCode(value)}
+            options={rewardOptions}
+            accumulatedPoints={member?.points ?? 0}
+          />
+        </div>
       </div>
 
       {/* Fixed footer */}
       <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
-        {state !== "REDEEMED" ? (
-          <button
-            className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
-            uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
-            onClick={handleRedeemReward}
-            disabled={!rewardCode && state !== "REDEEMING"}
-          >
-            Redeem Reward
-          </button>
-        ) : (
-          <div className="text-center">
-            <button
-              onClick={handleReset}
-              className="text-primary dark:text-primary-lighter text-sm underline underline-offset-2 bg-transparent border-none cursor-pointer"
-            >
-              Scan another customer
-            </button>
-          </div>
-        )}
+        <button
+          className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
+          uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
+          onClick={handleRedeemReward}
+          disabled={!rewardCode || isSubmitting}
+        >
+          {isSubmitting ? "Redeeming..." : "Redeem Reward"}
+        </button>
       </div>
     </div>
   );

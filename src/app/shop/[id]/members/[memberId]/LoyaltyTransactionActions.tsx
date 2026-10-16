@@ -1,22 +1,26 @@
 "use client";
 
 import { Dialog } from "@/src/components/shared/Dialog";
+import { MemberSummary } from "@/src/types/member";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import AddPointsForm from "./AddPointsForm";
+import RedeemRewardForm from "./RedeemRewardForm";
 
 type TransactionAction = "add-points" | "redeem-reward";
 
 type Props = {
   shopId: string;
   memberId: string;
-  onPointsAdded: () => void;
+  memberSummary: MemberSummary;
+  onRefresh: () => void;
 };
 
 export default function LoyaltyTransactionActions({
   shopId,
   memberId,
-  onPointsAdded,
+  memberSummary,
+  onRefresh,
 }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDialog, setActiveDialog] = useState<TransactionAction | null>(
@@ -60,7 +64,7 @@ export default function LoyaltyTransactionActions({
           aria-expanded={isMenuOpen}
           aria-controls="loyalty-transaction-actions"
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-secondary-foreground transition hover:opacity-90 tracking-wide transition-all uppercase"
+          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 tracking-wide transition-all uppercase"
         >
           Add Transaction
           <ChevronDown className="h-4 w-4" aria-hidden="true" />
@@ -99,13 +103,17 @@ export default function LoyaltyTransactionActions({
           <AddPointsForm
             shopId={shopId}
             memberId={memberId}
-            onRefresh={onPointsAdded}
+            onRefresh={onRefresh}
             onClose={() => setActiveDialog(null)}
           />
         ) : (
-          <p className="pb-4 text-sm text-foreground/70">
-            The Redeem Reward form will be available here.
-          </p>
+          <RedeemRewardForm
+            shopId={shopId}
+            memberId={memberId}
+            memberSummary={memberSummary}
+            onRefresh={onRefresh}
+            onClose={() => setActiveDialog(null)}
+          />
         )}
       </Dialog>
     </>
