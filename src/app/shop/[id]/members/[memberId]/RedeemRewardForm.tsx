@@ -42,6 +42,7 @@ export default function RedeemRewardForm({
       onClose();
     } catch (error) {
       toastError(error);
+    } finally {
       setIsSubmitting(false);
     }
   };
