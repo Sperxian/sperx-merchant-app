@@ -79,7 +79,7 @@ export default function LoyaltyTransactionsSection({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col md:flex-row items-start justify-between gap-2">
-        <h1 className="text-2xl font-semibold text-primary">
+        <h1 className="text-2xl font-semibold text-foreground mb-4">
           Loyalty Transactions
         </h1>
 

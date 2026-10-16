@@ -58,7 +58,7 @@ export default function LoyaltyProgramPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold text-primary">
+        <h1 className="text-2xl font-semibold text-foreground">
           Loyalty Programs
         </h1>
         <Link

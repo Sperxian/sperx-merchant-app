@@ -76,7 +76,7 @@ export default function MembersPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold text-primary mb-4">Members</h1>
+      <h1 className="text-2xl font-semibold text-foreground mb-4">Members</h1>
 
       <DataTable
         columns={columns}

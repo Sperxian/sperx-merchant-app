@@ -13,7 +13,7 @@ export default function MemberInfoSection({ memberSummary }: Props) {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-2xl font-semibold text-primary">
+      <h1 className="text-2xl font-semibold text-foreground mb-4">
         Member Information
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

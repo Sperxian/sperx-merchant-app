@@ -111,7 +111,7 @@ export default function EditLoyaltyProgramPageContent({
     <div className="flex flex-col gap-4">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <h1 className="mb-4 text-2xl font-semibold text-primary dark:text-primary-lighter">
+      <h1 className="mb-4 text-2xl font-semibold text-foreground">
         <span className="text-xl">Manage </span>
         {loyaltyProgram.loyaltyProgramName}
       </h1>

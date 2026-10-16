@@ -62,7 +62,7 @@ export default function LoyaltyPage() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold text-primary mb-4">
+      <h1 className="text-2xl font-semibold text-foreground mb-4">
         Loyalty Transactions
       </h1>
 
