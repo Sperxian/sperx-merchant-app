@@ -91,7 +91,7 @@ export default function AddPointsForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 uppercase"
       >
         {isSubmitting ? "Adding points..." : "Add points"}
       </button>

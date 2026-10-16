@@ -71,7 +71,7 @@ export default function RedeemRewardForm({
         type="button"
         onClick={handleRedeem}
         disabled={!selectedCode || isSubmitting}
-        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 uppercase"
       >
         {isSubmitting ? "Redeeming..." : "Redeem Reward"}
       </button>
