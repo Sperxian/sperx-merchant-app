@@ -36,7 +36,7 @@ export function QrScanner({
       <div className="flex flex-col flex-1 justify-center min-h-[350px]">
         <button
           onClick={() => onScan(mockMemberId)}
-          className="bg-primary text-white text-md font-medium p-6 py-2 rounded-xl tracking-wide transition-all active:scale-95 hover:bg-secondary"
+          className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark active:scale-[0.98]"
         >
           Simulate QR Scan
         </button>
@@ -48,11 +48,15 @@ export function QrScanner({
     detectedCodes: IDetectedBarcode[],
     ctx: CanvasRenderingContext2D,
   ) => {
+    const primaryColor =
+      getComputedStyle(ctx.canvas).getPropertyValue("--primary").trim() ||
+      "#2d1060";
+
     detectedCodes.forEach((detectedCode) => {
       const { boundingBox, cornerPoints } = detectedCode;
 
       // Draw bounding box
-      ctx.strokeStyle = "#ffb800";
+      ctx.strokeStyle = primaryColor;
       ctx.lineWidth = 4;
       ctx.strokeRect(
         boundingBox.x,
@@ -62,7 +66,7 @@ export function QrScanner({
       );
 
       // Draw corner points
-      ctx.fillStyle = "#ffb800";
+      ctx.fillStyle = primaryColor;
       cornerPoints.forEach((point) => {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI);
@@ -74,11 +78,11 @@ export function QrScanner({
   return (
     // TODO: Turn off camera upon sheet overlay
     <div className="flex-1 flex flex-col items-center justify-center px-6">
-      <p className="text-xs font-medium text-primary dark:text-primary-lighter mb-4">
+      <p className="mb-4 text-xs font-medium text-primary dark:text-primary-lighter">
         Point camera at customer QR code
       </p>
 
-      <div className="relative w-full max-w-[280px] aspect-square bg-primary-lighter rounded-2xl overflow-hidden">
+      <div className="relative aspect-square w-full max-w-[280px] overflow-hidden rounded-2xl bg-slate-100 ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-white/10">
         <Scanner
           paused={paused}
           onScan={handleScan}
@@ -91,7 +95,7 @@ export function QrScanner({
       </div>
 
       {memberId && (
-        <p className="text-primary dark:text-primary-lighter text-xs pt-4">
+        <p className="pt-4 text-xs text-slate-500 dark:text-slate-400">
           {memberId}
         </p>
       )}

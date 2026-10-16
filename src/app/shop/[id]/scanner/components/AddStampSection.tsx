@@ -11,7 +11,7 @@ export function AddStampSection({
 }: AddStampSectionProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground/50 mb-2">
+      <p className="mb-2 text-sm font-medium text-slate-500 dark:text-slate-400">
         Apply Stamps
       </p>
       <StampCounter value={stampsToReward} onChange={setStampsToReward} />
@@ -29,16 +29,13 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
   const increment = () => onChange(value + 1);
 
   return (
-    <div className="bg-background border border-primary rounded-2xl p-3">
+    <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-slate-950">
       <div className="flex items-center">
         <button
           onClick={decrement}
           disabled={value <= 1}
           className={[
-            "w-11 h-11 rounded-full border-2 border-primary dark:border-primary-lighter",
-            "flex items-center justify-center flex-shrink-0 leading-none",
-            "text-2xl text-primary dark:text-primary-lighter",
-            "transition-all hover:bg-primary hover:text-white",
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary text-2xl leading-none text-primary transition-all hover:bg-primary hover:text-primary-foreground dark:border-primary-lighter dark:text-primary-lighter dark:hover:bg-primary-lighter dark:hover:text-primary-darkest",
             "disabled:opacity-25 disabled:cursor-not-allowed",
           ].join(" ")}
           aria-label="Remove one stamp"
@@ -46,17 +43,14 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
           −
         </button>
 
-        <span className="flex-1 text-center text-2xl font-medium text-foreground">
+        <span className="flex-1 text-center text-2xl font-semibold text-slate-900 dark:text-white">
           {value}
         </span>
 
         <button
           onClick={increment}
           className={[
-            "w-11 h-11 rounded-full border-2 border-primary dark:border-primary-lighter",
-            "flex items-center justify-center flex-shrink-0 leading-none",
-            "text-2xl text-primary dark:text-primary-lighter",
-            "transition-all hover:bg-primary hover:text-white",
+            "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary text-2xl leading-none text-primary transition-all hover:bg-primary hover:text-primary-foreground dark:border-primary-lighter dark:text-primary-lighter dark:hover:bg-primary-lighter dark:hover:text-primary-darkest",
             "disabled:opacity-25 disabled:cursor-not-allowed",
           ].join(" ")}
           aria-label="Add one stamp"

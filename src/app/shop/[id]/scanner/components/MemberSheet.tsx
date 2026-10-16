@@ -76,7 +76,7 @@ export function MemberSheet({
                     className={[
                       "rounded-full px-3 py-2 text-sm font-semibold transition",
                       isActive
-                        ? "bg-primary text-white"
+                        ? "bg-primary text-primary-foreground"
                         : "bg-white/80 text-slate-600 border border-slate-200 hover:bg-slate-100 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-800",
                     ].join(" ")}
                   >

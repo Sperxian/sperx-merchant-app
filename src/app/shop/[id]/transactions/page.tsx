@@ -7,6 +7,7 @@ import { fetchAllMemberPointTransactionsForShop } from "@/src/lib/api/loyalty";
 import { LoyaltyTransactionSummary } from "@/src/lib/types";
 import { createColumnHelper } from "@tanstack/react-table";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
+import { PageHeading } from "@/src/components/shared/PageHeading";
 
 const columnHelper = createColumnHelper<LoyaltyTransactionSummary>();
 
@@ -61,10 +62,12 @@ export default function LoyaltyPage() {
   }, [shop, page, pageSize]);
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold text-foreground mb-4">
-        Loyalty Transactions
-      </h1>
+    <div className="mx-auto flex max-w-7xl flex-col gap-6">
+      <PageHeading
+        eyebrow="Activity"
+        title="Loyalty transactions"
+        description="Review points earned and rewards redeemed across your shop."
+      />
 
       <DataTable
         columns={columns}

@@ -64,7 +64,7 @@ export default function LoyaltyTransactionActions({
           aria-expanded={isMenuOpen}
           aria-controls="loyalty-transaction-actions"
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:opacity-90 tracking-wide transition-all uppercase"
+          className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark"
         >
           Add Transaction
           <ChevronDown className="h-4 w-4" aria-hidden="true" />
@@ -73,19 +73,19 @@ export default function LoyaltyTransactionActions({
         {isMenuOpen && (
           <div
             id="loyalty-transaction-actions"
-            className="absolute right-0 z-20 mt-2 w-48 rounded-lg border border-foreground/20 bg-background p-1 shadow-lg"
+            className="absolute right-0 z-20 mt-2 w-48 rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-slate-900"
           >
             <button
               type="button"
               onClick={() => openDialog("add-points")}
-              className="w-full rounded-md px-3 py-2 text-left text-sm hover:bg-foreground/10"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-primary/5 hover:text-primary dark:text-slate-200 dark:hover:bg-primary-lighter/10 dark:hover:text-primary-lighter"
             >
               Add Points
             </button>
             <button
               type="button"
               onClick={() => openDialog("redeem-reward")}
-              className="w-full rounded-md px-3 py-2 text-left text-sm hover:bg-foreground/10"
+              className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-700 transition hover:bg-primary/5 hover:text-primary dark:text-slate-200 dark:hover:bg-primary-lighter/10 dark:hover:text-primary-lighter"
             >
               Redeem Reward
             </button>

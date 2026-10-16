@@ -67,7 +67,7 @@ export default function AddPointsForm({
               setPoints(event.target.value);
               setValidationError(undefined);
             }}
-            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
           />
         </label>
         <label className="flex flex-col gap-2 text-sm font-medium">
@@ -77,7 +77,7 @@ export default function AddPointsForm({
             disabled={isSubmitting}
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
           />
         </label>
 
@@ -91,7 +91,7 @@ export default function AddPointsForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-xl bg-primary text-white py-3 text-md font-medium uppercase tracking-wide text-primary-foreground transition-all disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? "Adding points..." : "Add points"}
       </button>

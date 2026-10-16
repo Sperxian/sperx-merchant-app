@@ -14,28 +14,27 @@ export default function RedirectingMerchantScanner() {
   return (
     <SplashPageTemplate
       defaultSlot={
-        <div className="flex flex-col items-center w-[75%] gap-4">
-          <div className="flex flex-col items-center w-full gap-2">
-            <span className="text-2xl font-bold text-primary dark:text-primary-lighter capitalize text-center">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="flex w-full flex-col items-center gap-2">
+            <span className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
               You’ve reached an unstamped territory.
             </span>
-            <span className="text-sm font-medium text-foreground/90 text-center">
+            <span className="text-sm leading-6 text-slate-500 dark:text-slate-400">
               This page expired before earning its free coffee — or{" "}
-              <span className="font-bold text-primary-lighter">
+              <span className="font-semibold text-primary dark:text-primary-lighter">
                 never existed
               </span>{" "}
               in the first place.
             </span>
           </div>
           <ShieldQuestionIcon
-            className="w-[150px] h-[150px] md:w-[200px] md:h-[200px]
-           text-primary dark:text-primary-lighter"
+            className="h-[150px] w-[150px] text-primary dark:text-primary-lighter md:h-[200px] md:w-[200px]"
           />
         </div>
       }
       actionSlot={
         <button
-          className="bg-primary hover:bg-primary/80 text-white py-4 px-10 rounded-lg inline-flex items-center justify-center gap-2"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-10 py-4 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark"
           onClick={goHome}
         >
           <HomeIcon size={18} />

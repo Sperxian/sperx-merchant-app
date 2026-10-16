@@ -57,10 +57,10 @@ export default function SetupPageContent() {
   };
 
   return (
-    <div className="relative mx-auto flex min-h-dvh w-full flex-col items-center justify-between gap-8 overflow-hidden bg-slate-50 py-8 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100 md:pt-8">
-      <div className="absolute -top-[28px] -right-[28px] w-[120px] h-[120px] rounded-full border-[18px] border-primary/10" />
-      <div className="absolute bottom-[-18px] left-[18px] w-[180px] h-[180px] rounded-full border-[20px] border-primary/10" />
-      <div className="absolute bottom-[35%] left-[5%] w-[320px] h-[320px] rounded-full border-[12px] border-primary/5" />
+    <div className="relative mx-auto flex min-h-dvh w-full flex-col items-center justify-center gap-8 overflow-hidden bg-slate-50 px-4 py-8 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100 md:py-12">
+      <div className="absolute -right-7 -top-7 h-[120px] w-[120px] rounded-full border-[18px] border-primary/10" />
+      <div className="absolute -bottom-5 left-[18px] h-[180px] w-[180px] rounded-full border-[20px] border-primary/10" />
+      <div className="absolute bottom-[35%] left-[5%] h-[320px] w-[320px] rounded-full border-[12px] border-primary/5" />
       <MultiStepForm stepsMetadata={stepsMetadata} onSubmit={onSubmit}>
         <ShopStep shopName={shopName} setShopName={setShopName} />
 

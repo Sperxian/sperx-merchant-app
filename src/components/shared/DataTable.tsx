@@ -39,12 +39,12 @@ export default function DataTable<T>({
   const totalPages = Math.max(1, Math.ceil(totalRows / pageSize));
 
   return (
-    <div className="overflow-auto rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
-      <div className="flex items-center justify-end gap-4 p-4">
-        <div className="flex items-center gap-2 text-sm">
+    <div className="overflow-auto rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-slate-900/70">
+      <div className="flex items-center justify-end gap-4 border-b border-slate-100 p-4 dark:border-white/10">
+        <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
           <button
             type="button"
-            className="rounded border border-foreground/20 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
             onClick={() => onPageChange(Math.max(0, page - 1))}
             disabled={page <= 0}
           >
@@ -55,7 +55,7 @@ export default function DataTable<T>({
           </span>
           <button
             type="button"
-            className="rounded border border-foreground/20 px-3 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg border border-slate-200 px-3 py-1.5 font-medium text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
             onClick={() => onPageChange(Math.min(totalPages - 1, page + 1))}
             disabled={page >= totalPages - 1}
           >
@@ -64,14 +64,14 @@ export default function DataTable<T>({
         </div>
       </div>
 
-      <table className="min-w-full divide-y divide-foreground/10">
-        <thead>
+      <table className="min-w-full divide-y divide-slate-100 dark:divide-white/10">
+        <thead className="bg-slate-50 dark:bg-white/[0.03]">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
                 <th
                   key={header.id}
-                  className="sticky top-0 z-10 p-4 text-left text-md font-bold"
+                  className="sticky top-0 z-10 p-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
                 >
                   {header.isPlaceholder
                     ? null
@@ -84,15 +84,15 @@ export default function DataTable<T>({
             </tr>
           ))}
         </thead>
-        <tbody className="divide-y divide-foreground/10">
+        <tbody className="divide-y divide-slate-100 dark:divide-white/10">
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="hover:bg-slate-500 cursor-pointer"
+              className={`transition-colors ${onClickRow ? "cursor-pointer" : ""} hover:bg-primary/5 dark:hover:bg-primary-lighter/10`}
               onClick={() => onClickRow?.(row.original)}
             >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="p-4 text-sm">
+                <td key={cell.id} className="p-4 text-sm text-slate-700 dark:text-slate-200">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}

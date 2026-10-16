@@ -67,7 +67,7 @@ export function Sidebar({
             isSidebarCollapsed ? "lg:justify-center" : ""
           }`}
         >
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 to-violet-500">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-lighter">
             <Image
               className="aspect-square h-8 w-8 object-scale-down"
               src={iconLocation}
@@ -127,7 +127,7 @@ export function Sidebar({
                   : ""
               } ${
                 isActive
-                  ? "bg-cyan-500/10 text-cyan-700 dark:bg-cyan-500/15 dark:text-cyan-300"
+                  ? "bg-primary/10 text-primary dark:bg-primary-lighter/15 dark:text-primary-lighter"
                   : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
               }`}
             >

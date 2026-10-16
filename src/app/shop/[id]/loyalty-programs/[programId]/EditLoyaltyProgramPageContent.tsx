@@ -10,6 +10,7 @@ import LoyaltyProgramForm, {
 } from "@/src/components/widgets/LoyaltyProgramForm";
 import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/types/loyalty";
 import QrDialogContent from "./QrDialogContent";
+import { PageHeading } from "@/src/components/shared/PageHeading";
 
 function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
   const reward = program.config.availableRewards[0];
@@ -108,15 +109,16 @@ export default function EditLoyaltyProgramPageContent({
   const isDirty = !areLoyaltyProgramsEqual(loyaltyProgram, savedLoyaltyProgram);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex max-w-5xl flex-col gap-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <h1 className="mb-4 text-2xl font-semibold text-foreground">
-        <span className="text-xl">Manage </span>
-        {loyaltyProgram.loyaltyProgramName}
-      </h1>
+      <PageHeading
+        eyebrow="Engagement"
+        title={`Manage ${loyaltyProgram.loyaltyProgramName}`}
+        description="Update your program details, reward, and member QR code."
+      />
 
-      <div className="flex flex-col mx-auto md:min-w-3xl rounded-xl md:rounded-3xl border border-white/30 p-4 shadow-2xl gap-4">
+      <div className="flex w-full flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
         <LoyaltyProgramForm
           loyaltyProgramInput={loyaltyProgram}
           setLoyaltyProgramInput={setLoyaltyProgram}
@@ -126,7 +128,7 @@ export default function EditLoyaltyProgramPageContent({
             <button
               type="button"
               onClick={() => setIsQrDialogOpen(true)}
-              className="w-fit text-sm font-medium text-primary underline underline-offset-4 transition hover:text-secondary"
+              className="w-fit text-sm font-semibold text-primary underline underline-offset-4 transition hover:text-primary-dark dark:text-primary-lighter dark:hover:text-primary-lightest"
             >
               Show QR code
             </button>
@@ -134,20 +136,20 @@ export default function EditLoyaltyProgramPageContent({
         )}
         {isDirty ? (
           <>
-            <hr className="border-foreground/20" />
-            <div className="w-full flex flex-col md:flex-row justify-between gap-4">
+            <hr className="border-slate-100 dark:border-white/10" />
+            <div className="flex w-full flex-col justify-between gap-3 sm:flex-row-reverse">
               <button
                 type="button"
                 onClick={() => saveLoyaltyProgram()}
                 disabled={isSaving}
-                className="bg-primary text-white text-md font-medium p-6 py-2 rounded-lg tracking-wide transition-all active:scale-95 hover:bg-secondary md:order-2"
+                className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {isSaving ? "Saving..." : "Save"}
               </button>
               <button
                 type="button"
                 onClick={() => setLoyaltyProgram(savedLoyaltyProgram)}
-                className="w-full inline-flex justify-center gap-2 md:order-1 md:w-fit text-md font-medium p-4 py-2 rounded-lg border border-gray-300"
+                className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5 sm:w-fit"
               >
                 Cancel
               </button>
@@ -160,7 +162,7 @@ export default function EditLoyaltyProgramPageContent({
         ref={qrDialogRef}
         aria-labelledby="loyalty-qr-dialog-title"
         onClose={() => setIsQrDialogOpen(false)}
-        className="fixed m-auto max-h-[calc(100%-2rem)] w-[80vw] max-w-5xl rounded-2xl border border-white/30 bg-background p-6 text-foreground shadow-2xl backdrop:bg-black/50"
+        className="fixed m-auto max-h-[calc(100%-2rem)] w-[min(90vw,64rem)] rounded-2xl border border-slate-200 bg-white p-6 text-slate-900 shadow-2xl backdrop:bg-slate-950/60 dark:border-white/10 dark:bg-slate-900 dark:text-slate-100"
       >
         <QrDialogContent
           loyaltyProgramInfo={initialValue}
