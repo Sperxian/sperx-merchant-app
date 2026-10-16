@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import { toastError } from "@/src/lib/toast";
 import CopyableText from "@/src/components/shared/CopyableText";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 import { LoyaltyProgramInfo } from "@/src/types/loyalty";
 
 const qrCenterImage = "/sperx-logo.png";
@@ -132,27 +133,27 @@ export default function QrDialogContent({
         />
       </div>
 
-      <div className="flex text-xl text-primary font-medium">
+      <div className="flex text-xl text-primary dark:text-primary-lighter font-medium">
         {loyaltyProgramInfo.name}
       </div>
       <div className="w-[80%]">
         <CopyableText text={loyaltyProgramInfo.memberJoinLink} />
       </div>
       <div className="flex w-full justify-between">
-        <button
-          type="button"
+        <ActionButton
+          variant="outline"
           onClick={onClose}
           className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium transition hover:bg-foreground/10"
         >
           Close
-        </button>
-        <button
-          type="button"
+        </ActionButton>
+        <ActionButton
+          variant="primary"
           onClick={downloadQrCode}
-          className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition hover:bg-secondary"
+          className="rounded-lg px-4 py-2 text-sm"
         >
           Download QR code (PNG)
-        </button>
+        </ActionButton>
       </div>
     </div>
   );

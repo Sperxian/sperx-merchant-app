@@ -3,6 +3,7 @@
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { useState, type FormEvent } from "react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type Props = {
   shopId: string;
@@ -67,7 +68,7 @@ export default function AddPointsForm({
               setPoints(event.target.value);
               setValidationError(undefined);
             }}
-            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
           />
         </label>
         <label className="flex flex-col gap-2 text-sm font-medium">
@@ -77,7 +78,7 @@ export default function AddPointsForm({
             disabled={isSubmitting}
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            className="w-full rounded-lg border border-foreground/20 bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
           />
         </label>
 
@@ -88,13 +89,13 @@ export default function AddPointsForm({
         )}
       </div>
 
-      <button
+      <ActionButton
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-xl bg-primary text-white py-3 text-md font-medium uppercase tracking-wide text-primary-foreground transition-all disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-xl py-3 text-sm"
       >
         {isSubmitting ? "Adding points..." : "Add points"}
-      </button>
+      </ActionButton>
     </form>
   );
 }

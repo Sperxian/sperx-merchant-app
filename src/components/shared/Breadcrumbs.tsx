@@ -20,8 +20,10 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
           const isCurrent = index === items.length - 1;
           const content = (
             <span
-              className={`inline-flex items-center text-sm font-medium ${
-                isCurrent ? "text-body-subtle" : "text-body"
+              className={`inline-flex items-center text-sm font-medium transition-colors ${
+                isCurrent
+                  ? "text-slate-500 dark:text-slate-400"
+                  : "text-slate-600 hover:text-primary dark:text-slate-300 dark:hover:text-primary-lighter"
               }`}
             >
               {Icon ? <Icon size={16} className="mr-2" /> : null}
@@ -36,7 +38,7 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
               className="inline-flex items-center"
             >
               {index > 0 ? (
-                <ChevronRight size={16} className="mr-1.5 text-body" />
+                <ChevronRight size={16} className="mr-1.5 text-slate-400 dark:text-slate-600" />
               ) : null}
               {href && !isCurrent ? <Link href={href}>{content}</Link> : content}
             </li>

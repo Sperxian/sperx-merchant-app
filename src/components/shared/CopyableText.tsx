@@ -34,7 +34,7 @@ export default function CopyableText({ text }: { text: string }) {
         className="relative shrink-0 cursor-pointer rounded-lg transition-all hover:scale-90"
         onClick={copyText}
       >
-        <CopyIcon color="var(--primary)" />
+        <CopyIcon className="text-primary dark:text-primary-lighter" />
       </button>
     </div>
   );

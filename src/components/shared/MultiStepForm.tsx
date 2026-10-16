@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 export type StepMetadata<T = unknown> = {
   title: string;
@@ -67,38 +68,37 @@ export function MultiStepForm<T>({
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10 bg-background">
+    <div className="mx-auto w-full max-w-4xl rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
       <StepIndicator
         steps={steps}
         currentStep={currentStep}
         onStepClick={goToStep}
       />
 
-      <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
-        <div className="min-h-[300px] flex items-center p-6">{form}</div>
+      <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10">
+        <div className="flex min-h-[300px] items-center p-5 sm:p-7">{form}</div>
 
-        <div className="flex items-center justify-between border-t border-gray-200 px-6 py-4">
+        <div className="flex items-center justify-between border-t border-slate-100 px-5 py-4 dark:border-white/10 sm:px-7">
           <button
             type="button"
             onClick={back}
             disabled={isFirstStep || isSubmitting}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-foreground transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5"
           >
             Back
           </button>
 
-          <button
-            type="button"
+          <ActionButton
             onClick={next}
             disabled={isSubmitting}
-            className="rounded-lg bg-primary px-5 py-2 text-sm font-medium text-white transition hover:bg-primary-lighter cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-xl px-5 py-2.5 text-sm"
           >
             {isSubmitting
               ? "Submitting..."
               : isLastStep
                 ? "Submit"
                 : "Continue"}
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>
@@ -139,8 +139,8 @@ export function StepIndicator<T>({
                     "flex h-9 w-9 items-center justify-center rounded-full",
                     "text-sm font-semibold transition-colors",
                     isActive || isCompleted
-                      ? "bg-primary text-white"
-                      : "bg-gray-100 text-gray-500",
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400",
                   ].join(" ")}
                 >
                   {StepIcon ? (
@@ -154,8 +154,8 @@ export function StepIndicator<T>({
                   className={[
                     "text-sm",
                     index <= currentStep
-                      ? "text-primary dark:text-primary-lighter font-bold"
-                      : "text-foreground/50 font-medium",
+                      ? "font-semibold text-primary dark:text-primary-lighter"
+                      : "font-medium text-slate-400 dark:text-slate-500",
                   ].join(" ")}
                 >
                   {step.title}
@@ -168,7 +168,7 @@ export function StepIndicator<T>({
                     "mx-4 flex-1",
                     index < currentStep
                       ? "h-0.75 bg-primary dark:bg-primary-lighter"
-                      : "h-px bg-primary-dark dark:bg-primary",
+                      : "h-px bg-slate-200 dark:bg-white/10",
                   ].join(" ")}
                 />
               )}

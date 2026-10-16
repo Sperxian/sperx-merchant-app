@@ -7,6 +7,7 @@ import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { useShop } from "../../ShopContext";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { toastError, toastSuccess } from "@/src/lib/toast";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
 interface MemberSheetApplyStampContentProps {
@@ -74,10 +75,9 @@ export function MemberSheetApplyStampContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
-        <button
-          className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
-          uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
+      <div className="min-h-20 sticky bottom-0 border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
+        <ActionButton
+          className="w-full rounded-xl py-3 text-sm"
           disabled={isSubmitting}
           onClick={handleAddStamp}
         >
@@ -86,7 +86,7 @@ export function MemberSheetApplyStampContent({
             : stampsToReward <= 1
               ? "Add 1 stamp"
               : `Add ${stampsToReward} stamps`}
-        </button>
+        </ActionButton>
       </div>
     </div>
   );

@@ -12,11 +12,14 @@ export default function MemberInfoSection({ memberSummary }: Props) {
   const isRegistered = memberSummary.identityId !== null && false;
 
   return (
-    <div className="flex flex-col gap-2">
-      <h1 className="text-2xl font-semibold text-primary">
+    <section className="flex flex-col gap-4">
+      <div>
+        <p className="mb-2 text-sm font-medium text-primary dark:text-primary-lighter">Profile</p>
+        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
         Member Information
-      </h1>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <InformationCard
           entries={[
             {
@@ -71,7 +74,7 @@ export default function MemberInfoSection({ memberSummary }: Props) {
           />
         )}
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -83,13 +86,13 @@ type InformationCardEntry = {
 
 function InformationCard({ entries }: { entries: InformationCardEntry[] }) {
   return (
-    <div className="flex flex-col gap-4 p-4 rounded-lg border border-foreground/40 bg-background/30 shadow-sm">
+    <div className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/70">
       {entries.map((entry, index) => (
         <div key={index}>
-          <div className="text-sm overflow-hidden text-ellipsis text-slate-500 dark:text-slate-400">
+          <div className="overflow-hidden text-ellipsis text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             {entry.label}
           </div>
-          <div className="text-md font-medium overflow-hidden text-ellipsis">
+          <div className="overflow-hidden text-ellipsis text-sm font-semibold text-slate-900 dark:text-white">
             {entry.valueNode !== undefined ? (
               entry.valueNode
             ) : (

@@ -72,6 +72,7 @@ export default function ShopLayout({ children }: Props) {
     <ShopContextProvider value={shop}>
       <div
         className="min-h-dvh w-full bg-slate-50 text-slate-900 transition-colors dark:bg-slate-950 dark:text-slate-100"
+        style={themeVars}
       >
         <div className="flex min-h-dvh flex-col lg:flex-row">
           <Sidebar
@@ -102,7 +103,6 @@ export default function ShopLayout({ children }: Props) {
 
             <main
               className="flex-1 min-h-0 px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8"
-              style={themeVars}
             >
               {children}
             </main>
