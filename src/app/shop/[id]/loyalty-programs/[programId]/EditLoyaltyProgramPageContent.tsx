@@ -11,6 +11,7 @@ import LoyaltyProgramForm, {
 import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/types/loyalty";
 import QrDialogContent from "./QrDialogContent";
 import { PageHeading } from "@/src/components/shared/PageHeading";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
   const reward = program.config.availableRewards[0];
@@ -138,14 +139,13 @@ export default function EditLoyaltyProgramPageContent({
           <>
             <hr className="border-slate-100 dark:border-white/10" />
             <div className="flex w-full flex-col justify-between gap-3 sm:flex-row-reverse">
-              <button
-                type="button"
+              <ActionButton
                 onClick={() => saveLoyaltyProgram()}
                 disabled={isSaving}
-                className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-40"
+                className="rounded-xl px-5 py-2.5 text-sm disabled:opacity-40"
               >
                 {isSaving ? "Saving..." : "Save"}
-              </button>
+              </ActionButton>
               <button
                 type="button"
                 onClick={() => setLoyaltyProgram(savedLoyaltyProgram)}

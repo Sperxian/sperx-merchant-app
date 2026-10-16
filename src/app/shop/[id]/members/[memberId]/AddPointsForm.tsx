@@ -3,6 +3,7 @@
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { useState, type FormEvent } from "react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type Props = {
   shopId: string;
@@ -88,13 +89,13 @@ export default function AddPointsForm({
         )}
       </div>
 
-      <button
+      <ActionButton
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 uppercase"
+        className="w-full rounded-xl py-3 text-sm"
       >
         {isSubmitting ? "Adding points..." : "Add points"}
-      </button>
+      </ActionButton>
     </form>
   );
 }

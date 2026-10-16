@@ -4,9 +4,11 @@ import "@/src/app/globals.css";
 import SplashPageTemplate from "./(splash)/SplashPageTemplate";
 import { HomeIcon, ShieldQuestionIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 export default function RedirectingMerchantScanner() {
   const router = useRouter();
+  
   const goHome = () => {
     router.push("/");
   };
@@ -27,19 +29,14 @@ export default function RedirectingMerchantScanner() {
               in the first place.
             </span>
           </div>
-          <ShieldQuestionIcon
-            className="h-[150px] w-[150px] text-primary dark:text-primary-lighter md:h-[200px] md:w-[200px]"
-          />
+          <ShieldQuestionIcon className="h-[150px] w-[150px] text-primary dark:text-primary-lighter md:h-[200px] md:w-[200px]" />
         </div>
       }
       actionSlot={
-        <button
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-10 py-4 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark"
-          onClick={goHome}
-        >
+        <ActionButton variant="primary" onClick={goHome}>
           <HomeIcon size={18} />
           Return Home
-        </button>
+        </ActionButton>
       }
     />
   );

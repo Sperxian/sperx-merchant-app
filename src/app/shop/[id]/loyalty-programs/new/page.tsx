@@ -10,14 +10,15 @@ import LoyaltyProgramForm, {
 import { createLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { PageHeading } from "@/src/components/shared/PageHeading";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 function isLoyaltyProgramValid(loyaltyProgram: LoyaltyProgramInput) {
   return Boolean(
     loyaltyProgram.loyaltyProgramName.trim() &&
-      loyaltyProgram.stampIcon &&
-      loyaltyProgram.goalPoints > 0 &&
-      loyaltyProgram.rewardName.trim() &&
-      loyaltyProgram.rewardDescription.trim(),
+    loyaltyProgram.stampIcon &&
+    loyaltyProgram.goalPoints > 0 &&
+    loyaltyProgram.rewardName.trim() &&
+    loyaltyProgram.rewardDescription.trim(),
   );
 }
 
@@ -91,21 +92,20 @@ export default function NewLoyaltyProgramPage() {
         />
         <hr className="border-slate-100 dark:border-white/10" />
         <div className="flex w-full flex-col justify-between gap-3 sm:flex-row-reverse">
-          <button
-            type="button"
-            onClick={() => void saveLoyaltyProgram()}
+          <ActionButton
+            onClick={saveLoyaltyProgram}
             disabled={isSaving || !isLoyaltyProgramValid(loyaltyProgram)}
-            className="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl px-5 py-2.5 text-sm disabled:opacity-40"
           >
             {isSaving ? "Saving..." : "Save"}
-          </button>
-          <button
-            type="button"
+          </ActionButton>
+          <ActionButton
+            variant="neutral"
             onClick={() => router.push(`/shop/${shopId}/loyalty-programs`)}
             className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5 sm:w-fit"
           >
             Back
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>

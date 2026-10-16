@@ -24,8 +24,8 @@ const variantConfig = {
     Icon: CheckCircleIcon,
   },
   info: {
-    container: "border-primary/30 bg-primary/5 text-primary dark:text-primary-lighter",
-    iconBg: "bg-primary",
+    container: "border-blue-500/30 bg-blue-500/10 text-primary dark:text-blue-300",
+    iconBg: "bg-blue-500",
     Icon: InfoIcon,
   },
 };

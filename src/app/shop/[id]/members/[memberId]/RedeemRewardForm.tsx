@@ -7,6 +7,7 @@ import { redeemReward } from "@/src/lib/api/member";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { MemberSummary } from "@/src/types/member";
 import { useState } from "react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type Props = {
   shopId: string;
@@ -67,14 +68,13 @@ export default function RedeemRewardForm({
         />
       </div>
 
-      <button
-        type="button"
+      <ActionButton
         onClick={handleRedeem}
         disabled={!selectedCode || isSubmitting}
-        className="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50 uppercase"
+        className="w-full rounded-xl py-3 text-sm"
       >
         {isSubmitting ? "Redeeming..." : "Redeem Reward"}
-      </button>
+      </ActionButton>
     </div>
   );
 }

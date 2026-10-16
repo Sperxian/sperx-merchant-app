@@ -8,6 +8,7 @@ import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
 import { toastError, toastSuccess } from "@/src/lib/toast";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 import "@/src/app/globals.css";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
@@ -84,15 +85,14 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 sticky bottom-0 bg-background border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
-        <button
-          className="w-full bg-primary dark:bg-primary-lighter text-primary-foreground
-          uppercase text-md font-medium py-3 rounded-xl tracking-wide transition-all"
+      <div className="min-h-20 sticky bottom-0 border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
+        <ActionButton
+          className="w-full rounded-xl py-3 text-sm uppercase"
           onClick={handleRedeemReward}
           disabled={!rewardCode || isSubmitting}
         >
           {isSubmitting ? "Redeeming..." : "Redeem Reward"}
-        </button>
+        </ActionButton>
       </div>
     </div>
   );

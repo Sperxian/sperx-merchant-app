@@ -4,13 +4,16 @@ import type { LoyaltyProgram } from "@/src/types/loyalty";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
 import { getLoyaltyPrograms } from "@/src/lib/api/loyalty";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { LoaderCircle, PencilIcon, PlusIcon } from "lucide-react";
 import { PageHeading } from "@/src/components/shared/PageHeading";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 export default function LoyaltyProgramPage() {
   const params = useParams<{ id: string }>();
+  const router = useRouter();
+
   const [loyaltyPrograms, setLoyaltyPrograms] = useState<LoyaltyProgram[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -46,6 +49,10 @@ export default function LoyaltyProgramPage() {
     },
   }));
 
+  const goToCreateLoyaltyProgramPage = () => {
+    router.push(`/shop/${params.id}/loyalty-programs/new`);
+  };
+
   const loadingContent = (
     <div
       role="status"
@@ -62,13 +69,15 @@ export default function LoyaltyProgramPage() {
         eyebrow="Engagement"
         title="Loyalty programs"
         description="Create and manage the rewards that keep members coming back."
-        action={<Link
-          href={`/shop/${params.id}/loyalty-programs/new`}
-          className="inline-flex w-fit items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-        >
-          <PlusIcon className="h-5 w-5" aria-hidden="true" />
-          <span>Add New</span>
-        </Link>}
+        action={
+          <ActionButton
+            onClick={goToCreateLoyaltyProgramPage}
+            className="w-fit rounded-xl px-4 py-2.5 text-sm"
+          >
+            <PlusIcon className="h-5 w-5" aria-hidden="true" />
+            <span>Add New</span>
+          </ActionButton>
+        }
       />
       <div className="flex flex-wrap items-start gap-5">
         {isLoading ? loadingContent : null}

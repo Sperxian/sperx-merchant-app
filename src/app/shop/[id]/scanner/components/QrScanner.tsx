@@ -2,6 +2,7 @@
 
 import { IDetectedBarcode, Scanner } from "@yudiel/react-qr-scanner";
 import { useState } from "react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type QrScannerProps = {
   mockMemberId?: string;
@@ -34,12 +35,12 @@ export function QrScanner({
   if (mockMemberId) {
     return (
       <div className="flex flex-col flex-1 justify-center min-h-[350px]">
-        <button
+        <ActionButton
           onClick={() => onScan(mockMemberId)}
-          className="rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark active:scale-[0.98]"
+          className="rounded-xl px-6 py-3 text-sm active:scale-[0.98]"
         >
           Simulate QR Scan
-        </button>
+        </ActionButton>
       </div>
     );
   }

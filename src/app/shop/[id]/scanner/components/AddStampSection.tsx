@@ -1,4 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type AddStampSectionProps = {
   stampsToReward: number;
@@ -31,32 +32,28 @@ export function StampCounter({ value, onChange }: StampCounterProps) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-slate-950">
       <div className="flex items-center">
-        <button
+        <ActionButton
+          variant="outline"
           onClick={decrement}
           disabled={value <= 1}
-          className={[
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary text-2xl leading-none text-primary transition-all hover:bg-primary hover:text-primary-foreground dark:border-primary-lighter dark:text-primary-lighter dark:hover:bg-primary-lighter dark:hover:text-primary-darkest",
-            "disabled:opacity-25 disabled:cursor-not-allowed",
-          ].join(" ")}
+          className="h-11 w-11 shrink-0 rounded-full p-0 text-2xl leading-none disabled:opacity-25"
           aria-label="Remove one stamp"
         >
           −
-        </button>
+        </ActionButton>
 
         <span className="flex-1 text-center text-2xl font-semibold text-slate-900 dark:text-white">
           {value}
         </span>
 
-        <button
+        <ActionButton
+          variant="outline"
           onClick={increment}
-          className={[
-            "flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 border-primary text-2xl leading-none text-primary transition-all hover:bg-primary hover:text-primary-foreground dark:border-primary-lighter dark:text-primary-lighter dark:hover:bg-primary-lighter dark:hover:text-primary-darkest",
-            "disabled:opacity-25 disabled:cursor-not-allowed",
-          ].join(" ")}
+          className="h-11 w-11 shrink-0 rounded-full p-0 text-2xl leading-none disabled:opacity-25"
           aria-label="Add one stamp"
         >
           +
-        </button>
+        </ActionButton>
       </div>
     </div>
   );

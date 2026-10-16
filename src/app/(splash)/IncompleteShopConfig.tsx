@@ -2,6 +2,7 @@ import "@/src/app/globals.css";
 import { SignOutButton } from "@clerk/nextjs";
 import { LogOutIcon } from "lucide-react";
 import SplashPageTemplate from "./SplashPageTemplate";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 export default function IncompleteShopConfig() {
   return (
@@ -20,12 +21,10 @@ export default function IncompleteShopConfig() {
       }
       actionSlot={
         <SignOutButton redirectUrl="/sign-in">
-          <button
-            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary p-4 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark"
-          >
+          <ActionButton className="w-full rounded-xl p-4 text-sm">
             <LogOutIcon size={18} />
             Logout <span className="text-white/50">(for now)</span>
-          </button>
+          </ActionButton>
         </SignOutButton>
       }
     />

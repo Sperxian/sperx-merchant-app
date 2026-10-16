@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import type { LucideIcon } from "lucide-react";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 export type StepMetadata<T = unknown> = {
   title: string;
@@ -87,18 +88,17 @@ export function MultiStepForm<T>({
             Back
           </button>
 
-          <button
-            type="button"
+          <ActionButton
             onClick={next}
             disabled={isSubmitting}
-            className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark disabled:cursor-not-allowed disabled:opacity-50"
+            className="cursor-pointer rounded-xl px-5 py-2.5 text-sm"
           >
             {isSubmitting
               ? "Submitting..."
               : isLastStep
                 ? "Submit"
                 : "Continue"}
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>

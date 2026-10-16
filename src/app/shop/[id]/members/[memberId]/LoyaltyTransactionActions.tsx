@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import AddPointsForm from "./AddPointsForm";
 import RedeemRewardForm from "./RedeemRewardForm";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type TransactionAction = "add-points" | "redeem-reward";
 
@@ -59,16 +60,15 @@ export default function LoyaltyTransactionActions({
   return (
     <>
       <div ref={menuRef} className="relative">
-        <button
-          type="button"
+        <ActionButton
           aria-expanded={isMenuOpen}
           aria-controls="loyalty-transaction-actions"
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-primary-dark"
+          className="rounded-xl px-4 py-2.5 text-sm"
         >
           Add Transaction
           <ChevronDown className="h-4 w-4" aria-hidden="true" />
-        </button>
+        </ActionButton>
 
         {isMenuOpen && (
           <div
