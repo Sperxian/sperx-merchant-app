@@ -5,7 +5,7 @@ import LoyaltyTransactionActions from "./LoyaltyTransactionActions";
 import { getMemberLoyaltyHistory } from "@/src/lib/api/member";
 import { Shop } from "@/src/lib/types";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
-import { MemberPointTransaction } from "@/src/types/member";
+import { MemberPointTransaction, MemberSummary } from "@/src/types/member";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toastError } from "@/src/lib/toast";
@@ -13,6 +13,7 @@ import { toastError } from "@/src/lib/toast";
 type Props = {
   shop: Shop;
   memberId: string;
+  memberSummary: MemberSummary;
   onMemberRefresh: () => Promise<void>;
 };
 
@@ -21,6 +22,7 @@ const columnHelper = createColumnHelper<MemberPointTransaction>();
 export default function LoyaltyTransactionsSection({
   shop,
   memberId,
+  memberSummary,
   onMemberRefresh,
 }: Props) {
   const pageSize = 20;
@@ -68,7 +70,7 @@ export default function LoyaltyTransactionsSection({
     void fetchTransactions();
   }, [refreshTransactions]);
 
-  const handlePointsAdded = () => {
+  const onRefresh = () => {
     void Promise.all([refreshTransactions(), onMemberRefresh()]).catch(
       toastError,
     );
@@ -81,10 +83,12 @@ export default function LoyaltyTransactionsSection({
           Loyalty Transactions
         </h1>
 
+
         <LoyaltyTransactionActions
           shopId={shop.id}
           memberId={memberId}
-          onPointsAdded={handlePointsAdded}
+          memberSummary={memberSummary}
+          onRefresh={onRefresh}
         />
       </div>
 

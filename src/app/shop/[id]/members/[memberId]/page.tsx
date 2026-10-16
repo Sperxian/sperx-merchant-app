@@ -48,6 +48,7 @@ export default function MemberIdPage() {
           <LoyaltyTransactionsSection
             shop={shop}
             memberId={memberId}
+            memberSummary={memberSummary}
             onMemberRefresh={refreshMember}
           />
         </div>
