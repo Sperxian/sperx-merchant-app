@@ -3,15 +3,15 @@
 import "@/src/app/globals.css";
 import { useState } from "react";
 import { AddStampSection } from "./AddStampSection";
-import { MemberLoyalty } from "@/src/lib/types";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
 import { Alert } from "@/src/components/shared/Alert";
 import { useShop } from "../../ShopContext";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { toastError } from "@/src/lib/toast";
+import { MemberLoyaltyDto } from "@/src/types/member";
 
 interface MemberSheetApplyStampContentProps {
-  member?: MemberLoyalty;
+  member?: MemberLoyaltyDto;
   onClose: () => void;
   onRefresh: () => void;
 }
@@ -41,7 +41,7 @@ export function MemberSheetApplyStampContent({
 
     try {
       setState("SUBMITTING");
-      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
+      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward, 'Scanned member QR code by admin');
       setSuccessMessage(
         cardPoints + stampsToReward >= goalPoints
           ? `Card complete! Member earned a ${rewardName}!`
