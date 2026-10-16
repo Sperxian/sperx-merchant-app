@@ -53,6 +53,7 @@ export function MemberSheetRedeemRewardContent({
 
       await onRefresh();
       toastSuccess(`Member redeemed ${selectedReward?.name}.`);
+      setRewardCode(undefined)
       onClose();
     } catch (error) {
       toastError(error);
