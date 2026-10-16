@@ -17,8 +17,9 @@ export default function AddPointsForm({
   onRefresh,
   onClose,
 }: Props) {
+  const DEFAULT_NOTES = "Manually added by admin.";
   const [points, setPoints] = useState("1");
-  const [notes, setNotes] = useState("Added by admin.");
+  const [notes, setNotes] = useState(DEFAULT_NOTES);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [validationError, setValidationError] = useState<string>();
 
@@ -39,7 +40,7 @@ export default function AddPointsForm({
         shopId,
         memberId,
         pointsToAdd,
-        notes.trim() || undefined,
+        notes.trim() || DEFAULT_NOTES,
       );
       onRefresh();
       toastSuccess("Member points have been added successfully.");

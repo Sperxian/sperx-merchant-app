@@ -41,7 +41,7 @@ export function MemberSheetApplyStampContent({
 
     try {
       setState("SUBMITTING");
-      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward);
+      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward, 'Scanned member QR code by admin');
       setSuccessMessage(
         cardPoints + stampsToReward >= goalPoints
           ? `Card complete! Member earned a ${rewardName}!`
