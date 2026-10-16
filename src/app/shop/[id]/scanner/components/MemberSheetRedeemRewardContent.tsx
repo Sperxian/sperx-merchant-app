@@ -7,7 +7,7 @@ import { MemberStampsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
-import { toastError } from "@/src/lib/toast";
+import { toastError, toastSuccess } from "@/src/lib/toast";
 import "@/src/app/globals.css";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
@@ -57,7 +57,8 @@ export function MemberSheetRedeemRewardContent({
       );
 
       await onRefresh();
-      setState("REDEEMED");
+      toastSuccess(`Member redeemed ${selectedReward?.name}.`);
+      onClose();
     } catch (error) {
       toastError(error);
       setState("TO_REDEEM");
@@ -79,13 +80,6 @@ export function MemberSheetRedeemRewardContent({
             message="Insufficient stamps to redeem rewards."
           />
         )}
-        {state === "REDEEMED" && (
-          <Alert
-            variant="success"
-            message={`Member redeemed ${selectedReward?.name}.`}
-          />
-        )}
-
         {/* Member Points Section */}
         <MemberStampsSection points={member?.points ?? 0} />
 

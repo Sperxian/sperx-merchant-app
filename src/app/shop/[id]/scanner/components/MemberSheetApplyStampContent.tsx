@@ -4,10 +4,9 @@ import "@/src/app/globals.css";
 import { useState } from "react";
 import { AddStampSection } from "./AddStampSection";
 import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
-import { Alert } from "@/src/components/shared/Alert";
 import { useShop } from "../../ShopContext";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
-import { toastError } from "@/src/lib/toast";
+import { toastError, toastSuccess } from "@/src/lib/toast";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
 interface MemberSheetApplyStampContentProps {
@@ -28,7 +27,6 @@ export function MemberSheetApplyStampContent({
 
   const [state, setState] = useState<SheetState>("IDLE");
   const [stampsToReward, setStampsToReward] = useState(1);
-  const [successMessage, setSuccessMessage] = useState<string>();
 
   const {
     config: {
@@ -41,17 +39,22 @@ export function MemberSheetApplyStampContent({
 
     try {
       setState("SUBMITTING");
-      await addMemberLoyaltyPoints(shop.id, member!.id, stampsToReward, 'Scanned member QR code by admin');
-      setSuccessMessage(
+      await addMemberLoyaltyPoints(
+        shop.id,
+        member!.id,
+        stampsToReward,
+        "Scanned member QR code by admin",
+      );
+      const message =
         cardPoints + stampsToReward >= goalPoints
           ? `Card complete! Member earned a ${rewardName}!`
           : stampsToReward === 1
             ? "Stamp rewarded!"
-            : `${stampsToReward} stamps rewarded!`,
-      );
+            : `${stampsToReward} stamps rewarded!`;
 
       await onRefresh();
-      setState("CONFIRMED");
+      toastSuccess(message);
+      onClose();
     } catch (error) {
       toastError(error);
       setState("IDLE");
@@ -76,11 +79,6 @@ export function MemberSheetApplyStampContent({
             stampsToReward={stampsToReward}
             setStampsToReward={setStampsToReward}
           />
-        )}
-
-        {/* Success */}
-        {state === "CONFIRMED" && member && (
-          <Alert variant="success" message={successMessage ?? ""} />
         )}
       </div>
 
