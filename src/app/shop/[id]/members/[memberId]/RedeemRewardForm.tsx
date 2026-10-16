@@ -36,7 +36,7 @@ export default function RedeemRewardForm({
 
     try {
       setIsSubmitting(true);
-      await redeemReward(shopId, memberId, selectedCode);
+      await redeemReward(shopId, memberId, selectedCode, "Manually redeemed by admin.");
       onRefresh();
       toastSuccess("Reward redeemed successfully.");
       onClose();

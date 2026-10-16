@@ -49,7 +49,12 @@ export function MemberSheetRedeemRewardContent({
         return;
       }
       setState("REDEEMING");
-      await redeemReward(shop.id, member.id, rewardCode);
+      await redeemReward(
+        shop.id,
+        member.id,
+        rewardCode,
+        "Scanned member QR code to redeem reward",
+      );
 
       await onRefresh();
       setState("REDEEMED");
