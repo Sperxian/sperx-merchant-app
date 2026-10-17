@@ -139,7 +139,7 @@ export function StepIndicator<T>({
                     "flex h-9 w-9 items-center justify-center rounded-full",
                     "text-sm font-semibold transition-colors",
                     isActive || isCompleted
-                      ? "bg-primary text-primary-foreground"
+                      ? "bg-primary text-white"
                       : "bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400",
                   ].join(" ")}
                 >

@@ -1,7 +1,7 @@
 "use react";
 
 import { LoyaltyStamp } from "./LoyaltyStamp";
-import { CircleCheckBigIcon, CircleIcon } from "lucide-react";
+import { CircleCheckBigIcon, CircleIcon, GiftIcon } from "lucide-react";
 import type { RewardMetadata } from "@/src/types/loyalty";
 
 type RedeemRewardSectionProps = {
@@ -49,22 +49,34 @@ function RewardVoucher({
             ].join(" ")}
           >
             <div className="flex items-center gap-4">
-              <div className="rounded-full bg-primary/10 p-2 text-primary group-disabled:bg-slate-200 dark:text-primary-lighter dark:group-disabled:bg-slate-700">
-                <LoyaltyStamp filled={true} size={24} />
+              <div className="rounded-full bg-primary dark:bg-primary-lighter p-2 text-primary group-disabled:bg-slate-200 dark:text-primary-lighter dark:group-disabled:bg-slate-700">
+                <LoyaltyStamp filled size={24} />
               </div>
 
-              <div className="flex flex-col text-start font-medium">
-                <span className="text-sm font-semibold text-slate-900 dark:text-white">{name}</span>
-                <span className="text-xs text-slate-500 dark:text-slate-400">
-                  {description ?? " ."}
-                </span>
-                <span className="inline-flex gap-2 text-xs text-primary dark:text-primary-lighter">
-                  {claimable && <CircleCheckBigIcon size={16} />}
-                  {`${goalPoints} stamps required`}
+              <div className="flex flex-col gap-2 text-start text-sm ">
+                <div className="flex flex-col">
+                  <span className="font-semibold text-slate-900 dark:text-white">
+                    {name}
+                  </span>
+                  {description && (
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
+                      {description}
+                    </span>
+                  )}
+                </div>
+                {claimable ? (
+                  <span className="inline-flex items-center gap-2 font-semibold text-primary dark:text-primary-lighter">
+                    <GiftIcon size={20} />
 
-                  {claimable && `· ${claimableRewards} claimable`}
-                </span>
+                    {`${claimableRewards} claimable`}
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-2 text-primary dark:text-primary-lighter">
+                    {`${goalPoints} stamps required`}
+                  </span>
+                )}
               </div>
+
               {claimable ? (
                 isActive ? (
                   <CircleCheckBigIcon className="ml-auto text-primary dark:text-primary-lighter" />

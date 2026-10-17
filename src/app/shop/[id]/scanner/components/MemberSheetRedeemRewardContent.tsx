@@ -53,6 +53,7 @@ export function MemberSheetRedeemRewardContent({
 
       await onRefresh();
       toastSuccess(`Member redeemed ${selectedReward?.name}.`);
+      setRewardCode(undefined)
       onClose();
     } catch (error) {
       toastError(error);
@@ -85,7 +86,7 @@ export function MemberSheetRedeemRewardContent({
       </div>
 
       {/* Fixed footer */}
-      <div className="min-h-20 sticky bottom-0 border-t rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
+      <div className="min-h-16 sticky bottom-0 border-t bg-slate-50 dark:bg-slate-900 rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         <ActionButton
           className="w-full rounded-xl py-3 text-sm uppercase"
           onClick={handleRedeemReward}
