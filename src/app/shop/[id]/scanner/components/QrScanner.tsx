@@ -5,13 +5,13 @@ import { useState } from "react";
 import { ActionButton } from "@/src/components/shared/ActionButton";
 
 type QrScannerProps = {
-  mockMemberId?: string;
+  defaultMemberId?: string;
   paused?: boolean;
   onScan: (memberId: string) => void;
 };
 
 export function QrScanner({
-  mockMemberId,
+  defaultMemberId,
   paused = false,
   onScan,
 }: QrScannerProps) {
@@ -32,11 +32,11 @@ export function QrScanner({
     }
   };
 
-  if (mockMemberId) {
+  if (defaultMemberId) {
     return (
       <div className="flex flex-col flex-1 justify-center min-h-[350px]">
         <ActionButton
-          onClick={() => onScan(mockMemberId)}
+          onClick={() => onScan(defaultMemberId)}
           className="rounded-xl px-6 py-3 text-sm active:scale-[0.98]"
         >
           Simulate QR Scan
