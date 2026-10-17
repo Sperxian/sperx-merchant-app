@@ -5,8 +5,8 @@ import { MemberSheet } from "./components/MemberSheet";
 import { getMemberLoyalty } from "@/src/lib/api/member";
 import { QrScanner } from "./components/QrScanner";
 import { useShop } from "../ShopContext";
-import { Alert } from "@/src/components/shared/Alert";
 import { MemberLoyaltyDto } from "@/src/types/member";
+import { toastError } from "@/src/lib/toast";
 
 type Props = {
   defaultMemberId?: string;
@@ -16,12 +16,10 @@ export default function QrScanPageContent({ defaultMemberId }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [memberId, setMemberId] = useState<string | null>(null);
   const [memberLoyalty, setMemberLoyalty] = useState<MemberLoyaltyDto>();
-  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const shop = useShop();
 
   const handleScan = async (memberId: string | null) => {
-    setErrorMessage("");
     setMemberId(memberId);
     if (memberId) {
       await loadMemberDetails(memberId);
@@ -29,16 +27,13 @@ export default function QrScanPageContent({ defaultMemberId }: Props) {
   };
 
   const loadMemberDetails = async (memberId: string) => {
-    const data = await getMemberLoyalty(shop.id, memberId);
-
-    if (!data) {
-      setErrorMessage(`Member scanned was not found. Please scan again.`);
-      return;
+    try {
+      const data = await getMemberLoyalty(shop.id, memberId);
+      setMemberLoyalty(data);
+      setSheetOpen(true);
+    } catch (error) {
+      toastError(error);
     }
-
-    setMemberLoyalty(data);
-
-    setSheetOpen(true);
   };
 
   function handleClose() {
@@ -54,7 +49,6 @@ export default function QrScanPageContent({ defaultMemberId }: Props) {
             defaultMemberId={defaultMemberId}
             paused={sheetOpen}
           />
-          {errorMessage && <Alert variant="error" message={errorMessage} />}
         </div>
       </div>
 
