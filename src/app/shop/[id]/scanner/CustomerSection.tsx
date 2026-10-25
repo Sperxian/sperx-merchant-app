@@ -1,26 +1,23 @@
-import { MemberLoyalty } from "@/src/lib/types";
+import { MemberLoyaltyDto } from "@/src/types/member";
 import { UserIcon } from "lucide-react";
 
 type CustomerSectionProps = {
-  customer: MemberLoyalty;
+  customer: MemberLoyaltyDto;
 };
 
 export function CustomerSection({ customer }: CustomerSectionProps) {
   return (
     <div>
-      <p className="text-sm font-medium text-foreground/50 mb-2">Customer</p>
-      <div className=" bg-background border border-primary/50 rounded-2xl p-3">
+      <p className="mb-2 text-sm font-medium text-slate-500 dark:text-slate-400">Customer</p>
+      <div className="rounded-2xl border border-slate-200 bg-white p-3 dark:border-white/10 dark:bg-slate-950">
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center text-white text-md font-medium flex-shrink-0">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary dark:text-primary-lighter">
             <UserIcon />
           </div>
 
           <div>
-            <p className="text-foreground text-[16px] font-medium leading-tight mb-1">
-              {customer.name}
-            </p>
-            <p className="text-foreground text-xs">{customer.id}</p>
-            <p className="text-foreground/50 text-xs">
+            <p className="text-xs font-medium text-slate-800 dark:text-slate-100">{customer.id}</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               {`Member since ${customer.dateCreated}`}
             </p>
           </div>

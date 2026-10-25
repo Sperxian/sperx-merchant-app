@@ -4,18 +4,19 @@ import { useEffect, useMemo, useState } from "react";
 import { useShop } from "../ShopContext";
 import { getMembers } from "@/src/lib/api/member";
 import { createColumnHelper } from "@tanstack/react-table";
-import { MemberSummary } from "@/src/lib/types";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
 import DataTable from "@/src/components/shared/DataTable";
+import { PageHeading } from "@/src/components/shared/PageHeading";
 import { CheckIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { MemberLoyaltySummary } from "@/src/types/member";
 
-const columnHelper = createColumnHelper<MemberSummary>();
+const columnHelper = createColumnHelper<MemberLoyaltySummary>();
 
 export default function MembersPage() {
   const shop = useShop();
   const router = useRouter();
-  const [members, setMembers] = useState<MemberSummary[]>([]);
+  const [members, setMembers] = useState<MemberLoyaltySummary[]>([]);
   const [page, setPage] = useState(0);
   const [pageSize] = useState(20);
   const [totalRows, setTotalRows] = useState(0);
@@ -70,13 +71,17 @@ export default function MembersPage() {
     fetchMembers();
   }, [shop, page, pageSize]);
 
-  const onClickRow = (row: MemberSummary) => {
+  const onClickRow = (row: MemberLoyaltySummary) => {
     router.push(`/shop/${shop.id}/members/${row.id}`);
-  }
+  };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-2xl font-semibold text-primary mb-4">Members</h1>
+    <div className="mx-auto flex max-w-7xl flex-col gap-6">
+      <PageHeading
+        eyebrow="People"
+        title="Members"
+        description="Browse member profiles and their loyalty activity."
+      />
 
       <DataTable
         columns={columns}

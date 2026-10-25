@@ -1,21 +1,30 @@
 "use client";
 
 import DataTable from "@/src/components/shared/DataTable";
+import LoyaltyTransactionActions from "./LoyaltyTransactionActions";
 import { getMemberLoyaltyHistory } from "@/src/lib/api/member";
 import { Shop } from "@/src/lib/types";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
-import { MemberPointTransaction } from "@/src/types/member";
+import { MemberPointTransaction, MemberSummary } from "@/src/types/member";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { toastError } from "@/src/lib/toast";
 
 type Props = {
   shop: Shop;
   memberId: string;
+  memberSummary: MemberSummary;
+  onMemberRefresh: () => Promise<void>;
 };
 
 const columnHelper = createColumnHelper<MemberPointTransaction>();
 
-export default function LoyaltyTransactionsSection({ shop, memberId }: Props) {
+export default function LoyaltyTransactionsSection({
+  shop,
+  memberId,
+  memberSummary,
+  onMemberRefresh,
+}: Props) {
   const pageSize = 20;
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
@@ -41,27 +50,50 @@ export default function LoyaltyTransactionsSection({ shop, memberId }: Props) {
     [],
   );
 
-  useEffect(() => {
-    const fetchMember = async () => {
-      const data = await getMemberLoyaltyHistory(
-        shop.id,
-        memberId,
-        page,
-        pageSize,
-      );
+  const refreshTransactions = useCallback(async () => {
+    const data = await getMemberLoyaltyHistory(
+      shop.id,
+      memberId,
+      page,
+      pageSize,
+    );
 
-      setPage(data.page);
-      setTotalRows(data.total);
-      setTransactions(data.items);
-    };
-    fetchMember();
+    setPage(data.page);
+    setTotalRows(data.total);
+    setTransactions(data.items);
   }, [shop.id, memberId, page]);
 
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      await refreshTransactions();
+    };
+    void fetchTransactions();
+  }, [refreshTransactions]);
+
+  const onRefresh = () => {
+    void Promise.all([refreshTransactions(), onMemberRefresh()]).catch(
+      toastError,
+    );
+  };
+
   return (
-    <>
-      <h1 className="text-2xl font-semibold text-primary">
-        Loyalty Transactions
-      </h1>
+    <section className="flex flex-col gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+        <div>
+          <p className="mb-2 text-sm font-medium text-primary dark:text-primary-lighter">Activity</p>
+          <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
+            Loyalty transactions
+          </h2>
+        </div>
+
+
+        <LoyaltyTransactionActions
+          shopId={shop.id}
+          memberId={memberId}
+          memberSummary={memberSummary}
+          onRefresh={onRefresh}
+        />
+      </div>
 
       <DataTable
         columns={columns}
@@ -71,6 +103,6 @@ export default function LoyaltyTransactionsSection({ shop, memberId }: Props) {
         totalRows={totalRows}
         onPageChange={setPage}
       />
-    </>
+    </section>
   );
 }

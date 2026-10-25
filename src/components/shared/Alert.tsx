@@ -9,23 +9,23 @@ type Variant = "warning" | "error" | "success" | "info";
 
 const variantConfig = {
   warning: {
-    container: "border-amber-600 bg-amber-600/10 text-amber-600",
-    iconBg: "bg-amber-600",
+    container: "border-amber-500 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+    iconBg: "bg-amber-500",
     Icon: TriangleAlertIcon,
   },
   error: {
-    container: "border-red-600 bg-red-600/10 text-red-600",
-    iconBg: "bg-red-600",
+    container: "border-rose-500 bg-rose-500/10 text-rose-700 dark:text-rose-300",
+    iconBg: "bg-rose-500",
     Icon: CircleXIcon,
   },
   success: {
-    container: "border-green-600 bg-green-600/10 text-green-600",
-    iconBg: "bg-green-600",
+    container: "border-emerald-500 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
+    iconBg: "bg-emerald-500",
     Icon: CheckCircleIcon,
   },
   info: {
-    container: "border-blue-600 bg-blue-600/10 text-blue-600",
-    iconBg: "bg-blue-600",
+    container: "border-blue-500/30 bg-blue-500/10 text-primary dark:text-blue-300",
+    iconBg: "bg-blue-500",
     Icon: InfoIcon,
   },
 };
@@ -46,12 +46,12 @@ export function Alert({
   return (
     <div
       className={[
-        "border border-2 rounded-2xl py-2 px-2 flex items-center gap-4 text-sm font-medium",
+        "flex items-center gap-3 rounded-xl border px-3 py-2 text-sm font-medium",
         container,
         className,
       ].join(" ")}
     >
-      <div className={`aspect-square p-1.5 rounded-lg ${iconBg}`}>
+      <div className={`aspect-square rounded-lg p-1.5 ${iconBg}`}>
         <Icon className="text-white" />
       </div>
 

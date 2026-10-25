@@ -15,17 +15,17 @@ export function LoyaltySetupStep({
 }: LoyaltySetupStepProps) {
   return (
     <div className="w-full">
-      <div className="text-xl font-medium text-foreground w-full mb-4">
+      <div className="mb-4 w-full text-xl font-semibold tracking-tight text-slate-900 dark:text-white">
         Design Your First Loyalty Program
       </div>
 
-      <span className="text-body text-sm pb-4">
+      <span className="pb-4 text-sm leading-6 text-slate-500 dark:text-slate-400">
         Most shops use the following default settings for their loyalty program.
         Feel free to customize them base on your business needs. You can always
         adjust these later.
       </span>
 
-      <div className="h-px w-full bg-foreground/10 mt-4 mb-6" />
+      <div className="mb-6 mt-4 h-px w-full bg-slate-100 dark:bg-white/10" />
 
       <LoyaltyProgramForm
         loyaltyProgramInput={loyaltyProgramInput}

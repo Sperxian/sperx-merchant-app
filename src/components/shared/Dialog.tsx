@@ -31,14 +31,14 @@ export function Dialog({
         "fixed inset-0 z-50",
         "rounded-none overflow-hidden ",
         "bg-black/60 shadow-lg p-0 m-0 w-full h-full max-w-none max-h-[none]",
-        "sm:m-auto sm:w-auto sm:h-auto sm:rounded-lg",
+        "sm:m-auto sm:w-auto sm:h-auto sm:rounded-2xl",
         "transition-opacity duration-300",
         open ? "opacity-100" : "opacity-0 pointer-events-none",
       ].join(" ")}
     >
       <div
         className={[
-          `${sizeClasses[size]} w-full h-full sm:max-h-3/4 sm:m-auto sm:mt-10 flex flex-col bg-background`,
+          `${sizeClasses[size]} w-full h-full sm:max-h-3/4 sm:m-auto sm:mt-10 flex flex-col border border-slate-200 bg-white text-slate-900 shadow-2xl dark:border-white/10 dark:bg-slate-900 dark:text-slate-100 sm:rounded-2xl`,
           "transition-all duration-300 ease-out",
           open
             ? "sm:opacity-100 translate-y-0  scale-100"
@@ -57,7 +57,7 @@ export function Dialog({
             </button>
           </div>
         )}
-        <div className="flex-1 overflow-y-auto p-4 pb-0">{children}</div>
+        <div className="flex-1 overflow-y-auto p-4">{children}</div>
       </div>
     </div>
   );

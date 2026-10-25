@@ -14,13 +14,13 @@ export function ShopStep({ shopName, setShopName }: ShopStepProps) {
     <div className="w-full">
       <div className="text-xl font-medium w-full mb-4">
         Welcome to{" "}
-        <span className="text-primary dark:text-primary-lighter font-medium">
+        <span className="font-medium text-primary dark:text-primary-lighter">
           SperX
         </span>
         !
       </div>
 
-      <span className="text-body text-sm">
+      <span className="text-sm text-slate-500 dark:text-slate-400">
         We&apos;re excited to have you. Let&apos;s get started by setting up
         your shop and loyalty program.
       </span>
@@ -28,7 +28,7 @@ export function ShopStep({ shopName, setShopName }: ShopStepProps) {
       <div className="pt-12 pb-6 flex flex-col items-center">
         <label
           htmlFor="shopName"
-          className="mb-2 block text-lg font-medium text-foreground"
+          className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200"
         >
           What&apos;s the name of your shop?
         </label>
@@ -38,7 +38,7 @@ export function ShopStep({ shopName, setShopName }: ShopStepProps) {
           name="shopName"
           type="text"
           placeholder="Your Shop's Name"
-          className="w-full max-w-sm rounded-lg border border-gray-300 px-3 py-2 text-lg shadow-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+          className="w-full max-w-sm rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
           value={shopName}
           onChange={(e) => setShopName(e.target.value)}
         />

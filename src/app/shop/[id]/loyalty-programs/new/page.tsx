@@ -9,14 +9,16 @@ import LoyaltyProgramForm, {
 } from "@/src/components/widgets/LoyaltyProgramForm";
 import { createLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
+import { PageHeading } from "@/src/components/shared/PageHeading";
+import { ActionButton } from "@/src/components/shared/ActionButton";
 
 function isLoyaltyProgramValid(loyaltyProgram: LoyaltyProgramInput) {
   return Boolean(
     loyaltyProgram.loyaltyProgramName.trim() &&
-      loyaltyProgram.stampIcon &&
-      loyaltyProgram.goalPoints > 0 &&
-      loyaltyProgram.rewardName.trim() &&
-      loyaltyProgram.rewardDescription.trim(),
+    loyaltyProgram.stampIcon &&
+    loyaltyProgram.goalPoints > 0 &&
+    loyaltyProgram.rewardName.trim() &&
+    loyaltyProgram.rewardDescription.trim(),
   );
 }
 
@@ -74,35 +76,36 @@ export default function NewLoyaltyProgramPage() {
   ];
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex max-w-5xl flex-col gap-6">
       <Breadcrumbs items={breadcrumbItems} />
 
-      <h1 className="mb-4 text-xl font-semibold text-primary dark:text-primary-lighter">
-        Create New Loyalty Program
-      </h1>
+      <PageHeading
+        eyebrow="Engagement"
+        title="Create a loyalty program"
+        description="Set up a reward members can earn with every visit."
+      />
 
-      <div className="flex flex-col mx-auto md:min-w-3xl rounded-xl md:rounded-3xl border border-white/30 p-4 shadow-2xl smz:p-6 gap-4">
+      <div className="flex w-full flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-slate-900/70 sm:p-7">
         <LoyaltyProgramForm
           loyaltyProgramInput={loyaltyProgram}
           setLoyaltyProgramInput={setLoyaltyProgram}
         />
-        <hr className="border-foreground/20" />
-        <div className="w-full flex flex-col md:flex-row justify-between gap-4">
-          <button
-            type="button"
-            onClick={() => void saveLoyaltyProgram()}
+        <hr className="border-slate-100 dark:border-white/10" />
+        <div className="flex w-full flex-col justify-between gap-3 sm:flex-row-reverse">
+          <ActionButton
+            onClick={saveLoyaltyProgram}
             disabled={isSaving || !isLoyaltyProgramValid(loyaltyProgram)}
-            className="bg-primary text-white text-md font-medium p-6 py-2 rounded-lg tracking-wide transition-all active:hover:bg-secondary disabled:opacity-25 md:order-2"
+            className="rounded-xl px-5 py-2.5 text-sm disabled:opacity-40"
           >
             {isSaving ? "Saving..." : "Save"}
-          </button>
-          <button
-            type="button"
+          </ActionButton>
+          <ActionButton
+            variant="neutral"
             onClick={() => router.push(`/shop/${shopId}/loyalty-programs`)}
-            className="w-full md:w-fit text-md font-medium p-4 py-2 rounded-lg border border-gray-300 md:order-1 inline-flex"
+            className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5 sm:w-fit"
           >
             Back
-          </button>
+          </ActionButton>
         </div>
       </div>
     </div>
