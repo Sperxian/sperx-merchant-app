@@ -235,7 +235,7 @@ export default function LoyaltyProgramForm({
                 current={Math.max(Math.floor(reward.goalPoints * 0.8), 1)}
                 loyaltyProgram={{
                   name: loyaltyProgramInput.loyaltyProgramName,
-                  type: "STAMP_BASED",
+                  type: loyaltyProgramInput.type,
                   config: loyaltyProgramInput.config,
                 }}
               />
