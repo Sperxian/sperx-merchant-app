@@ -1,6 +1,6 @@
 import { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 import { StampGrid } from "@/src/app/shop/[id]/scanner/components/StampGrid";
-import type { LoyaltyProgram } from "@/src/types/loyalty";
+import type { LoyaltyProgram, StampBasedConfig } from "@/src/types/loyalty";
 
 type LoyaltyCardProps = {
   current: number;
@@ -28,11 +28,15 @@ export function LoyaltyCard({ current, loyaltyProgram }: LoyaltyCardProps) {
         </p>
       </div>
 
-      <StampGrid
-        icon={loyaltyProgram.config.stampIcon as IconName}
-        collected={trackingPoints}
-        total={total}
-      />
+      {loyaltyProgram.type === "STAMP_BASED" ? (
+        <StampGrid
+          icon={
+            (loyaltyProgram.config as StampBasedConfig).stampIcon as IconName
+          }
+          collected={trackingPoints}
+          total={total}
+        />
+      ) : null}
 
       <div className="flex items-center gap-2 mt-2.5">
         <div className="flex-1 h-1 bg-secondary-darkest rounded-full overflow-hidden">

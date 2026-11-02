@@ -11,14 +11,19 @@ import { createLoyaltyProgram } from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { PageHeading } from "@/src/components/shared/PageHeading";
 import { ActionButton } from "@/src/components/shared/ActionButton";
+import { StampBasedConfig, WalletBasedConfig } from "@/src/types/loyalty";
 
 function isLoyaltyProgramValid(loyaltyProgram: LoyaltyProgramInput) {
+  const reward = loyaltyProgram.config.availableRewards[0];
   return Boolean(
     loyaltyProgram.loyaltyProgramName.trim() &&
-    loyaltyProgram.stampIcon &&
-    loyaltyProgram.goalPoints > 0 &&
-    loyaltyProgram.rewardName.trim() &&
-    loyaltyProgram.rewardDescription.trim(),
+    reward?.goalPoints > 0 &&
+    reward.name.trim() &&
+    reward.description?.trim() &&
+    (loyaltyProgram.type !== "WALLET_BASED" ||
+      ((loyaltyProgram.config as WalletBasedConfig).convertibleAmountCents >
+        0 &&
+        (loyaltyProgram.config as WalletBasedConfig).pointsAwarded > 0)),
   );
 }
 
@@ -27,10 +32,18 @@ export default function NewLoyaltyProgramPage() {
   const router = useRouter();
   const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgramInput>({
     loyaltyProgramName: "",
-    stampIcon: "star",
-    goalPoints: 10,
-    rewardName: "",
-    rewardDescription: "",
+    type: "STAMP_BASED",
+    config: {
+      stampIcon: "star",
+      availableRewards: [
+        {
+          code: "PLACEHOLDER",
+          goalPoints: 10,
+          name: "",
+          description: "",
+        },
+      ],
+    },
   });
   const [isSaving, setIsSaving] = useState(false);
 
@@ -43,18 +56,21 @@ export default function NewLoyaltyProgramPage() {
     setIsSaving(true);
 
     try {
+      const availableRewards = loyaltyProgram.config.availableRewards.map(
+        ({ name, description, goalPoints }) => ({
+          name,
+          description,
+          goalPoints,
+        }),
+      );
+      
+      // Only stamp-based config for now
       await createLoyaltyProgram(shopId, {
         name: loyaltyProgram.loyaltyProgramName,
-        type: "STAMP_BASED",
+        type: loyaltyProgram.type,
         config: {
-          stampIcon: loyaltyProgram.stampIcon,
-          availableRewards: [
-            {
-              name: loyaltyProgram.rewardName,
-              description: loyaltyProgram.rewardDescription,
-              goalPoints: loyaltyProgram.goalPoints,
-            },
-          ],
+          stampIcon: (loyaltyProgram.config as StampBasedConfig).stampIcon,
+          availableRewards,
         },
       });
       toastSuccess("Loyalty program created.");

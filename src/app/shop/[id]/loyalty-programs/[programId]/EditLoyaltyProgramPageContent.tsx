@@ -2,29 +2,35 @@
 
 import { useEffect, useRef, useState } from "react";
 import { CreditCardIcon } from "lucide-react";
-import { updateLoyaltyProgram } from "@/src/lib/api/loyalty";
+import {
+  updateLoyaltyProgram,
+  type UpdateLoyaltyProgramParams,
+} from "@/src/lib/api/loyalty";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { Breadcrumbs } from "@/src/components/shared/Breadcrumbs";
 import LoyaltyProgramForm, {
   type LoyaltyProgramInput,
 } from "@/src/components/widgets/LoyaltyProgramForm";
-import type { LoyaltyProgram, LoyaltyProgramInfo } from "@/src/types/loyalty";
+import type {
+  LoyaltyProgram,
+  LoyaltyProgramInfo,
+  LoyaltyProgramType,
+  StampBasedConfig,
+  WalletBasedConfig,
+} from "@/src/types/loyalty";
 import QrDialogContent from "./QrDialogContent";
 import { PageHeading } from "@/src/components/shared/PageHeading";
 import { ActionButton } from "@/src/components/shared/ActionButton";
 
 function toLoyaltyProgramInput(program: LoyaltyProgram): LoyaltyProgramInput {
-  const reward = program.config.availableRewards[0];
-  if (!reward) {
+  if (!program.config.availableRewards[0]) {
     throw new Error("Loyalty program has no configured reward.");
   }
 
   return {
     loyaltyProgramName: program.name,
-    stampIcon: program.config.stampIcon as LoyaltyProgramInput["stampIcon"],
-    goalPoints: reward.goalPoints,
-    rewardName: reward.name,
-    rewardDescription: reward.description ?? "",
+    type: program.type,
+    config: program.config,
   };
 }
 
@@ -72,22 +78,58 @@ export default function EditLoyaltyProgramPageContent({
   }, [isQrDialogOpen]);
 
   async function saveLoyaltyProgram() {
+    if (loyaltyProgram.type === "WALLET_BASED") {
+      const walletConfig = loyaltyProgram.config as WalletBasedConfig;
+      if (
+        !Number.isInteger(walletConfig.convertibleAmountCents) ||
+        !Number.isInteger(walletConfig.pointsAwarded) ||
+        walletConfig.convertibleAmountCents < 1 ||
+        walletConfig.pointsAwarded < 1
+      ) {
+        toastError(
+          new Error(
+            "Convertible amount and points awarded must be positive whole numbers.",
+          ),
+        );
+      }
+      return;
+    }
+
     setIsSaving(true);
 
     try {
+      let updateConfig: UpdateLoyaltyProgramParams["config"];
+      if (loyaltyProgram.type === ("WALLET_BASED" as LoyaltyProgramType)) {
+        const walletConfig = loyaltyProgram.config as WalletBasedConfig;
+        updateConfig = {
+          convertibleAmountCents: walletConfig.convertibleAmountCents,
+          pointsAwarded: walletConfig.pointsAwarded,
+          availableRewards: walletConfig.availableRewards.map(
+            ({ name, description, goalPoints }) => ({
+              name,
+              description,
+              goalPoints,
+            }),
+          ),
+        };
+      } else {
+        const stampConfig = loyaltyProgram.config as StampBasedConfig;
+        updateConfig = {
+          stampIcon: stampConfig.stampIcon,
+          availableRewards: stampConfig.availableRewards.map(
+            ({ name, description, goalPoints }) => ({
+              name,
+              description,
+              goalPoints,
+            }),
+          ),
+        };
+      }
+
       await updateLoyaltyProgram(shopId, programId, {
         name: loyaltyProgram.loyaltyProgramName,
-        type: "STAMP_BASED",
-        config: {
-          stampIcon: loyaltyProgram.stampIcon,
-          availableRewards: [
-            {
-              name: loyaltyProgram.rewardName,
-              description: loyaltyProgram.rewardDescription,
-              goalPoints: loyaltyProgram.goalPoints,
-            },
-          ],
-        },
+        type: initialValue.type,
+        config: updateConfig,
       });
       setSavedLoyaltyProgram(loyaltyProgram);
       toastSuccess("Loyalty program saved.");
