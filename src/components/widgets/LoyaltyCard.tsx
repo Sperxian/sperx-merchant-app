@@ -4,17 +4,26 @@ import { WalletLoyaltyCard } from "./WalletLoyaltyCard";
 
 type LoyaltyCardProps = {
   current: number;
+  balance?: number;
   loyaltyProgram: Omit<LoyaltyProgram, "id" | "shopId" | "dateCreated">;
 };
 
-export function LoyaltyCard({ current, loyaltyProgram }: LoyaltyCardProps) {
+export function LoyaltyCard({
+  current,
+  balance,
+  loyaltyProgram,
+}: LoyaltyCardProps) {
   if (loyaltyProgram.type === "STAMP_BASED") {
     return (
       <StampLoyaltyCard loyaltyProgram={loyaltyProgram} current={current} />
     );
   } else if (loyaltyProgram.type === "WALLET_BASED") {
     return (
-      <WalletLoyaltyCard loyaltyProgram={loyaltyProgram} current={current} />
+      <WalletLoyaltyCard
+        loyaltyProgram={loyaltyProgram}
+        currentPoints={current}
+        balance={balance ?? 0}
+      />
     );
   }
 }

@@ -1,13 +1,15 @@
-import { ArrowRightIcon, SparklesIcon, WalletCardsIcon } from "lucide-react";
+import { ArrowRightIcon, SparklesIcon, WalletIcon } from "lucide-react";
 import type { LoyaltyProgram } from "@/src/types/loyalty";
 
 type WalletLoyaltyCardProps = {
   loyaltyProgram: Omit<LoyaltyProgram, "id" | "shopId" | "dateCreated">;
-  current: number;
+  balance: number;
+  currentPoints: number;
 };
 
 export function WalletLoyaltyCard({
-  current,
+  balance,
+  currentPoints,
   loyaltyProgram,
 }: WalletLoyaltyCardProps) {
   if (!("convertibleAmountCents" in loyaltyProgram.config)) {
@@ -16,7 +18,7 @@ export function WalletLoyaltyCard({
 
   const rewardConfig = loyaltyProgram.config.availableRewards[0];
   const total = rewardConfig.goalPoints;
-  const points = Number.isFinite(current) ? Math.max(current, 0) : 0;
+  const points = Number.isFinite(currentPoints) ? Math.max(currentPoints, 0) : 0;
   const progressPoints = Math.min(points, total);
   const remainingPoints = Math.max(total - points, 0);
   const progressPercent =
@@ -36,24 +38,22 @@ export function WalletLoyaltyCard({
         className="pointer-events-none absolute -bottom-12 -left-10 h-32 w-32 rounded-full border-[20px] border-white/5"
       />
 
-      <div className="relative flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="truncate text-xs font-semibold uppercase tracking-[0.16em] text-white/70">
+      <div className="relative flex items-center justify-start gap-4">
+          <WalletIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
+          <p className="truncate text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
             {loyaltyProgram.name}
           </p>
-          <div className="mt-1 flex items-center gap-1.5 text-sm font-medium text-white/90">
-            <WalletCardsIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
-            Wallet rewards
-          </div>
-        </div>
-        <div className="shrink-0 rounded-full bg-white/10 px-2.5 py-1 text-xs font-semibold text-white/90">
-          Goal: {total} pts
-        </div>
       </div>
 
-      <div className="relative mt-5 flex flex-col md:flex-row justify-between gap-3">
-        <div className="flex flex-col w-full md:max-w-2/5">
-          <p className="text-xs font-medium text-white/70">Points balance</p>
+      <div className="relative mt-5 flex flex-row justify-between gap-3">
+        <div className="flex flex-col w-1/2">
+          <p className="text-xs font-medium text-white/70">Wallet Balance</p>
+          <p className="mt-0.5 text-3xl font-bold leading-none tracking-tight">
+            ₱ {balance.toFixed(2)}
+          </p>
+        </div>
+        <div className="flex flex-col w-1/2 text-right">
+          <p className="text-xs font-medium text-white/70">Accumulated Points</p>
           <p className="mt-0.5 text-3xl font-bold leading-none tracking-tight">
             {Math.trunc(points)}
             <span className="ml-1.5 text-sm font-semibold text-white/70">
@@ -61,25 +61,24 @@ export function WalletLoyaltyCard({
             </span>
           </p>
         </div>
-        <div className="flex w-full md:max-w-3/5 items-center justify-center rounded-xl border border-white/10 bg-white/10 px-2.5 py-2 text-right text-xs font-medium leading-tight text-white/90">
-          <span>
-            Every ₱{spendAmount} spent
-          </span>
-          <ArrowRightIcon
-            className="h-3.5 w-3.5 shrink-0 text-white/60"
-            aria-hidden="true"
-          />
-          <span className="text-secondary">
-            +{loyaltyProgram.config.pointsAwarded} pts
-          </span>
-        </div>
       </div>
 
-      <div className="relative mt-auto pt-5">
+      <div className="flex w-full mt-4 items-center justify-center rounded-lg border border-white/10 bg-white/10 px-2.5 py-2 text-right text-xs font-medium leading-tight text-white/90">
+        <span>Every ₱{spendAmount} spent</span>
+        <ArrowRightIcon
+          className="h-3.5 w-3.5 shrink-0 text-white/60"
+          aria-hidden="true"
+        />
+        <span className="text-secondary">
+          +{loyaltyProgram.config.pointsAwarded} pts
+        </span>
+      </div>
+
+      <div className="relative mt-auto pt-4">
         <div className="mb-2 flex items-center justify-between gap-2 text-xs">
           <span className="font-semibold text-white/90">
             {remainingPoints > 0
-              ? `${remainingPoints} pts to ${rewardConfig.name}`
+              ? `${remainingPoints} points to ${rewardConfig.name}`
               : `${rewardConfig.name} earned!`}
           </span>
           <span className="shrink-0 text-white/70">
