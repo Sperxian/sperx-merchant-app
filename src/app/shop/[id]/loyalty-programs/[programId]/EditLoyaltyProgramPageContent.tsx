@@ -92,7 +92,6 @@ export default function EditLoyaltyProgramPageContent({
           ),
         );
       }
-      return;
     }
 
     setIsSaving(true);
