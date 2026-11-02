@@ -229,8 +229,8 @@ export default function LoyaltyProgramForm({
             </div>
           </div>
 
-          <div className="flex w-full justify-center md:w-3/5">
-            <div className="max-w-[350px] min-w-[90%]">
+          <div className="flex w-full items-center justify-center md:w-3/5">
+            <div className="max-w-[350px] w-[90%] min-w-[300px] max-h-[250px]">
               <LoyaltyCard
                 current={Math.max(Math.floor(reward.goalPoints * 0.8), 1)}
                 loyaltyProgram={{
