@@ -3,6 +3,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
 import LoyaltyStampIconPicker from "@/src/components/widgets/LoyaltyStampIconPicker";
+import ConvertibleAmountInput from "@/src/components/widgets/ConvertibleAmountInput";
 import type { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
 import type {
   LoyaltyProgramConfig,
@@ -46,6 +47,10 @@ export default function LoyaltyProgramForm({
   }
 
   const isStampBased = loyaltyProgramInput.type === "STAMP_BASED";
+  const walletConfig =
+    loyaltyProgramInput.type === "WALLET_BASED"
+      ? (loyaltyProgramInput.config as WalletBasedConfig)
+      : undefined;
 
   return (
     <div className="w-full">
@@ -86,40 +91,29 @@ export default function LoyaltyProgramForm({
 
         <div className="flex w-full flex-col gap-4 md:mt-8 md:flex-row">
           <div className="flex w-full flex-col gap-4 md:w-2/5">
-            {loyaltyProgramInput.type === "WALLET_BASED" && (
+            {walletConfig && (
               <div className="flex flex-col">
                 <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
                   Spend Amount to Points Conversion
                 </label>
 
                 <div className="flex flex-row items-center justify-between">
-                  <input
-                    id="convertibleAmountCents"
-                    name="convertibleAmountCents"
-                    type="number"
-                    min={1}
-                    step={1}
-                    value={
-                      (loyaltyProgramInput.config as WalletBasedConfig)
-                        .convertibleAmountCents
-                    }
-                    onChange={(event) =>
+                  <ConvertibleAmountInput
+                    key={walletConfig.convertibleAmountCents}
+                    amountCents={walletConfig.convertibleAmountCents}
+                    onAmountCentsChange={(convertibleAmountCents) =>
                       setLoyaltyProgramInput((previous) =>
                         previous.type === "WALLET_BASED"
                           ? {
                               ...previous,
                               config: {
                                 ...previous.config,
-                                convertibleAmountCents: Number(
-                                  event.target.value,
-                                ),
+                                convertibleAmountCents,
                               },
                             }
                           : previous,
                       )
                     }
-                    placeholder="Amount convertible to points"
-                    className="w-full max-w-sm rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-right text-slate-900 shadow-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-white/10 dark:bg-slate-950 dark:text-slate-100"
                   />
                   <span className="px-2">
                     <ArrowBigRightDashIcon size={20} color="white" />

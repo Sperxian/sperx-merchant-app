@@ -25,7 +25,6 @@ import {
   UtensilsIcon,
   WashingMachineIcon,
 } from "lucide-react";
-import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
 
 export const ICON_MAP = Object.freeze({
