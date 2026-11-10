@@ -9,7 +9,7 @@ import { LoyaltySetupStep } from "@/src/app/(splash)/setup/steps/LoyaltySetupSte
 import type { LoyaltyProgramInput } from "@/src/components/widgets/LoyaltyProgramForm";
 import { MultiStepForm } from "../../../components/shared/MultiStepForm";
 import { setupShop } from "@/src/lib/api/shop";
-import type { LoyaltyProgramType } from "@/src/types/loyalty";
+import type { LoyaltyProgramType, StampBasedConfig } from "@/src/types/loyalty";
 
 export default function SetupPageContent() {
   const router = useRouter();
@@ -27,27 +27,39 @@ export default function SetupPageContent() {
   const [shopName, setShopName] = useState("");
   const [loyaltyProgram, setLoyaltyProgram] = useState<LoyaltyProgramInput>({
     loyaltyProgramName: "Loyalty Program",
-    stampIcon: "star",
-    goalPoints: 10,
-    rewardName: "Free Item",
-    rewardDescription: "You get a free item once you complete the points.",
+    type: "STAMP_BASED",
+    config: {
+      stampIcon: "star",
+      availableRewards: [
+        {
+          code: "PLACEHOLDER",
+          goalPoints: 10,
+          name: "Free Item",
+          description: "You get a free item once you complete the points.",
+        },
+      ],
+    },
   });
 
   const onSubmit = async () => {
+    if (loyaltyProgram.type !== "STAMP_BASED") {
+      throw new Error("Shop setup requires a stamp-based loyalty program.");
+    }
+
     const setupParams = {
       shop: { name: shopName },
       loyaltyProgram: {
         name: loyaltyProgram.loyaltyProgramName,
-        type: "STAMP_BASED" as LoyaltyProgramType,
+        type: loyaltyProgram.type as LoyaltyProgramType,
         config: {
-          stampIcon: loyaltyProgram.stampIcon,
-          availableRewards: [
-            {
-              name: loyaltyProgram.rewardName,
-              description: loyaltyProgram.rewardDescription,
-              goalPoints: loyaltyProgram.goalPoints,
-            },
-          ],
+          stampIcon: (loyaltyProgram.config as StampBasedConfig).stampIcon,
+          availableRewards: loyaltyProgram.config.availableRewards.map(
+            ({ name, description, goalPoints }) => ({
+              name,
+              description,
+              goalPoints,
+            }),
+          ),
         },
       },
     };

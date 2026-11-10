@@ -25,7 +25,6 @@ import {
   UtensilsIcon,
   WashingMachineIcon,
 } from "lucide-react";
-import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 
 
 export const ICON_MAP = Object.freeze({
@@ -65,15 +64,6 @@ interface Props {
   size?: number;
 }
 
-export function MemberLoyaltyStamp({ filled = false, size = 20 }: Props) {
-  const loyaltyProgram = useLoyaltyProgram()
-  const { stampIcon } = loyaltyProgram.config;
-
-  return (
-    <LoyaltyStamp filled={filled} size={size} icon={stampIcon as IconName} />
-  );
-}
-
 export function LoyaltyStamp({ filled = false, size = 20, icon }: Props) {
   const finalIcon = icon as IconName;
   const IconComponent = ICON_MAP[finalIcon] ?? DEFAULT_ICON;
@@ -81,4 +71,3 @@ export function LoyaltyStamp({ filled = false, size = 20, icon }: Props) {
 
   return <IconComponent color={color} size={size} />;
 }
-

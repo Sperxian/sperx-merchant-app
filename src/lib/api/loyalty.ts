@@ -1,4 +1,8 @@
-import type { LoyaltyProgram, LoyaltyProgramInfo, LoyaltyProgramType } from "../../types/loyalty";
+import type {
+  LoyaltyProgram,
+  LoyaltyProgramInfo,
+  LoyaltyProgramType,
+} from "../../types/loyalty";
 import type { LoyaltyTransactionSummary, Paginated } from "../types";
 import apiClient from "./client";
 
@@ -66,12 +70,23 @@ export async function fetchAllMemberPointTransactionsForShop(shopId: string, pag
 export type UpdateLoyaltyProgramParams = {
   name: string;
   type: LoyaltyProgramType;
-  config: {
-    stampIcon: string;
-    availableRewards: {
-      name: string;
-      description?: string;
-      goalPoints: number;
-    }[];
-  };
+  config: StampBasedConfigInput| WalletBasedConfigInput;
+};
+
+
+export type StampBasedConfigInput = {
+  stampIcon: string;
+  availableRewards: RewardMetadataInput[];
+};
+
+export type WalletBasedConfigInput = {
+  convertibleAmountCents: number;
+  pointsAwarded: number;
+  availableRewards: RewardMetadataInput[];
+};
+
+export type RewardMetadataInput = {
+  name: string;
+  description?: string;
+  goalPoints: number;
 };
