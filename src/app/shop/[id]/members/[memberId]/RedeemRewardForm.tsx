@@ -2,7 +2,7 @@
 
 import { Alert } from "@/src/components/shared/Alert";
 import { RedeemRewardSection } from "@/src/app/shop/[id]/scanner/components/RedeemRewardSection";
-import { MemberStampsSection } from "@/src/app/shop/[id]/scanner/components/MemberPointsSection";
+import { MemberPointsSection } from "@/src/app/shop/[id]/scanner/components/MemberPointsSection";
 import { redeemReward } from "@/src/lib/api/member";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import { MemberSummary } from "@/src/types/member";
@@ -58,7 +58,7 @@ export default function RedeemRewardForm({
           />
         )}
 
-        <MemberStampsSection points={memberSummary.netPoints} />
+        <MemberPointsSection points={memberSummary.netPoints} />
 
         <RedeemRewardSection
           selected={selectedCode}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { GiftIcon } from "lucide-react";
 import { RedeemRewardSection } from "./RedeemRewardSection";
 import { redeemReward } from "@/src/lib/api/member";
-import { MemberStampsSection } from "./MemberPointsSection";
+import { MemberPointsSection } from "./MemberPointsSection";
 import { Alert } from "@/src/components/shared/Alert";
 import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
 import { useShop } from "../../ShopContext";
@@ -33,6 +34,10 @@ export function MemberSheetRedeemRewardContent({
 
   const rewardOptions = loyaltyProgram.config.availableRewards;
   const selectedReward = rewardOptions.find(({ code }) => code === rewardCode);
+  const remainingPoints = Math.max(
+    (member?.points ?? 0) - (selectedReward?.goalPoints ?? 0),
+    0,
+  );
 
   const minPoints = Math.min(
     ...rewardOptions.map((reward) => reward.goalPoints),
@@ -53,7 +58,7 @@ export function MemberSheetRedeemRewardContent({
 
       await onRefresh();
       toastSuccess(`Member redeemed ${selectedReward?.name}.`);
-      setRewardCode(undefined)
+      setRewardCode(undefined);
       onClose();
     } catch (error) {
       toastError(error);
@@ -64,18 +69,18 @@ export function MemberSheetRedeemRewardContent({
 
   return (
     <div className="h-full flex flex-col justify-between">
-      <div className="px-4 flex flex-col flex-grow gap-4 pb-4 md:pb-0">
+      <div className="px-4 flex flex-col flex-grow gap-5 pb-4 md:pb-0">
         {!canRedeem && (
           <Alert
             variant="warning"
             message="Insufficient stamps to redeem rewards."
           />
         )}
-        {/* Member Points Section */}
-        <MemberStampsSection points={member?.points ?? 0} />
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
+          <MemberPointsSection points={member?.points ?? 0} />
+        </div>
 
-        {/* Redeem Rewards Section */}
-        <div className="pb-4">
+        <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60">
           <RedeemRewardSection
             selected={rewardCode}
             onSelect={(value) => setRewardCode(value)}
@@ -83,6 +88,24 @@ export function MemberSheetRedeemRewardContent({
             accumulatedPoints={member?.points ?? 0}
           />
         </div>
+        {selectedReward && (
+          <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 dark:border-primary-lighter/20 dark:bg-primary-lighter/5">
+            <div className="flex items-center justify-between gap-4 text-sm">
+              <span className="flex min-w-0 items-center gap-2 text-slate-600 dark:text-slate-300">
+                <GiftIcon
+                  className="h-4 w-4 shrink-0 text-primary dark:text-primary-lighter"
+                  aria-hidden="true"
+                />
+                <span className="truncate">
+                  Points after redeeming {selectedReward.name}
+                </span>
+              </span>
+              <span className="shrink-0 font-semibold text-slate-900 dark:text-slate-100">
+                {remainingPoints}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Fixed footer */}
