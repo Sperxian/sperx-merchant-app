@@ -5,6 +5,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { MemberSheetApplyStampContent } from "./MemberSheetApplyStampContent";
 import { MemberSheetRedeemRewardContent } from "./MemberSheetRedeemRewardContent";
 import { MemberSheetTopUpBalanceContent } from "./MemberSheetTopUpBalanceContent";
+import { MemberSheetSpendBalanceContent } from "./MemberSheetSpendBalanceContent";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { CustomerSection } from "./CustomerSection";
 import { LoyaltyProgramContextProvider } from "../../LoyaltyProgramContext";
@@ -15,12 +16,14 @@ import { MemberLoyaltyDto } from "@/src/types/member";
 export type MODE_OPTION =
   | "APPLY_STAMP"
   | "REDEEM_REWARD"
-  | "TOP_UP_BALANCE";
+  | "TOP_UP_BALANCE"
+  | "SPEND_BALANCE";
 
 const tabs: Array<{ key: MODE_OPTION; label: string }> = [
   { key: "APPLY_STAMP", label: "Apply Stamp" },
   { key: "REDEEM_REWARD", label: "Redeem Reward" },
   { key: "TOP_UP_BALANCE", label: "Top-up Balance" },
+  { key: "SPEND_BALANCE", label: "Spend Balance" },
 ];
 
 interface MemberSheetProps {
@@ -72,17 +75,20 @@ export function MemberSheet({
       availableRewards: [{ goalPoints }],
     },
   } = loyaltyProgram;
+
   const visibleTabs =
     loyaltyProgram.type === "WALLET_BASED"
       ? tabs
-      : tabs.filter((tab) => tab.key !== "TOP_UP_BALANCE");
+      : tabs.filter(
+          (tab) => tab.key !== "TOP_UP_BALANCE" && tab.key !== "SPEND_BALANCE",
+        );
 
   const currentTab = visibleTabs.some((tab) => tab.key === activeTab)
     ? activeTab
     : "APPLY_STAMP";
+
   const currentTabLabel =
     visibleTabs.find((tab) => tab.key === currentTab)?.label ?? "Member action";
-  const actionMenuId = `member-action-menu-${member.id}`;
 
   const currentPoints = member?.points ?? 0;
   const hasRedeemableReward = currentPoints >= goalPoints;
@@ -116,7 +122,6 @@ export function MemberSheet({
                   type="button"
                   aria-label="Choose member action"
                   aria-expanded={isActionMenuOpen}
-                  aria-controls={actionMenuId}
                   onClick={() => setIsActionMenuOpen((isOpen) => !isOpen)}
                   className="inline-flex items-center justify-center rounded-r-xl border border-slate-200 bg-primary px-3 text-white transition hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:border-slate-700"
                 >
@@ -130,10 +135,7 @@ export function MemberSheet({
                 </button>
               </div>
               {isActionMenuOpen && (
-                <div
-                  id={actionMenuId}
-                  className="absolute left-0 right-0 z-20 mt-2 rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-slate-900"
-                >
+                <div className="absolute left-0 right-0 z-20 mt-2 rounded-xl border border-slate-200 bg-white p-1 shadow-lg dark:border-white/10 dark:bg-slate-900">
                   {visibleTabs.map((tab) => (
                     <button
                       key={tab.key}
@@ -188,9 +190,16 @@ export function MemberSheet({
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
-            ) : (
+            ) : currentTab === "TOP_UP_BALANCE" ? (
               <MemberSheetTopUpBalanceContent />
-            )}
+            ) : "convertibleAmountCents" in loyaltyProgram.config ? (
+              <MemberSheetSpendBalanceContent
+                member={member}
+                config={loyaltyProgram.config}
+                onClose={onClose}
+                onRefresh={onRefresh}
+              />
+            ) : null}
           </div>
         </div>
       </Dialog>
