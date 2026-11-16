@@ -15,15 +15,15 @@ import { MemberLoyaltyDto } from "@/src/types/member";
 
 export type MODE_OPTION =
   | "APPLY_STAMP"
-  | "REDEEM_REWARD"
+  | "SPEND_BALANCE"
   | "TOP_UP_BALANCE"
-  | "SPEND_BALANCE";
+  | "REDEEM_REWARD";
 
 const tabs: Array<{ key: MODE_OPTION; label: string }> = [
   { key: "APPLY_STAMP", label: "Apply Stamp" },
-  { key: "REDEEM_REWARD", label: "Redeem Reward" },
-  { key: "TOP_UP_BALANCE", label: "Top-up Balance" },
   { key: "SPEND_BALANCE", label: "Spend Balance" },
+  { key: "TOP_UP_BALANCE", label: "Top-up Balance" },
+  { key: "REDEEM_REWARD", label: "Redeem Reward" },
 ];
 
 interface MemberSheetProps {
@@ -78,14 +78,14 @@ export function MemberSheet({
 
   const visibleTabs =
     loyaltyProgram.type === "WALLET_BASED"
-      ? tabs
+      ? tabs.filter((tab) => tab.key !== "APPLY_STAMP")
       : tabs.filter(
           (tab) => tab.key !== "TOP_UP_BALANCE" && tab.key !== "SPEND_BALANCE",
         );
 
   const currentTab = visibleTabs.some((tab) => tab.key === activeTab)
     ? activeTab
-    : "APPLY_STAMP";
+    : (visibleTabs[0]?.key ?? "APPLY_STAMP");
 
   const currentTabLabel =
     visibleTabs.find((tab) => tab.key === currentTab)?.label ?? "Member action";
