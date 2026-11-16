@@ -51,6 +51,7 @@ export function MemberSheetTopUpBalanceContent({
       setIsSubmitting(true);
       await topUpMemberBalance(shop.id, member.id, amountCents);
       await onRefresh();
+      setAmount(String(MINIMUM_TOP_UP_PESOS));
       toastSuccess("Member wallet balance topped up successfully.");
       onClose();
     } catch (error) {
