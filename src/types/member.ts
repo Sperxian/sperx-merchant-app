@@ -18,6 +18,7 @@ export type MemberLoyaltyDto = {
   guestId: string | null;
   loyaltyProgram: LoyaltyProgram;
   points: number;
+  walletBalance?: number;
   dateCreated: Date;
 };
 

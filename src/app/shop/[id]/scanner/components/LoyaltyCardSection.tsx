@@ -1,23 +1,23 @@
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
-import { useLoyaltyProgram } from "../../LoyaltyProgramContext";
+import type { MemberLoyaltyDto } from "@/src/types/member";
 
 export type LoyaltyCardSectionProps = {
-  current: number;
+  member: MemberLoyaltyDto;
 };
 
 export function LoyaltyCardSection(props: LoyaltyCardSectionProps) {
-  const loyaltyProgram = useLoyaltyProgram();
-
+  const balance = (props.member.walletBalance ?? 0) / 100
   return (
     <div>
       <p className="text-sm font-medium text-foreground/50 mb-2">
         Loyalty Card
-      </p>
+      </p>z
       <div className="w-full flex flex-col items-center">
         <div className="h-64 max-h-[360px] w-full md:w-sm">
           <LoyaltyCard
-            current={props.current}
-            loyaltyProgram={loyaltyProgram}
+            current={props.member.points}
+            balance={balance}
+            loyaltyProgram={props.member.loyaltyProgram}
           />
         </div>
       </div>
