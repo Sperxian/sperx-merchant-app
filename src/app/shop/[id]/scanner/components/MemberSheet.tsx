@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { MemberSheetApplyStampContent } from "./MemberSheetApplyStampContent";
 import { MemberSheetRedeemRewardContent } from "./MemberSheetRedeemRewardContent";
+import { MemberSheetTopUpBalanceContent } from "./MemberSheetTopUpBalanceContent";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
 import { CustomerSection } from "./CustomerSection";
 import { LoyaltyProgramContextProvider } from "../../LoyaltyProgramContext";
@@ -10,11 +11,15 @@ import { Alert } from "@/src/components/shared/Alert";
 import { Dialog } from "@/src/components/shared/Dialog";
 import { MemberLoyaltyDto } from "@/src/types/member";
 
-export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
+export type MODE_OPTION =
+  | "APPLY_STAMP"
+  | "REDEEM_REWARD"
+  | "TOP_UP_BALANCE";
 
 const tabs: Array<{ key: MODE_OPTION; label: string }> = [
   { key: "APPLY_STAMP", label: "Apply Stamp" },
   { key: "REDEEM_REWARD", label: "Redeem Reward" },
+  { key: "TOP_UP_BALANCE", label: "Top-up Balance" },
 ];
 
 interface MemberSheetProps {
@@ -41,6 +46,14 @@ export function MemberSheet({
       availableRewards: [{ goalPoints }],
     },
   } = loyaltyProgram;
+  const visibleTabs =
+    loyaltyProgram.type === "WALLET_BASED"
+      ? tabs
+      : tabs.filter((tab) => tab.key !== "TOP_UP_BALANCE");
+      
+  const currentTab = visibleTabs.some((tab) => tab.key === activeTab)
+    ? activeTab
+    : "APPLY_STAMP";
 
   const currentPoints = member?.points ?? 0;
   const hasRedeemableReward = currentPoints >= goalPoints;
@@ -66,8 +79,8 @@ export function MemberSheet({
 
           <div className="h-full sm:w-1/2 w-full flex flex-col gap-4">
             <div className="flex flex-wrap gap-2">
-              {tabs.map((tab) => {
-                const isActive = tab.key === activeTab;
+              {visibleTabs.map((tab) => {
+                const isActive = tab.key === currentTab;
                 return (
                   <button
                     key={tab.key}
@@ -85,18 +98,20 @@ export function MemberSheet({
                 );
               })}
             </div>
-            {activeTab === "APPLY_STAMP" ? (
+            {currentTab === "APPLY_STAMP" ? (
               <MemberSheetApplyStampContent
                 member={member}
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
-            ) : (
+            ) : currentTab === "REDEEM_REWARD" ? (
               <MemberSheetRedeemRewardContent
                 member={member}
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
+            ) : (
+              <MemberSheetTopUpBalanceContent />
             )}
           </div>
         </div>
