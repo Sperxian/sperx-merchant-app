@@ -191,7 +191,11 @@ export function MemberSheet({
                 onRefresh={onRefresh}
               />
             ) : currentTab === "TOP_UP_BALANCE" ? (
-              <MemberSheetTopUpBalanceContent />
+              <MemberSheetTopUpBalanceContent
+                member={member}
+                onClose={onClose}
+                onRefresh={onRefresh}
+              />
             ) : "convertibleAmountCents" in loyaltyProgram.config ? (
               <MemberSheetSpendBalanceContent
                 member={member}

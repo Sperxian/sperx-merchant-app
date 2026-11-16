@@ -158,7 +158,11 @@ export default function LoyaltyTransactionActions({
             />
           ) : activeDialog === "top-up-balance" &&
             loyaltyProgram.type === "WALLET_BASED" ? (
-            <MemberSheetTopUpBalanceContent />
+            <MemberSheetTopUpBalanceContent
+              member={member}
+              onRefresh={onRefresh}
+              onClose={() => setActiveDialog(null)}
+            />
           ) : activeDialog === "redeem-reward" ? (
             <MemberSheetRedeemRewardContent
               member={member}

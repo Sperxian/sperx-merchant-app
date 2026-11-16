@@ -3,19 +3,62 @@
 import { useState } from "react";
 import { WalletIcon } from "lucide-react";
 import { ActionButton } from "@/src/components/shared/ActionButton";
+import { topUpMemberBalance } from "@/src/lib/api/member";
+import { toastError, toastSuccess } from "@/src/lib/toast";
+import { formatNumber } from "@/src/lib/utils/numeric.utils";
+import type { MemberLoyaltyDto } from "@/src/types/member";
+import { useShop } from "../../ShopContext";
 
-const MINIMUM_TOP_UP = 100;
-const CURRENT_BALANCE_PLACEHOLDER = 0;
+const MINIMUM_TOP_UP_PESOS = 300;
 
-export function MemberSheetTopUpBalanceContent() {
-  const [amount, setAmount] = useState(String(MINIMUM_TOP_UP));
-  const numericAmount = Number(amount);
+type MemberSheetTopUpBalanceContentProps = {
+  member: MemberLoyaltyDto;
+  onClose: () => void;
+  onRefresh: () => void | Promise<void>;
+};
+
+function parseAmountCents(amount: string): number | undefined {
+  if (!/^\d+(?:\.\d{1,2})?$/.test(amount)) return undefined;
+
+  const [whole, fraction = ""] = amount.split(".");
+  const amountCents = Number(whole) * 100 + Number(fraction.padEnd(2, "0"));
+  return Number.isSafeInteger(amountCents) ? amountCents : undefined;
+}
+
+export function MemberSheetTopUpBalanceContent({
+  member,
+  onClose,
+  onRefresh,
+}: MemberSheetTopUpBalanceContentProps) {
+  const shop = useShop();
+  const [amount, setAmount] = useState(String(MINIMUM_TOP_UP_PESOS));
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const amountCents = parseAmountCents(amount);
   const isAmountValid =
-    Number.isFinite(numericAmount) && numericAmount >= MINIMUM_TOP_UP;
+    !!amountCents && amountCents * 100 >= MINIMUM_TOP_UP_PESOS;
+  const numericAmount = (amountCents ?? 0) / 100;
+  const walletBalance = (member.walletBalance ?? 0) / 100;
+
   const previewBalance = Math.max(
+    walletBalance + (isAmountValid ? numericAmount : 0),
     0,
-    CURRENT_BALANCE_PLACEHOLDER + (isAmountValid ? numericAmount : 0),
   );
+
+  const handleTopUp = async () => {
+    if (isSubmitting || !isAmountValid || amountCents === undefined) return;
+
+    try {
+      setIsSubmitting(true);
+      await topUpMemberBalance(shop.id, member.id, amountCents);
+      await onRefresh();
+      toastSuccess("Member wallet balance topped up successfully.");
+      onClose();
+    } catch (error) {
+      toastError(error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col justify-between">
@@ -33,7 +76,7 @@ export function MemberSheetTopUpBalanceContent() {
                 Current balance (placeholder)
               </p>
               <p className="text-2xl font-semibold text-slate-900 dark:text-slate-100">
-                ₱ {CURRENT_BALANCE_PLACEHOLDER.toFixed(2)}
+                ₱ {formatNumber(walletBalance)}
               </p>
             </div>
           </div>
@@ -53,8 +96,8 @@ export function MemberSheetTopUpBalanceContent() {
             <input
               id="member-top-up-amount"
               type="number"
-              min={MINIMUM_TOP_UP}
-              step="0.01"
+              min={MINIMUM_TOP_UP_PESOS}
+              step="100"
               inputMode="decimal"
               value={amount}
               onChange={(event) => setAmount(event.target.value)}
@@ -66,12 +109,13 @@ export function MemberSheetTopUpBalanceContent() {
             id="member-top-up-hint"
             className="text-xs text-slate-500 dark:text-slate-400"
           >
-            Minimum top-up: ₱ {MINIMUM_TOP_UP.toFixed(2)}. Wallet balance cannot
-            be negative.
+            Minimum top-up: ₱ {formatNumber(MINIMUM_TOP_UP_PESOS)}. Wallet
+            balance cannot be negative.
           </p>
           {amount !== "" && !isAmountValid && (
             <p role="alert" className="text-xs text-red-600 dark:text-red-400">
-              Enter a top-up amount of at least ₱ {MINIMUM_TOP_UP.toFixed(2)}.
+              Enter a top-up amount of at least ₱{" "}
+              {formatNumber(MINIMUM_TOP_UP_PESOS)}.
             </p>
           )}
         </div>
@@ -82,22 +126,24 @@ export function MemberSheetTopUpBalanceContent() {
               New balance preview
             </span>
             <span className="font-semibold text-slate-900 dark:text-slate-100">
-              ₱ {previewBalance.toFixed(2)}
+              ₱ {formatNumber(previewBalance)}
             </span>
           </div>
         </div>
 
         <p className="text-xs text-slate-500 dark:text-slate-400">
-          Preview only — top-up submission is not connected yet.
+          The current wallet balance is a placeholder until balance data is
+          available.
         </p>
       </div>
 
       <div className="min-h-16 sticky bottom-0 border-t bg-slate-50 dark:bg-slate-900 rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         <ActionButton
           className="w-full rounded-xl py-3 text-sm"
-          disabled
+          disabled={!isAmountValid || isSubmitting}
+          onClick={handleTopUp}
         >
-          Top-up Balance Coming Soon
+          {isSubmitting ? "Topping Up..." : "Top-up Balance"}
         </ActionButton>
       </div>
     </div>

@@ -13,6 +13,7 @@ export function LoyaltyCard({
   balance,
   loyaltyProgram,
 }: LoyaltyCardProps) {
+  console.log({ loyaltyProgram });
   if (loyaltyProgram.type === "STAMP_BASED") {
     return (
       <StampLoyaltyCard loyaltyProgram={loyaltyProgram} current={current} />
