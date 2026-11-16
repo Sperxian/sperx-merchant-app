@@ -1,4 +1,4 @@
-import QrScanPageContent from "./QrScanPageContent";
+import QrScanPageContent from "./components/QrScanPageContent";
 import { PageHeading } from "@/src/components/shared/PageHeading";
 
 type Props = {

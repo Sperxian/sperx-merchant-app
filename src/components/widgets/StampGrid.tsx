@@ -1,4 +1,4 @@
-import { IconName, LoyaltyStamp } from "./LoyaltyStamp";
+import { IconName, LoyaltyStamp } from "../shared/LoyaltyStamp";
 
 interface StampGridProps {
   total: number;

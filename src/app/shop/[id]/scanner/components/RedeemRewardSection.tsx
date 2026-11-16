@@ -1,6 +1,6 @@
 "use react";
 
-import { LoyaltyStamp } from "./LoyaltyStamp";
+import { LoyaltyStamp } from "../../../../../components/shared/LoyaltyStamp";
 import { CircleCheckBigIcon, CircleIcon, GiftIcon } from "lucide-react";
 import type { RewardMetadata } from "@/src/types/loyalty";
 

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   IconName,
   ICON_MAP,
-} from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
+} from "@/src/components/shared/LoyaltyStamp";
 
 type Props = {
   stampIcon: IconName;

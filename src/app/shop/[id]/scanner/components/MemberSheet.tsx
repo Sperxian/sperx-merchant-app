@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MemberSheetApplyStampContent } from "./MemberSheetApplyStampContent";
 import { MemberSheetRedeemRewardContent } from "./MemberSheetRedeemRewardContent";
 import { LoyaltyCardSection } from "./LoyaltyCardSection";
-import { CustomerSection } from "../CustomerSection";
+import { CustomerSection } from "./CustomerSection";
 import { LoyaltyProgramContextProvider } from "../../LoyaltyProgramContext";
 import { Alert } from "@/src/components/shared/Alert";
 import { Dialog } from "@/src/components/shared/Dialog";

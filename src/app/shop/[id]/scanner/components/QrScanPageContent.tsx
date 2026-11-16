@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { MemberSheet } from "./components/MemberSheet";
+import { MemberSheet } from "./MemberSheet";
 import { getMemberLoyalty } from "@/src/lib/api/member";
-import { QrScanner } from "./components/QrScanner";
-import { useShop } from "../ShopContext";
+import { QrScanner } from "./QrScanner";
+import { useShop } from "../../ShopContext";
 import { MemberLoyaltyDto } from "@/src/types/member";
 import { toastError } from "@/src/lib/toast";
 
