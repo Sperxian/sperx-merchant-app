@@ -54,7 +54,7 @@ export async function topUpMemberBalance(
   amountCents: number,
 ) {
   const { data } = await apiClient.post(
-    `/shop/${shopId}/members/${memberId}/top-up`,
+    `/shop/${shopId}/members/${memberId}/wallet/top-up`,
     { amount: amountCents },
   );
 
