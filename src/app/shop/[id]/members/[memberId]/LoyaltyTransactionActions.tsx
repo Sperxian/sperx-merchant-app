@@ -146,6 +146,7 @@ export default function LoyaltyTransactionActions({
           loyaltyProgram.type === "STAMP_BASED" ? (
             <MemberSheetApplyStampContent
               member={member}
+              note="Manually added by admin"
               onRefresh={onRefresh}
               onClose={() => setActiveDialog(null)}
             />
@@ -154,6 +155,7 @@ export default function LoyaltyTransactionActions({
             <MemberSheetSpendBalanceContent
               member={member}
               config={loyaltyProgram.config}
+              note="Manually spent by admin"
               onRefresh={onRefresh}
               onClose={() => setActiveDialog(null)}
             />
@@ -161,12 +163,14 @@ export default function LoyaltyTransactionActions({
             loyaltyProgram.type === "WALLET_BASED" ? (
             <MemberSheetTopUpBalanceContent
               member={member}
+              note="Manually topped-up by admin"
               onRefresh={onRefresh}
               onClose={() => setActiveDialog(null)}
             />
           ) : activeDialog === "redeem-reward" ? (
             <MemberSheetRedeemRewardContent
               member={member}
+              note="Manually redeemed by admin"
               onRefresh={onRefresh}
               onClose={() => setActiveDialog(null)}
             />

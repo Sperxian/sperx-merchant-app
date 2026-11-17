@@ -15,17 +15,19 @@ import { MemberLoyaltyDto } from "@/src/types/member";
 
 export type MODE_OPTION = "APPLY_STAMP" | "REDEEM_REWARD";
 
-type MemberSheetRedeemRewardContent = {
+type MemberSheetRedeemRewardContentProps = {
   member?: MemberLoyaltyDto;
+  note: string;
   onClose: () => void;
   onRefresh: () => void;
 };
 
 export function MemberSheetRedeemRewardContent({
   member,
+  note,
   onClose,
   onRefresh,
-}: MemberSheetRedeemRewardContent) {
+}: MemberSheetRedeemRewardContentProps) {
   const shop = useShop();
   const loyaltyProgram = useLoyaltyProgram();
 
@@ -53,7 +55,7 @@ export function MemberSheetRedeemRewardContent({
         shop.id,
         member.id,
         rewardCode,
-        "Scanned member QR code to redeem reward",
+        note,
       );
 
       await onRefresh();

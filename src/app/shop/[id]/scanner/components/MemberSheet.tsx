@@ -181,18 +181,21 @@ export function MemberSheet({
             {currentTab === "APPLY_STAMP" ? (
               <MemberSheetApplyStampContent
                 member={member}
+                note="Scanned member QR code by admin"
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
             ) : currentTab === "REDEEM_REWARD" ? (
               <MemberSheetRedeemRewardContent
                 member={member}
+                note="Scanned member QR code to redeem reward"
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
             ) : currentTab === "TOP_UP_BALANCE" ? (
               <MemberSheetTopUpBalanceContent
                 member={member}
+                note="Scanned member QR code to top-up balance"
                 onClose={onClose}
                 onRefresh={onRefresh}
               />
@@ -200,6 +203,7 @@ export function MemberSheet({
               <MemberSheetSpendBalanceContent
                 member={member}
                 config={loyaltyProgram.config}
+                note="Scanned member QR code to spend balance"
                 onClose={onClose}
                 onRefresh={onRefresh}
               />

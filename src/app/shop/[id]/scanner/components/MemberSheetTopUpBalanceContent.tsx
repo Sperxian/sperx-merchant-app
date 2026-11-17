@@ -13,6 +13,7 @@ const MINIMUM_TOP_UP_PESOS = 300;
 
 type MemberSheetTopUpBalanceContentProps = {
   member: MemberLoyaltyDto;
+  note: string;
   onClose: () => void;
   onRefresh: () => void | Promise<void>;
 };
@@ -27,6 +28,7 @@ function parseAmountCents(amount: string): number | undefined {
 
 export function MemberSheetTopUpBalanceContent({
   member,
+  note,
   onClose,
   onRefresh,
 }: MemberSheetTopUpBalanceContentProps) {
@@ -49,7 +51,7 @@ export function MemberSheetTopUpBalanceContent({
 
     try {
       setIsSubmitting(true);
-      await topUpMemberBalance(shop.id, member.id, amountCents);
+      await topUpMemberBalance(shop.id, member.id, amountCents, note);
       await onRefresh();
       setAmount(String(MINIMUM_TOP_UP_PESOS));
       toastSuccess("Member wallet balance topped up successfully.");

@@ -52,10 +52,11 @@ export async function topUpMemberBalance(
   shopId: string,
   memberId: string,
   amountCents: number,
+  notes: string,
 ) {
   const { data } = await apiClient.post(
     `/shop/${shopId}/members/${memberId}/wallet/top-up`,
-    { amount: amountCents },
+    { amount: amountCents, notes },
   );
 
   return data;
@@ -65,10 +66,11 @@ export async function spendMemberBalance(
   shopId: string,
   memberId: string,
   amountCents: number,
+  notes: string,
 ) {
   const { data } = await apiClient.post(
     `/shop/${shopId}/members/${memberId}/wallet/spend`,
-    { amount: -amountCents },
+    { amount: -amountCents, notes },
   );
 
   return data;

@@ -13,6 +13,7 @@ import { formatNumber } from "@/src/lib/utils/numeric.utils";
 type MemberSheetSpendBalanceContentProps = {
   member: MemberLoyaltyDto;
   config: WalletBasedConfig;
+  note: string;
   onClose: () => void;
   onRefresh: () => void;
 };
@@ -27,6 +28,7 @@ function parseAmountCents(amount: number): number | undefined {
 export function MemberSheetSpendBalanceContent({
   member,
   config,
+  note,
   onClose,
   onRefresh,
 }: MemberSheetSpendBalanceContentProps) {
@@ -63,7 +65,7 @@ export function MemberSheetSpendBalanceContent({
 
     try {
       setIsSubmitting(true);
-      await spendMemberBalance(shop.id, member.id, salesAmountCents);
+      await spendMemberBalance(shop.id, member.id, salesAmountCents, note);
       await onRefresh();
       toastSuccess("Member wallet balance spent successfully.");
       setSalesAmount(0);

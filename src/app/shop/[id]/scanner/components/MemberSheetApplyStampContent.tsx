@@ -13,12 +13,14 @@ import { MemberPointsSection } from "./MemberPointsSection";
 
 interface MemberSheetApplyStampContentProps {
   member?: MemberLoyaltyDto;
+  note: string;
   onClose: () => void;
   onRefresh: () => void;
 }
 
 export function MemberSheetApplyStampContent({
   member,
+  note,
   onClose,
   onRefresh,
 }: MemberSheetApplyStampContentProps) {
@@ -43,7 +45,7 @@ export function MemberSheetApplyStampContent({
         shop.id,
         member!.id,
         stampsToReward,
-        "Scanned member QR code by admin",
+        note,
       );
       const message =
         cardPoints + stampsToReward >= goalPoints
