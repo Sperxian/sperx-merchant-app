@@ -11,7 +11,7 @@ export function LoyaltyCardSection(props: LoyaltyCardSectionProps) {
     <div>
       <p className="text-sm font-medium text-foreground/50 mb-2">
         Loyalty Card
-      </p>z
+      </p>
       <div className="w-full flex flex-col items-center">
         <div className="h-64 max-h-[360px] w-full md:w-sm">
           <LoyaltyCard
