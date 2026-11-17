@@ -6,6 +6,7 @@ export type MemberSummary = {
   guestId: string | null;
   loyaltyProgram: LoyaltyProgram;
   netPoints: number;
+  walletBalance: number | null;
   totalAccumulatedPoints: number;
   totalRedeemedPoints: number;
   totalRedeemedRewards: number;
@@ -18,7 +19,7 @@ export type MemberLoyaltyDto = {
   guestId: string | null;
   loyaltyProgram: LoyaltyProgram;
   points: number;
-  walletBalance?: number;
+  walletBalance?: number | null;
   dateCreated: Date;
 };
 

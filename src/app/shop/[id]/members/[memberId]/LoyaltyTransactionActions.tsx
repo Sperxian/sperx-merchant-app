@@ -87,6 +87,7 @@ export default function LoyaltyTransactionActions({
     guestId: memberSummary.guestId,
     loyaltyProgram,
     points: memberSummary.netPoints,
+    walletBalance: memberSummary.walletBalance,
     dateCreated: memberSummary.dateCreated,
   };
 

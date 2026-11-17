@@ -3,11 +3,12 @@
 import { useState } from "react";
 import { ReceiptTextIcon } from "lucide-react";
 import { ActionButton } from "@/src/components/shared/ActionButton";
-import { addMemberLoyaltyPoints } from "@/src/lib/api/member";
+import { spendMemberBalance } from "@/src/lib/api/member";
 import { toastError, toastSuccess } from "@/src/lib/toast";
 import type { MemberLoyaltyDto } from "@/src/types/member";
 import type { WalletBasedConfig } from "@/src/types/loyalty";
 import { useShop } from "../../ShopContext";
+import { formatNumber } from "@/src/lib/utils/numeric.utils";
 
 type MemberSheetSpendBalanceContentProps = {
   member: MemberLoyaltyDto;
@@ -16,17 +17,11 @@ type MemberSheetSpendBalanceContentProps = {
   onRefresh: () => void;
 };
 
-function parseAmountCents(amount: string): number | undefined {
-  if (
-    !/^\d*(?:\.\d{0,2})?$/.test(amount) ||
-    amount === "" ||
-    amount === "."
-  ) {
-    return undefined;
-  }
+function parseAmountCents(amount: number): number | undefined {
+  if (!Number.isFinite(amount) || amount < 0) return undefined;
 
-  const [whole, fraction = ""] = amount.split(".");
-  return Number(whole || "0") * 100 + Number(fraction.padEnd(2, "0"));
+  const amountCents = Math.round(amount * 100);
+  return Number.isSafeInteger(amountCents) ? amountCents : undefined;
 }
 
 export function MemberSheetSpendBalanceContent({
@@ -36,7 +31,7 @@ export function MemberSheetSpendBalanceContent({
   onRefresh,
 }: MemberSheetSpendBalanceContentProps) {
   const shop = useShop();
-  const [salesAmount, setSalesAmount] = useState("");
+  const [salesAmount, setSalesAmount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const salesAmountCents = parseAmountCents(salesAmount);
@@ -52,13 +47,15 @@ export function MemberSheetSpendBalanceContent({
       : 0;
   const hasValidSalesAmount =
     salesAmountCents !== undefined && salesAmountCents > 0;
+  const currentBalance = (member.walletBalance ?? 0) / 100;
+  const previewBalance =
+    ((member.walletBalance ?? 0) - (salesAmountCents ?? 0)) / 100;
 
-  const handleAwardPoints = async () => {
+  const handleSpendBalance = async () => {
     if (
       isSubmitting ||
       salesAmountCents === undefined ||
       salesAmountCents <= 0 ||
-      pointsAwarded <= 0 ||
       !isConfigValid
     ) {
       return;
@@ -66,15 +63,10 @@ export function MemberSheetSpendBalanceContent({
 
     try {
       setIsSubmitting(true);
-      await addMemberLoyaltyPoints(
-        shop.id,
-        member.id,
-        pointsAwarded,
-        `Recorded ₱${(salesAmountCents / 100).toFixed(2)} in sales`,
-      );
+      await spendMemberBalance(shop.id, member.id, salesAmountCents);
       await onRefresh();
-      toastSuccess(`${pointsAwarded} points awarded to member.`);
-      setSalesAmount("");
+      toastSuccess("Member wallet balance spent successfully.");
+      setSalesAmount(0);
       onClose();
     } catch (error) {
       toastError(error);
@@ -117,15 +109,14 @@ export function MemberSheetSpendBalanceContent({
               </span>
               <input
                 id="member-sales-amount"
-                type="text"
+                type="number"
                 inputMode="decimal"
+                min="0"
+                step="1"
                 value={salesAmount}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (/^\d*(?:\.\d{0,2})?$/.test(value)) {
-                    setSalesAmount(value);
-                  }
-                }}
+                onChange={(event) =>
+                  setSalesAmount(event.currentTarget.valueAsNumber || 0)
+                }
                 aria-describedby="member-sales-amount-hint"
                 className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-9 pr-4 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
@@ -152,26 +143,33 @@ export function MemberSheetSpendBalanceContent({
               Points to award
             </span>
             <span className="font-semibold text-slate-900 dark:text-slate-100">
-              {pointsAwarded}
+              {formatNumber(pointsAwarded, 0)}
             </span>
           </div>
+        </div>
+
+        <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 dark:border-primary-lighter/20 dark:bg-primary-lighter/5">
+          <div className="flex items-center justify-between gap-4 text-sm">
+            <span className="text-slate-600 dark:text-slate-300">
+              Balance after sale
+            </span>
+            <span className="font-semibold text-slate-900 dark:text-slate-100">
+              ₱ {formatNumber(previewBalance)}
+            </span>
+          </div>
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            Current balance: ₱ {formatNumber(currentBalance)}
+          </p>
         </div>
       </div>
 
       <div className="min-h-16 sticky bottom-0 border-t bg-slate-50 dark:bg-slate-900 rounded-sm border-gray-300 dark:border-gray-800 flex flex-col justify-center py-2">
         <ActionButton
           className="w-full rounded-xl py-3 text-sm"
-          disabled={
-            isSubmitting ||
-            !hasValidSalesAmount ||
-            pointsAwarded <= 0 ||
-            !isConfigValid
-          }
-          onClick={handleAwardPoints}
+          disabled={isSubmitting || !hasValidSalesAmount || !isConfigValid}
+          onClick={handleSpendBalance}
         >
-          {isSubmitting
-            ? "Awarding Points..."
-            : `Award ${pointsAwarded} Points`}
+          {isSubmitting ? "Spending Balance..." : "Spend Balance"}
         </ActionButton>
       </div>
     </div>

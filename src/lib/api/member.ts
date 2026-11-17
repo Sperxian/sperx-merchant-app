@@ -61,6 +61,19 @@ export async function topUpMemberBalance(
   return data;
 }
 
+export async function spendMemberBalance(
+  shopId: string,
+  memberId: string,
+  amountCents: number,
+) {
+  const { data } = await apiClient.post(
+    `/shop/${shopId}/members/${memberId}/wallet/spend`,
+    { amount: -amountCents },
+  );
+
+  return data;
+}
+
 export async function redeemReward(shopId: string, memberId: string, rewardCode: string, notes?: string) {
   const body = { rewardCode, notes };
   const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/redeem`, body);
