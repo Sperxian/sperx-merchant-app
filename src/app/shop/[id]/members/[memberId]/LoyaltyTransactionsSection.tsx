@@ -5,10 +5,11 @@ import LoyaltyTransactionActions from "./LoyaltyTransactionActions";
 import { getMemberLoyaltyHistory } from "@/src/lib/api/member";
 import { Shop } from "@/src/lib/types";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
-import { MemberPointTransaction, MemberSummary } from "@/src/types/member";
+import { MemberLoyaltyHistoryItem, MemberSummary } from "@/src/types/member";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toastError } from "@/src/lib/toast";
+import { formatNumber } from "@/src/lib/utils/numeric.utils";
 
 type Props = {
   shop: Shop;
@@ -17,7 +18,7 @@ type Props = {
   onMemberRefresh: () => Promise<void>;
 };
 
-const columnHelper = createColumnHelper<MemberPointTransaction>();
+const columnHelper = createColumnHelper<MemberLoyaltyHistoryItem>();
 
 export default function LoyaltyTransactionsSection({
   shop,
@@ -28,13 +29,13 @@ export default function LoyaltyTransactionsSection({
   const pageSize = 20;
   const [page, setPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
-  const [transactions, setTransactions] = useState<MemberPointTransaction[]>(
+  const [transactions, setTransactions] = useState<MemberLoyaltyHistoryItem[]>(
     [],
   );
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("dateCreated", {
+      columnHelper.accessor("transactionDate", {
         header: "Date",
         cell: (info) => formatDateTime(info.getValue()),
       }),
@@ -42,12 +43,30 @@ export default function LoyaltyTransactionsSection({
         header: "Points",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
+      ...(memberSummary.loyaltyProgram.type === "WALLET_BASED"
+        ? [
+            columnHelper.accessor("balance", {
+              header: "Balance",
+              cell: (info) => {
+                const balance = info.getValue();
+                if (!balance) return <span />;
+
+                return (
+                  <span>
+                    {balance < 0 ? "-₱" : "₱"}
+                    {formatNumber(Math.abs(balance) / 100)}
+                  </span>
+                );
+              },
+            }),
+          ]
+        : []),
       columnHelper.accessor("notes", {
         header: "Notes",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
     ],
-    [],
+    [memberSummary.loyaltyProgram.type],
   );
 
   const refreshTransactions = useCallback(async () => {
@@ -80,12 +99,13 @@ export default function LoyaltyTransactionsSection({
     <section className="flex flex-col gap-4">
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
         <div>
-          <p className="mb-2 text-sm font-medium text-primary dark:text-primary-lighter">Activity</p>
+          <p className="mb-2 text-sm font-medium text-primary dark:text-primary-lighter">
+            Activity
+          </p>
           <h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
             Loyalty transactions
           </h2>
         </div>
-
 
         <LoyaltyTransactionActions
           memberId={memberId}
