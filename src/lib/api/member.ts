@@ -48,6 +48,34 @@ export async function addMemberLoyaltyPoints(
   return data;
 }
 
+export async function topUpMemberBalance(
+  shopId: string,
+  memberId: string,
+  amountCents: number,
+  notes: string,
+) {
+  const { data } = await apiClient.post(
+    `/shop/${shopId}/members/${memberId}/wallet/top-up`,
+    { amount: amountCents, notes },
+  );
+
+  return data;
+}
+
+export async function spendMemberBalance(
+  shopId: string,
+  memberId: string,
+  amountCents: number,
+  notes: string,
+) {
+  const { data } = await apiClient.post(
+    `/shop/${shopId}/members/${memberId}/wallet/spend`,
+    { amount: -amountCents, notes },
+  );
+
+  return data;
+}
+
 export async function redeemReward(shopId: string, memberId: string, rewardCode: string, notes?: string) {
   const body = { rewardCode, notes };
   const { data } = await apiClient.post(`/shop/${shopId}/members/${memberId}/redeem`, body);

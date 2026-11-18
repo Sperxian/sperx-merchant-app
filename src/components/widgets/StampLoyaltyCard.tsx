@@ -1,5 +1,5 @@
-import { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
-import { StampGrid } from "@/src/app/shop/[id]/scanner/components/StampGrid";
+import { IconName } from "@/src/components/shared/LoyaltyStamp";
+import { StampGrid } from "@/src/components/widgets/StampGrid";
 import type { LoyaltyProgram, StampBasedConfig } from "@/src/types/loyalty";
 
 type StampLoyaltyCardProps = {

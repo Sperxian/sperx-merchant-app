@@ -4,7 +4,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { LoyaltyCard } from "@/src/components/widgets/LoyaltyCard";
 import LoyaltyStampIconPicker from "@/src/components/widgets/LoyaltyStampIconPicker";
 import ConvertibleAmountInput from "@/src/components/widgets/ConvertibleAmountInput";
-import type { IconName } from "@/src/app/shop/[id]/scanner/components/LoyaltyStamp";
+import type { IconName } from "@/src/components/shared/LoyaltyStamp";
 import type {
   LoyaltyProgramConfig,
   LoyaltyProgramType,

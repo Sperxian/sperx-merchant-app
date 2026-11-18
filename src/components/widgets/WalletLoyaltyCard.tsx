@@ -1,5 +1,6 @@
 import { ArrowRightIcon, SparklesIcon, WalletIcon } from "lucide-react";
 import type { LoyaltyProgram } from "@/src/types/loyalty";
+import { formatNumber } from "@/src/lib/utils/numeric.utils";
 
 type WalletLoyaltyCardProps = {
   loyaltyProgram: Omit<LoyaltyProgram, "id" | "shopId" | "dateCreated">;
@@ -18,14 +19,14 @@ export function WalletLoyaltyCard({
 
   const rewardConfig = loyaltyProgram.config.availableRewards[0];
   const total = rewardConfig.goalPoints;
-  const points = Number.isFinite(currentPoints) ? Math.max(currentPoints, 0) : 0;
+  const points = Number.isFinite(currentPoints)
+    ? Math.max(currentPoints, 0)
+    : 0;
   const progressPoints = Math.min(points, total);
   const remainingPoints = Math.max(total - points, 0);
   const progressPercent =
     total > 0 ? Math.min((progressPoints / total) * 100, 100) : 0;
-  const spendAmount = (
-    loyaltyProgram.config.convertibleAmountCents / 100
-  ).toFixed(2);
+  const spendAmount = loyaltyProgram.config.convertibleAmountCents / 100;
 
   return (
     <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white shadow-lg">
@@ -39,21 +40,23 @@ export function WalletLoyaltyCard({
       />
 
       <div className="relative flex items-center justify-start gap-4">
-          <WalletIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
-          <p className="truncate text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
-            {loyaltyProgram.name}
-          </p>
+        <WalletIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <p className="truncate text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
+          {loyaltyProgram.name}
+        </p>
       </div>
 
       <div className="relative mt-5 flex flex-row justify-between gap-3">
         <div className="flex flex-col w-1/2">
           <p className="text-xs font-medium text-white/70">Wallet Balance</p>
           <p className="mt-0.5 text-3xl font-bold leading-none tracking-tight">
-            ₱ {balance.toFixed(2)}
+            ₱ {formatNumber(balance)}
           </p>
         </div>
         <div className="flex flex-col w-1/2 text-right">
-          <p className="text-xs font-medium text-white/70">Accumulated Points</p>
+          <p className="text-xs font-medium text-white/70">
+            Accumulated Points
+          </p>
           <p className="mt-0.5 text-3xl font-bold leading-none tracking-tight">
             {Math.trunc(points)}
             <span className="ml-1.5 text-sm font-semibold text-white/70">
@@ -64,7 +67,7 @@ export function WalletLoyaltyCard({
       </div>
 
       <div className="flex w-full mt-4 items-center justify-center rounded-lg border border-white/10 bg-white/10 px-2.5 py-2 text-right text-xs font-medium leading-tight text-white/90">
-        <span>Every ₱{spendAmount} spent</span>
+        <span>Every ₱{formatNumber(spendAmount)} spent</span>
         <ArrowRightIcon
           className="h-3.5 w-3.5 shrink-0 text-white/60"
           aria-hidden="true"

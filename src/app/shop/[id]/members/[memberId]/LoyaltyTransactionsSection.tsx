@@ -88,7 +88,6 @@ export default function LoyaltyTransactionsSection({
 
 
         <LoyaltyTransactionActions
-          shopId={shop.id}
           memberId={memberId}
           memberSummary={memberSummary}
           onRefresh={onRefresh}
