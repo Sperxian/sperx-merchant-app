@@ -1,4 +1,4 @@
-import type { LoyaltyProgram } from "./loyalty";
+import type { LoyaltyProgram, LoyaltyProgramType } from "./loyalty";
 
 export type MemberSummary = {
   id: string;
@@ -51,3 +51,13 @@ export type MemberLoyaltyHistoryItem = {
   balance: number | null;
   notes?: string;
 }
+
+export type ShopLoyaltyHistoryTransactionItem = MemberLoyaltyHistoryItem & {
+  memberId: string;
+  loyaltyProgram: {
+    id: string;
+    name: string;
+    type: LoyaltyProgramType;
+  };
+  rewardName: string | null;
+};
