@@ -54,10 +54,6 @@ export default function LoyaltyPage() {
         header: "Program",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
-      columnHelper.accessor("rewardName", {
-        header: "Reward",
-        cell: (info) => <span>{info.getValue()}</span>,
-      }),
     ],
     [],
   );

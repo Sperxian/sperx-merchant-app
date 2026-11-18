@@ -49,10 +49,14 @@ export type MemberLoyaltyHistoryItem = {
   type: 'ACCUMULATION' | 'WALLET_TOP_UP' | 'WALLET_SPEND' | 'REDEMPTION'
   points: number | null;
   balance: number | null;
+  reward: {
+    redemptionId: string;
+    name: string;
+  } | null;
   notes?: string;
 }
 
-export type ShopLoyaltyHistoryTransactionItem = MemberLoyaltyHistoryItem & {
+export type ShopLoyaltyHistoryTransactionItem = Omit<MemberLoyaltyHistoryItem, "reward"> & {
   memberId: string;
   loyaltyProgram: {
     id: string;

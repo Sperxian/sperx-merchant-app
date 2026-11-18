@@ -65,6 +65,10 @@ export default function LoyaltyTransactionsSection({
         header: "Notes",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
+      columnHelper.accessor("reward", {
+        header: "Reward",
+        cell: (info) => <span>{info.getValue()?.name}</span>,
+      }),
     ],
     [memberSummary.loyaltyProgram.type],
   );
