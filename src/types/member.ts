@@ -41,3 +41,13 @@ export type MemberPointTransaction = {
   notes?: string;
   dateCreated: Date;
 };
+
+export type MemberLoyaltyHistoryItem = {
+  walletTransactionId: number | null;
+  pointTransactionId: number | null;
+  transactionDate: Date;
+  type: 'ACCUMULATION' | 'WALLET_TOP_UP' | 'WALLET_SPEND' | 'REDEMPTION'
+  points: number | null;
+  balance: number | null;
+  notes?: string;
+}
