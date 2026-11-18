@@ -1,4 +1,4 @@
-import type { LoyaltyProgram } from "./loyalty";
+import type { LoyaltyProgram, LoyaltyProgramType } from "./loyalty";
 
 export type MemberSummary = {
   id: string;
@@ -40,4 +40,28 @@ export type MemberPointTransaction = {
   points: number;
   notes?: string;
   dateCreated: Date;
+};
+
+export type MemberLoyaltyHistoryItem = {
+  walletTransactionId: number | null;
+  pointTransactionId: number | null;
+  transactionDate: Date;
+  type: 'ACCUMULATION' | 'WALLET_TOP_UP' | 'WALLET_SPEND' | 'REDEMPTION'
+  points: number | null;
+  balance: number | null;
+  reward: {
+    redemptionId: string;
+    name: string;
+  } | null;
+  notes?: string;
+}
+
+export type ShopLoyaltyHistoryTransactionItem = Omit<MemberLoyaltyHistoryItem, "reward"> & {
+  memberId: string;
+  loyaltyProgram: {
+    id: string;
+    name: string;
+    type: LoyaltyProgramType;
+  };
+  rewardName: string | null;
 };

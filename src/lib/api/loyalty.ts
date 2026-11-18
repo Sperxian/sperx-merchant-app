@@ -1,9 +1,10 @@
+import { ShopLoyaltyHistoryTransactionItem } from "@/src/types/member";
 import type {
   LoyaltyProgram,
   LoyaltyProgramInfo,
   LoyaltyProgramType,
 } from "../../types/loyalty";
-import type { LoyaltyTransactionSummary, Paginated } from "../types";
+import type { Paginated } from "../types";
 import apiClient from "./client";
 
 export async function getLoyaltyPrograms(
@@ -54,15 +55,16 @@ export async function updateLoyaltyProgram(
   return data;
 }
 
-export async function fetchAllMemberPointTransactionsForShop(shopId: string, page = 0, size = 50): Promise<Paginated<LoyaltyTransactionSummary>> {
+export async function fetchAllMemberPointTransactionsForShop(shopId: string, page = 0, size = 50): Promise<Paginated<ShopLoyaltyHistoryTransactionItem>> {
   const { data } = await apiClient.get(`/shop/${shopId}/loyalty-transactions`, { params: { page, size } });
 
   return {
     ...data,
     items: data.items.map((item: Record<string, string>) => ({
       ...item,
-      points: Number(item.points),
-      dateCreated: new Date(item.dateCreated),
+      points: item.points ? Number(item.points) : null,
+      balance: item.balance ? Number(item.balance) : null,
+      transactionDate: new Date(item.transactionDate),
     })),
   };
 }
@@ -70,7 +72,7 @@ export async function fetchAllMemberPointTransactionsForShop(shopId: string, pag
 export type UpdateLoyaltyProgramParams = {
   name: string;
   type: LoyaltyProgramType;
-  config: StampBasedConfigInput| WalletBasedConfigInput;
+  config: StampBasedConfigInput | WalletBasedConfigInput;
 };
 
 
