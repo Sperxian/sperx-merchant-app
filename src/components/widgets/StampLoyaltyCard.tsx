@@ -19,7 +19,7 @@ export function StampLoyaltyCard({
   const remainingPercent = Math.round((trackingPoints / total) * 100);
 
   return (
-    <div className="h-full w-full bg-primary rounded-2xl p-4 relative overflow-hidden flex flex-col justify-between">
+    <div className="relative flex h-full w-full md:w-xs flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white shadow-lg">
       {/* Decorative circles */}
       <div className="absolute -top-[28px] -right-[28px] w-[90px] h-[90px] rounded-full border-[18px] border-white/5" />
       <div className="absolute bottom-[-18px] left-[18px] w-[55px] h-[55px] rounded-full border-[11px] border-white/5" />

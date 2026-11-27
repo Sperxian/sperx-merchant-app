@@ -29,7 +29,7 @@ export function WalletLoyaltyCard({
   const spendAmount = loyaltyProgram.config.convertibleAmountCents / 100;
 
   return (
-    <div className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white shadow-lg">
+    <div className="relative flex h-full w-full md:w-xs flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-primary to-primary-dark p-5 text-white shadow-lg">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -right-10 -top-12 h-36 w-36 rounded-full border-[24px] border-white/5"
@@ -42,6 +42,7 @@ export function WalletLoyaltyCard({
       <div className="relative flex items-center justify-start gap-4">
         <WalletIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
         <p className="truncate text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
+          {loyaltyProgram.name}
           {loyaltyProgram.name}
         </p>
       </div>
