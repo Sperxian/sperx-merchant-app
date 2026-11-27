@@ -4,12 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import DataTable from "../../../../components/shared/DataTable";
 import { useShop } from "../ShopContext";
 import { fetchAllMemberPointTransactionsForShop } from "@/src/lib/api/loyalty";
-import { LoyaltyTransactionSummary } from "@/src/lib/types";
 import { createColumnHelper } from "@tanstack/react-table";
 import { formatDateTime } from "@/src/lib/utils/date.utils";
 import { PageHeading } from "@/src/components/shared/PageHeading";
+import { ShopLoyaltyHistoryTransactionItem } from "@/src/types/member";
+import { formatNumber } from "@/src/lib/utils/numeric.utils";
 
-const columnHelper = createColumnHelper<LoyaltyTransactionSummary>();
+const columnHelper = createColumnHelper<ShopLoyaltyHistoryTransactionItem>();
 
 export default function LoyaltyPage() {
   const shop = useShop();
@@ -18,12 +19,12 @@ export default function LoyaltyPage() {
   const [totalRows, setTotalRows] = useState(0);
 
   const [loyaltyTransactions, setLoyaltyTransactions] = useState<
-    LoyaltyTransactionSummary[]
+    ShopLoyaltyHistoryTransactionItem[]
   >([]);
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor("dateCreated", {
+      columnHelper.accessor("transactionDate", {
         header: "Date",
         cell: (info) => formatDateTime(info.getValue()),
       }),
@@ -35,12 +36,22 @@ export default function LoyaltyPage() {
         header: "Points",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
-      columnHelper.accessor("loyaltyProgramName", {
-        header: "Program",
-        cell: (info) => <span>{info.getValue()}</span>,
+      columnHelper.accessor("balance", {
+        header: "Balance",
+        cell: (info) => {
+          const balance = info.getValue();
+          if (!balance) return <span />;
+
+          return (
+            <span>
+              {balance < 0 ? "-₱" : "₱"}
+              {formatNumber(Math.abs(balance) / 100)}
+            </span>
+          );
+        },
       }),
-      columnHelper.accessor("rewardName", {
-        header: "Reward",
+      columnHelper.accessor("loyaltyProgram.name", {
+        header: "Program",
         cell: (info) => <span>{info.getValue()}</span>,
       }),
     ],

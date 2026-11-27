@@ -19,7 +19,7 @@ export function PageHeading({
         <p className="mb-2 text-sm font-medium text-primary dark:text-primary-lighter">
           {eyebrow}
         </p>
-        <h2 className="text-3xl font-semibold tracking-tight text-slate-900 dark:text-white">
+        <h2 className="text-3xl font-semibold capitalize text-slate-900 dark:text-white">
           {title}
         </h2>
         {description ? (
