@@ -30,7 +30,7 @@ export default function MemberIdPage() {
   }, [refreshMember]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex max-w-7xl flex-col gap-6">
       <Breadcrumbs
         items={[
           {
