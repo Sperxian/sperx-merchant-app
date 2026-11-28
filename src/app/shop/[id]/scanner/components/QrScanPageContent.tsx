@@ -32,7 +32,7 @@ export default function QrScanPageContent({ defaultMemberId }: Props) {
       setMemberLoyalty(data);
       setSheetOpen(true);
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to load the scanned member's details. Please try again.");
     }
   };
 

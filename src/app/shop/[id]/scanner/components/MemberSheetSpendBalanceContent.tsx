@@ -71,7 +71,7 @@ export function MemberSheetSpendBalanceContent({
       setSalesAmount(0);
       onClose();
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to spend from the member's wallet. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

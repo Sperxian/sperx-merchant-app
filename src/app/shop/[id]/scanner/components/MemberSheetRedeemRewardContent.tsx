@@ -63,7 +63,7 @@ export function MemberSheetRedeemRewardContent({
       setRewardCode(undefined);
       onClose();
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to redeem the member's reward. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

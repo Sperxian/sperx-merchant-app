@@ -57,7 +57,10 @@ export function MemberSheetTopUpBalanceContent({
       toastSuccess("Member wallet balance topped up successfully.");
       onClose();
     } catch (error) {
-      toastError(error);
+      toastError(
+        error,
+        "Unable to top up member wallet balance. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }

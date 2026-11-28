@@ -7,7 +7,7 @@ export default function CopyableText({ text }: { text: string }) {
       await navigator.clipboard.writeText(text);
       toastSuccess("Copied text to clipboard");
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to copy the text to the clipboard.");
     }
   }
 

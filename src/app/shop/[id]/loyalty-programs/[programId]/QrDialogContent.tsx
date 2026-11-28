@@ -23,7 +23,7 @@ export default function QrDialogContent({
   async function downloadQrCode() {
     const qrCode = qrCodeContainerRef.current?.querySelector("svg");
     if (!qrCode) {
-      toastError(new Error("QR code is unavailable."));
+      toastError("QR code is unavailable.");
       return;
     }
 
@@ -106,7 +106,7 @@ export default function QrDialogContent({
       link.click();
       setTimeout(() => URL.revokeObjectURL(pngUrl), 0);
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to download the loyalty program QR code.");
     } finally {
       if (svgUrl) {
         URL.revokeObjectURL(svgUrl);

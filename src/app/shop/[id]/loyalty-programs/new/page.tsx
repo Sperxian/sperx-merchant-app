@@ -49,7 +49,7 @@ export default function NewLoyaltyProgramPage() {
 
   async function saveLoyaltyProgram() {
     if (!isLoyaltyProgramValid(loyaltyProgram)) {
-      toastError(new Error("Please complete all loyalty program details."));
+      toastError("Please complete all loyalty program details.");
       return;
     }
 
@@ -76,7 +76,7 @@ export default function NewLoyaltyProgramPage() {
       toastSuccess("Loyalty program created.");
       router.push(`/shop/${shopId}/loyalty-programs`);
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to create the loyalty program. Please try again.");
     } finally {
       setIsSaving(false);
     }
