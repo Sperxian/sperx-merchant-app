@@ -10,6 +10,7 @@ import type { MemberLoyaltyDto } from "@/src/types/member";
 import { useShop } from "../../ShopContext";
 
 const MINIMUM_TOP_UP_PESOS = 300;
+const MAXIMUM_TOP_UP_PESOS = 100_000;
 
 type MemberSheetTopUpBalanceContentProps = {
   member: MemberLoyaltyDto;
@@ -37,7 +38,9 @@ export function MemberSheetTopUpBalanceContent({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const amountCents = parseAmountCents(amount);
   const isAmountValid =
-    !!amountCents && amountCents * 100 >= MINIMUM_TOP_UP_PESOS;
+    amountCents !== undefined &&
+    amountCents >= MINIMUM_TOP_UP_PESOS * 100 &&
+    amountCents <= MAXIMUM_TOP_UP_PESOS * 100;
   const numericAmount = (amountCents ?? 0) / 100;
   const walletBalance = (member.walletBalance ?? 0) / 100;
 
@@ -103,6 +106,7 @@ export function MemberSheetTopUpBalanceContent({
               id="member-top-up-amount"
               type="number"
               min={MINIMUM_TOP_UP_PESOS}
+              max={MAXIMUM_TOP_UP_PESOS}
               step="100"
               inputMode="decimal"
               value={amount}
@@ -115,13 +119,16 @@ export function MemberSheetTopUpBalanceContent({
             id="member-top-up-hint"
             className="text-xs text-slate-500 dark:text-slate-400"
           >
-            Minimum top-up: ₱ {formatNumber(MINIMUM_TOP_UP_PESOS)}. Wallet
-            balance cannot be negative.
+            Top-up amount must be between ₱{" "}
+            {formatNumber(MINIMUM_TOP_UP_PESOS)} and ₱{" "}
+            {formatNumber(MAXIMUM_TOP_UP_PESOS)}. Wallet balance cannot be
+            negative.
           </p>
           {amount !== "" && !isAmountValid && (
             <p role="alert" className="text-xs text-red-600 dark:text-red-400">
-              Enter a top-up amount of at least ₱{" "}
-              {formatNumber(MINIMUM_TOP_UP_PESOS)}.
+              Enter a top-up amount between ₱{" "}
+              {formatNumber(MINIMUM_TOP_UP_PESOS)} and ₱{" "}
+              {formatNumber(MAXIMUM_TOP_UP_PESOS)}.
             </p>
           )}
         </div>
