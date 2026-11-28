@@ -43,7 +43,6 @@ export function WalletLoyaltyCard({
         <WalletIcon className="h-4 w-4 shrink-0" aria-hidden="true" />
         <p className="truncate text-sm font-semibold uppercase tracking-[0.16em] text-white/70">
           {loyaltyProgram.name}
-          {loyaltyProgram.name}
         </p>
       </div>
 
