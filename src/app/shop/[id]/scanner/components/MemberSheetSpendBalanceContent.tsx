@@ -19,11 +19,22 @@ type MemberSheetSpendBalanceContentProps = {
   onRefresh: () => void;
 };
 
-function parseAmountCents(amount: number): number | undefined {
-  if (!Number.isFinite(amount) || amount < 0) return undefined;
+function parseAmountCents(amount: string): number | undefined {
+  if (amount.trim() === "") return undefined;
 
-  const amountCents = Math.round(amount * 100);
+  const parsedAmount = Number(amount);
+  if (!Number.isFinite(parsedAmount) || parsedAmount < 0) return undefined;
+
+  const amountCents = Math.round(parsedAmount * 100);
   return Number.isSafeInteger(amountCents) ? amountCents : undefined;
+}
+
+function normalizeSalesAmount(value: string): string {
+  const [whole, fraction] = value.split(".");
+  const normalizedWhole = whole.replace(/^0+(?=\d)/, "");
+  return fraction === undefined
+    ? normalizedWhole
+    : `${normalizedWhole}.${fraction}`;
 }
 
 export function MemberSheetSpendBalanceContent({
@@ -34,7 +45,7 @@ export function MemberSheetSpendBalanceContent({
   onRefresh,
 }: MemberSheetSpendBalanceContentProps) {
   const shop = useShop();
-  const [salesAmount, setSalesAmount] = useState(0);
+  const [salesAmount, setSalesAmount] = useState("0");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const salesAmountCents = parseAmountCents(salesAmount);
@@ -73,7 +84,7 @@ export function MemberSheetSpendBalanceContent({
       await spendMemberBalance(shop.id, member.id, salesAmountCents, note);
       await onRefresh();
       toastSuccess("Member wallet balance spent successfully.");
-      setSalesAmount(0);
+      setSalesAmount("0");
       onClose();
     } catch (error) {
       toastError(
@@ -134,7 +145,9 @@ export function MemberSheetSpendBalanceContent({
                     step="1"
                     value={salesAmount}
                     onChange={(event) =>
-                      setSalesAmount(event.currentTarget.valueAsNumber || 0)
+                      setSalesAmount(
+                        normalizeSalesAmount(event.currentTarget.value),
+                      )
                     }
                     aria-describedby="member-sales-amount-hint"
                     className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-9 pr-4 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
