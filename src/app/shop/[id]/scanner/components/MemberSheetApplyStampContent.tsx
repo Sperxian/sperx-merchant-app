@@ -59,7 +59,7 @@ export function MemberSheetApplyStampContent({
       setStampsToReward(1);
       onClose();
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to add stamps to the member's card. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

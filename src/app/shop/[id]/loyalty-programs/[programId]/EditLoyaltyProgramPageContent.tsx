@@ -87,9 +87,7 @@ export default function EditLoyaltyProgramPageContent({
         walletConfig.pointsAwarded < 1
       ) {
         toastError(
-          new Error(
-            "Convertible amount and points awarded must be positive whole numbers.",
-          ),
+          "Convertible amount and points awarded must be positive whole numbers.",
         );
       }
     }
@@ -133,7 +131,7 @@ export default function EditLoyaltyProgramPageContent({
       setSavedLoyaltyProgram(loyaltyProgram);
       toastSuccess("Loyalty program saved.");
     } catch (error) {
-      toastError(error);
+      toastError(error, "Unable to save the loyalty program. Please try again.");
     } finally {
       setIsSaving(false);
     }
