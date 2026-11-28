@@ -115,18 +115,9 @@ export function MemberSheetTopUpBalanceContent({
               className="w-full rounded-xl border border-slate-300 bg-white py-3 pl-9 pr-4 text-slate-900 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
             />
           </div>
-          <p
-            id="member-top-up-hint"
-            className="text-xs text-slate-500 dark:text-slate-400"
-          >
-            Top-up amount must be between ₱{" "}
-            {formatNumber(MINIMUM_TOP_UP_PESOS)} and ₱{" "}
-            {formatNumber(MAXIMUM_TOP_UP_PESOS)}. Wallet balance cannot be
-            negative.
-          </p>
           {amount !== "" && !isAmountValid && (
             <p role="alert" className="text-xs text-red-600 dark:text-red-400">
-              Enter a top-up amount between ₱{" "}
+              Enter an amount between ₱{" "}
               {formatNumber(MINIMUM_TOP_UP_PESOS)} and ₱{" "}
               {formatNumber(MAXIMUM_TOP_UP_PESOS)}.
             </p>
